@@ -1,0 +1,6 @@
+{
+    "serverPort": 5000,
+    "uri": "http://localhost",
+    "dbUri": "mongodb+srv://admin:Ycb-cxD-5GM-Wc3@cluster0.evbvi.mongodb.net/sweet_memory?retryWrites=true&w=majority",
+    "secretKey": "memory"
+}
