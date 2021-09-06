@@ -1,0 +1,173 @@
+$font-stack: HelveticaNeueCyr, sans-serif;
+$main-color: #03ADD2;
+
+.cardBg {
+    background: #fff;
+    left: 0;
+    position: fixed;
+    z-index: 4;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+.eventCard {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    width: 70%;
+    max-width: 850px;
+    margin: 0 auto;
+    background: #FBFBFB;
+    border-radius: 19px;
+    font-family: $font-stack;
+    color: #242424;
+    .card__content { 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 50%;
+        text-align: center;
+        .pretitle {
+            line-height: 30px;
+            font-size: 22px;
+            font-weight: 400;
+        }
+        .title {
+            line-height: 30px;
+            font-size: 26px;
+            font-weight: 700;
+        }
+        .keywords {
+            .keywords__item {
+                line-height: 20px;
+                font-size: 18px;
+                font-weight: 400;
+            }
+        }
+    }
+    .card__img {
+        position: relative;
+        width: 50%;
+        .main__img {
+            border-radius: 19px 0px 0px 19px;
+            width: 100%;
+            height: calc(100vh - 130px);
+            max-height: 500px;
+            object-fit: cover;
+        }
+    }
+}
+
+.actions {
+    position: absolute;
+    bottom: 16px;
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    .action {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        width: 80px;
+        height: 80px;
+        background: #FFFFFF;
+        box-shadow: 0px 0px 7.26457px rgba(0, 0, 0, 0.1);
+        img {
+            height: 30px;
+            width: 45px;
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .cardBg {
+        position: relative;
+    }
+    .eventCard {
+        position: relative;
+        top: auto;
+        left: auto;
+        transform: translate(0,0);
+        display: block;
+        .actions {
+            .action {
+                width: 70px;
+                height: 70px;
+                img {
+                    height: 30px;
+                    width: 35px;
+                }
+            }
+        }
+        .card__img {
+            width: auto;
+            .main__img {
+                border-radius: 19px;
+            }
+        }
+        .card__content {
+            padding: 20px 0;
+            width: auto;
+        }
+    }
+}
+
+@media screen and (max-width: 420px) {
+    .cardBg {
+        position: relative;
+    }
+    .eventCard {
+        background: #fff;
+        position: relative;
+        transform: none;
+        left: 0;
+        top: 0;
+        width: 100%;
+        display: block;
+        
+        .actions {
+            .mb {
+                display: none;
+            }
+            .action {
+                width: 60px;
+                height: 60px;
+                img {
+                    height: 20px;
+                    width: 40px;
+                }
+            }
+        }
+        .card__content {
+            position: absolute;
+            bottom: 85px;
+            text-align: center;
+            width: 100%;
+            color: #fff;
+            .pretitle {
+                line-height: 18px;
+                font-size: 16px;
+            }
+            .title {
+                font-size: 24px;
+            }
+            .keywords {
+                display: none;
+            }
+        }
+        .card__img {
+            width: 100%;
+            .main__img {
+                width: 100%;
+                border-radius: 19px;
+                height: calc(100vh - 100px);
+                max-height: 100vh;
+                object-fit: cover;
+            }
+        }
+    }
+}

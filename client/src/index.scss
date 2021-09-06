@@ -1,0 +1,356 @@
+@import 'fonts';
+
+$font-stack: HelveticaNeueCyr, sans-serif;
+$main-color: #03ADD2;
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.hidden {
+  display: none;
+}
+
+.MuiPaper-root {
+  padding: 0 20px!important;
+}
+
+.header {
+  position: relative;
+  z-index: 10;
+  margin: 0 auto;
+  width: 90%;
+  max-width: 1200px;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 0;
+  img {
+    width: 28px;
+  }
+  .logo {
+    font-family: $font-stack;   
+    font-weight: 900;
+    font-size: 14px;
+  }
+}
+
+.bg__tutorial {
+  position: fixed;
+  background: #ffffffa6;
+  backdrop-filter: blur(1px);
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+
+
+.tutorial {
+  margin: 0 auto;
+  text-align: center;
+  background: #FFFFFF;
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 14px;
+  padding: 16px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  .dots {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    .dot {
+      border-radius: 50%;
+      background: #C4C4C4;
+      width: 7px;
+      height: 7px;
+      margin: 3px;
+    }
+    .active {
+      border-radius: 50%;
+      background: #03ADD2;
+      width: 7px;
+      height: 7px;
+      margin: 3px;
+    }
+  }
+  .content__close-img {
+    cursor: pointer;
+    position: absolute;
+    right: 15px;
+  }
+  .content__title {
+    font-family: $font-stack;
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 30px;
+  }
+  .content__desc {
+    font-family: $font-stack;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 20px;
+    margin: 5px 0 30px 0;
+  }
+  .content__step {
+    font-size: 17px;
+    line-height: 24px;
+    color: $main-color;
+    font-family: $font-stack;
+    font-weight: 500;
+  }
+}
+
+.btn_auth {
+  cursor: pointer;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  background: $main-color;
+  border: none;
+  padding: 10px 40px;
+  border-radius: 20px;
+}
+
+.btn_category {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 6px 8px 16px;
+  border-radius: 25px;
+  margin: 10px 5px 5px 5px;
+  width: 70px;
+}
+
+.btn_tutorial {
+  margin: 0 10px;
+  margin-top: 20px;
+  padding: 10px 40px;
+}
+
+.btn_primary {
+  cursor: pointer;
+  color: #fff;
+  border-radius: 20px;
+  background: $main-color;
+  font-family: $font-stack;
+  border: none;
+}
+
+.ml-10 {
+  margin-left: 10px;
+}
+
+a {
+  text-decoration: none;
+  color: #242424;
+}
+
+#tabs {
+  display: flex;
+  align-items: center;
+}
+
+.header__admin {
+  position: relative;
+  z-index: 10;
+  margin: 0 auto;
+  width: 90%;
+  max-width: 1200px;
+  padding: 20px 0;
+  font-family: HelveticaNeueCyr, sans-serif;
+  font-weight: 900;
+  font-size: 14px;
+  a {
+    margin-right: 10px;
+  }
+}
+
+.fixed {
+  top: 0!important;
+  position: fixed;
+  margin: 0px!important;
+  padding: 20px 0px;
+}
+
+.categories {
+  font-family: $font-stack;
+  height: 100%;
+  .categories__sort {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .sort__btns {
+      margin-bottom: 10px;
+      .btn {
+        font-weight: 700;
+        font-family: $font-stack;
+        min-width: 80px;
+        padding: 8px 20px;
+        border-radius: 25px;
+        margin: 10px 5px 5px 5px;
+        font-size: 14px;
+      }
+      .btn__fill {
+        border: 2px solid transparent;
+        background: #03ADD2;
+        color: #fff;
+      }
+      .btn__outline {
+        background: transparent;
+        border: 2px solid #03ADD2;
+        color: #03ADD2;
+      }
+    }
+  }
+  .categories__content__vissible {
+    display: none;
+  }
+  .content__container {
+    display: flex;  
+    justify-content: space-between;
+    margin: 20px -10px;
+    .content__side {
+      width: 50%;
+      margin: 0 10px;
+      .content__items {
+        display: flex;
+        flex-wrap: wrap;
+        margin-left: -10px;
+        .item {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 8px 6px 8px 16px;
+          border-radius: 25px;
+          margin: 10px 5px 5px 5px;
+          width: 70px;
+          img {
+            cursor: pointer;
+          }
+          .txt {
+            font-size: 14px;
+            font-weight: 700;
+          }
+        }
+        .item__fill {
+          border: 2px solid transparent;
+          background: #03ADD2;
+          color: #fff;
+        }
+        .item__outline {
+          border: 2px solid #03ADD2;
+          color: #03ADD2;
+        }
+      }
+    }
+  }
+  .catergories__container {
+    position: fixed;
+    padding: 17px 40px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0px -7px 47px rgba(0, 0, 0, 0.25);
+    max-width: 700px;
+    width: calc(100% - 80px);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    .content__close-img {
+      float: right;
+      cursor: pointer;
+    }
+  }
+  .categories__title {
+    color: #242424;
+    font-size: 16px;
+    font-weight: 700;
+  }
+}
+
+.filter {
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.08);
+}
+
+@media screen and (max-width: 550px) {
+  .categories {
+    display: flex;
+    align-items: center;
+    .catergories__container {
+      position: relative;
+      transform: translate(0,0);
+      left: auto;
+      top: auto;
+    }
+    .content__container {
+      display: block;
+      
+      .content__side {
+        width: 100%;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 420px) {
+  .tutorial {
+    width: 280px;
+    .content__desc {
+      margin: 5px 0 10px 0;
+    }
+  }
+  .categories {
+    .catergories__container {
+      padding: 17px 20px;
+      width: calc(100% - 40px);
+    }
+    .content__container {
+      display: block;
+      .content__side {
+        width: 100%;
+        &:nth-child(2){
+          margin-top: 10px;
+        }
+        .content__items {
+          margin-top: 10px;
+          .item {
+            width: calc(33% - 35px);
+            margin: 0px 0px 7px 5px;
+          }
+        }
+      }
+    }
+    .categories__sort {
+      text-align: left;
+      align-items: flex-start;
+      .sort__btns {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        .btn {
+          padding: 8px 0px;
+          margin: 15px 0px 0px 0px;
+          width: calc(40% - 5px);
+          &:nth-child(1){
+            width: calc(30% - 5px);
+          }
+          &:nth-child(3){
+            width: calc(30% - 5px);
+          }
+        }
+      }
+    }
+  }
+  .App {
+    padding: 0 10px;
+  }
+  .header {
+    width: 100%;
+  }
+}
