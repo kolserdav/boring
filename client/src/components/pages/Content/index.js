@@ -24,33 +24,23 @@ const Content = (props) => {
                     setLoading(false)
                 })
         }
-        setTimeout(() => setLoading(false), 1000)
     }, [loading])
 
-    let childCategoriesArr = []
     let [childCategories, setChildCategories] = useState([])
 
     useEffect(() => {
-
         if (isFethcingCategory) {
-            content[step].categoriesChild.map((item) => {
-                GetCategory(item._id)
-                    .then(res => {
-                        childCategoriesArr.push(res)
-                    })
-                    .finally(() => {
-                        setChildCategories(childCategoriesArr)
-                    })
-            })
-            if (content[step].categoriesChild.length === childCategoriesArr.length) {
-                setChildCategories(childCategoriesArr)
-            }
+            Promise.all(content[step].categoriesChild.map((item) => GetCategory(item._id)))
+                .then(res => {
+                    setChildCategories(res)
+                })
         }
+    }, [step, isFethcingCategory, content])
 
-    }, [step, isFethcingCategory])
     if (loading) {
         return <Loader />
     }
+
     return (
         <div className={styles.cardBg}>
             <div className={styles.eventCard}>
@@ -86,7 +76,6 @@ const Content = (props) => {
                                     {content[step].categoriesChild.length === childCategories.length && childCategories.map((item) => (
                                         <div key={item._id} className={styles.keywords__item}>
                                             {item.title}
-                                            {console.log(item.title)}
                                         </div>
                                     ))}
                                 </div>

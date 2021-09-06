@@ -31,7 +31,7 @@ const Card = () => {
     })
     useEffect(() => {
         if (isFetchingCategory) {
-            event.categories.map((item) => {
+            event.categories.forEach((item) => {
                 GetCategory(item._id).then
                     (res => {
                         categoriesArr.push(res)
