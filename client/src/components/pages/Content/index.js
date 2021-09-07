@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { GetContents } from '../../../action/contentAction'
 import Loader from '../../Loader'
 import { GetCategory } from '../../../action/Category'
+import {SERVER_URI} from '../../../config'
 
 const Content = (props) => {
 
@@ -45,7 +46,7 @@ const Content = (props) => {
         <div className={styles.cardBg}>
             <div className={styles.eventCard}>
                 <div className={styles.card__img}>
-                    <img className={styles.main__img} src={`http://localhost:5000/content/${content[step].picture}`} alt={props.title} />
+                    <img className={styles.main__img} src={`${SERVER_URI}/content/${content[step].picture}`} alt={props.title} />
                     <div className={styles.actions}>
                         <div className={styles.action}>
                             <img src={closeImg} alt='close' onClick={() => {

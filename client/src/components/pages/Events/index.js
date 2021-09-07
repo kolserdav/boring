@@ -9,6 +9,7 @@ import { useHistory } from 'react-router-dom'
 import { GetEvents } from '../../../action/eventAction'
 import { GetCategories } from '../../../action/Category'
 import { useSelector } from 'react-redux'
+import { SERVER_URI } from '../../../config'
 
 const Events = () => {
     const history = useHistory()
@@ -67,15 +68,15 @@ const Events = () => {
     }
     return (
         <>
-        {!token &&
-            <Tutorial />
-        }
+            {!token &&
+                <Tutorial />
+            }
             <div id="events" className={styles.events}>
                 <div id='tabs'>
                     <div id='tab' className={styles.tab}>
                         {categoriesData.map((data, index) => (
                             <div key={index} style={{ background: data.color }} className={`${styles.tab__item}`} >
-                                <img className={styles.tab__itemImg} src={`http://localhost:5000/categories/${data.picture}`} alt='tab-img' />
+                                <img className={styles.tab__itemImg} src={`${SERVER_URI}/categories/${data.picture}`} alt='tab-img' />
                                 {data.title}
                             </div>
                         ))}
@@ -98,7 +99,7 @@ const Events = () => {
                                 history.push(`/event/${item._id}`)
                             }}>
                                 <div className={styles.bookmark}><img src={bookmarkImg} alt='bookmark' /></div>
-                                <img className={styles.contentImg} src={`http://localhost:5000/events/${item.picture}`} alt={item.title} />
+                                <img className={styles.contentImg} src={`${SERVER_URI}/events/${item.picture}`} alt={item.title} />
                                 <div className={styles.event__cardHedaer}>
                                     <div className={styles.cardHeader__title}>
                                         {item.title}

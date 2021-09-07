@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import { GetCategory } from '../../../action/Category'
 import Loader from '../../Loader'
+import { SERVER_URI } from '../../../config'
+
 
 const Card = () => {
 
@@ -50,7 +52,7 @@ const Card = () => {
         <div className={styles.cardBg}>
             <div className={styles.eventCard}>
                 <div className={styles.card__img}>
-                    <img src={`http://localhost:5000/events/${event.picture}`} alt={event.title} />
+                    <img src={`${SERVER_URI}/events/${event.picture}`} alt={event.title} />
                 </div>
                 <div className={styles.card__content}>
                     <div>
@@ -73,8 +75,8 @@ const Card = () => {
                         </div>
                         <div className={styles.tab}>
                             {categories.map((item) => (
-                                <div className={styles.tab__item} style={{background: item.color}} key={item._id}>
-                                    <img alt={item.title} src={`http://localhost:5000/categories/${item.picture}`} className={styles.tab__itemImg } />
+                                <div className={styles.tab__item} style={{ background: item.color }} key={item._id}>
+                                    <img alt={item.title} src={`${SERVER_URI}/categories/${item.picture}`} className={styles.tab__itemImg} />
                                     {item.title}
                                 </div>
                             ))}
