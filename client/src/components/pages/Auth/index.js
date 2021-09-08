@@ -17,7 +17,7 @@ const SignUp = () => {
     const [email, setEmail] = useState()
     const [password, setPassword] = useState()
     const history = useHistory()
-    return ( 
+    return (
         <div className={styles.signup}>
             <div className={styles.signup__container}>
                 <img className={styles.img1} src={window.innerWidth < 420 ? signup1Mobile : signup1} alt='Img' />
@@ -64,7 +64,7 @@ const SignUp = () => {
                             button_className='btn_auth'
                             button_title='Sign up'
                             onClick={() => {
-                                if (email, password) {
+                                if (email && password) {
                                     Registration(email, password).then(data => {
                                         dispatch(setUser(data))
                                     })
@@ -78,7 +78,7 @@ const SignUp = () => {
                             button_className='btn_auth'
                             button_title='Log in'
                             onClick={() => {
-                                if (email, password) {
+                                if (email && password) {
                                     Login(email, password).then(data => {
                                         dispatch(setUser(data))
                                     })
