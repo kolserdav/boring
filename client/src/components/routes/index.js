@@ -11,7 +11,6 @@ const AppRouter = () => {
     const token = useSelector(state => state.user.token)
     let decode
     let role
-    console.log(token)
     if (token) {
         decode = jwt_decode(token)
         role = (decode.role)

@@ -4,7 +4,9 @@ import fileService from "../service/fileService.js"
 class eventService {
 
     async create({ title, categories, description, location, locationUri }, picture ) {
+        console.log(categories)
         const parseCategories = JSON.parse(categories)
+        console.log(parseCategories)
         const filepath = 'events'
         const fileName = fileService.saveFile(picture, filepath)
         const createdEvent = await eventModel.create({title, categories: parseCategories, picture: fileName, description, location, locationUri})
