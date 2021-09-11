@@ -9,6 +9,7 @@ export const Registration = async (email, password) => {
             password
         })
         localStorage.setItem('token', data.token)
+        return data.token
     } catch (e) {
         console.log(e)
     }
