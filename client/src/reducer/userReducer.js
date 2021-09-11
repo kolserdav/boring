@@ -18,10 +18,7 @@ export default function userReducer(state = initialState, action) {
                 token: action.payload,
                 isAuth: true,
                 role: jwt_decode(action.payload)
-            }
-
-        default:
-            return state
+            };
 
         case LOGOUT:
             localStorage.removeItem('token')
@@ -30,7 +27,11 @@ export default function userReducer(state = initialState, action) {
                 token: '',
                 isAuth: false,
                 role: 'GUEST'
-            }
+            };
+
+        default:
+            return state;
+
     }
 }
 

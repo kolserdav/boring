@@ -50,8 +50,8 @@ const Tutorial = () => {
     return (
         <>
             {step < 5 &&
-                <div className="bg__tutorial">
-                    <div className="tutorial">
+                <div className="blur">
+                    <div className="popup">
                         <div className="tutorial__content">
                             <img className="content__close-img" src={close} alt='close' onClick={() => setStep(5)} />
                             {step === 1 &&

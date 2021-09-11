@@ -4,7 +4,7 @@ import close from '../images/close.svg'
 
 const Categories = (props) => {
     return (
-        <div className='bg__tutorial'>
+        <div className='blur'>
             <div className='categories'>
                 <div className='catergories__container'>
                     <img className="content__close-img" src={close} alt='close' onClick={() => props.onClose()} />
