@@ -30,7 +30,6 @@ export default function userReducer(state = initialState, action) {
             }
         default:
             return state
-
         case LOGOUT:
             localStorage.removeItem('token')
             return {
@@ -38,7 +37,11 @@ export default function userReducer(state = initialState, action) {
                 token: '',
                 isAuth: false,
                 role: 'GUEST'
-            }
+            };
+
+        default:
+            return state;
+
     }
 }
 
