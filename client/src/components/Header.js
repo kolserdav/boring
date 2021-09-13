@@ -2,16 +2,16 @@ import questionSvg from '../images/question.svg'
 import menuSvg from '../images/menu.svg'
 import { NavLink } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { logout } from '../reducer/userReducer'
+import { logout } from '../action/userActions'
 import Drawer from '@material-ui/core/Drawer';
 import { Divider, IconButton, List, ListItem, ListItemText } from '@material-ui/core'
 import { useState } from 'react'
+import { removeUser } from './pages/Auth/authSlice'
 
 const Header = () => {
     const dispatch = useDispatch()
     const isAuth = useSelector(state => state.user.isAuth)
     const role = useSelector(state => state.user.role)
-
     const [open, setOpen] = useState(false)
 
     const handleDrawerOpen = () => {
@@ -21,6 +21,11 @@ const Header = () => {
     const handleDrawerClose = () => {
         setOpen(false);
     };
+
+    function handleLogout(event) {
+        dispatch(removeUser());
+        logout()
+    }
     return (
         <>
             <nav className="header">
@@ -69,7 +74,7 @@ const Header = () => {
                         {isAuth && (
                             <>
                                 <Divider />
-                                <ListItem onClick={() => dispatch(logout())} button>
+                                <ListItem onClick={handleLogout} button>
                                     <ListItemText primary='Log out' />
                                 </ListItem>
                             </>

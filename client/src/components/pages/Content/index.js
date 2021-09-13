@@ -5,20 +5,22 @@ import { useEffect, useState } from 'react'
 import { GetContents } from '../../../action/contentAction'
 import Loader from '../../Loader'
 import { GetCategory } from '../../../action/Category'
-import {SERVER_URI} from '../../../config'
+import { SERVER_URI } from '../../../config'
 
 const Content = (props) => {
 
     const [loading, setLoading] = useState(true)
+    const [isFethcingCategory, setIsFetchingCategory] = useState(false)
     const [content, setContent] = useState([])
     const [step, setStep] = useState(0)
-    const [isFethcingCategory, setIsFetchingCategory] = useState(false)
+    const [childCategories, setChildCategories] = useState([])
 
     useEffect(() => {
         if (loading) {
             GetContents()
                 .then(
                     res => setContent(res.data)
+                    
                 )
                 .finally(() => {
                     setIsFetchingCategory(true)
@@ -27,7 +29,6 @@ const Content = (props) => {
         }
     }, [loading])
 
-    let [childCategories, setChildCategories] = useState([])
 
     useEffect(() => {
         if (isFethcingCategory) {
@@ -41,7 +42,6 @@ const Content = (props) => {
     if (loading) {
         return <Loader />
     }
-
     return (
         <div className={styles.cardBg}>
             <div className={styles.eventCard}>

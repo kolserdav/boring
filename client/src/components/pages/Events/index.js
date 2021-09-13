@@ -21,7 +21,7 @@ const Events = () => {
     }
     const [categories, setCategories] = useState(false)
     const [overflow, setOverflow] = useState()
-    const token = useSelector(state => state.user.token)
+    const isAuth = useSelector(state => state.user.isAuth)
     let events = document.getElementById('events')
 
     if (overflow === true) {
@@ -68,7 +68,7 @@ const Events = () => {
     }
     return (
         <>
-            {!token &&
+            {!isAuth &&
                 <Tutorial />
             }
             <div id="events" className={styles.events}>

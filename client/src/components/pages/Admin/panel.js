@@ -2,9 +2,8 @@ import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import Button from '../../Button'
 import styles from './Admin.module.scss'
-import CreateContentPage from './Content/createContent'
-import { CATEGORIES_ADMIN, CONTENT_ADMIN, EVENT_ADMIN } from '../../../utils/routesConsts'
-import CreateEvent from './Events/createEvent' 
+import { CATEGORIES_ADMIN, CONTENT_ADMIN, EVENT_ADMIN } from '../../../Routes/Paths'
+import CreateEvent from './Events/createEvent'
 import Content from './Content'
 import Categories from './Categories'
 
@@ -41,7 +40,7 @@ const Panel = () => {
                     break;
             }
         }
-    }, [])
+    }, [location.pathname, title])
     return (
         <>
             <div className={styles.admin}>

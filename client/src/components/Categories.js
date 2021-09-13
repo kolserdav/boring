@@ -14,33 +14,48 @@ const Categories = (props) => {
                                 Yours categories
                             </div>
                             <div className='content__items'>
-
                                 <div className='item item__fill'>
-                                    <span className='txt'>Date</span>
+                                    <span className='txt'>Sport</span>
                                     <img src={close__blue} alt='close' />
                                 </div>
                                 <div className='item item__fill'>
-                                    <span className='txt'>Foo</span>
+                                    <span className='txt'>Relax</span>
                                     <img src={close__blue} alt='close' />
                                 </div>
                                 <div className='item item__fill'>
-                                    <span className='txt'>Bar</span>
+                                    <span className='txt'>Shopping</span>
                                     <img src={close__blue} alt='close' />
                                 </div>
                                 <div className='item item__fill'>
-                                    <span className='txt'>Long text</span>
+                                    <span className='txt'>Kids</span>
                                     <img src={close__blue} alt='close' />
                                 </div>
                                 <div className='item item__fill'>
-                                    <span className='txt'>Long long text</span>
+                                    <span className='txt'>Party</span>
                                     <img src={close__blue} alt='close' />
                                 </div>
                                 <div className='item item__fill'>
-                                    <span className='txt'>Long short long text</span>
+                                    <span className='txt'>Kids</span>
                                     <img src={close__blue} alt='close' />
                                 </div>
                                 <div className='item item__fill'>
-                                    <span className='txt'>Text</span>
+                                    <span className='txt'>Kids</span>
+                                    <img src={close__blue} alt='close' />
+                                </div>
+                                <div className='item item__fill'>
+                                    <span className='txt'>Sport</span>
+                                    <img src={close__blue} alt='close' />
+                                </div>
+                                <div className='item item__fill'>
+                                    <span className='txt'>Relax</span>
+                                    <img src={close__blue} alt='close' />
+                                </div>
+                                <div className='item item__fill'>
+                                    <span className='txt'>Shopping</span>
+                                    <img src={close__blue} alt='close' />
+                                </div>
+                                <div className='item item__fill'>
+                                    <span className='txt'>Kids</span>
                                     <img src={close__blue} alt='close' />
                                 </div>
                             </div>
@@ -59,42 +74,6 @@ const Categories = (props) => {
                                     <img src={add} alt='add' />
                                 </div>
                                 <div className='item item__outline'>
-                                    <span className='txt'>Very long text</span>
-                                    <img src={add} alt='add' />
-                                </div>
-                                <div className='item item__outline'>
-                                    <span className='txt'>Very very long text</span>
-                                    <img src={add} alt='add' />
-                                </div>
-                                <div className='item item__outline'>
-                                    <span className='txt'>Very long text</span>
-                                    <img src={add} alt='add' />
-                                </div>
-                                <div className='item item__outline'>
-                                    <span className='txt'>Very very long text</span>
-                                    <img src={add} alt='add' />
-                                </div>
-                                <div className='item item__outline'>
-                                    <span className='txt'>Very long text</span>
-                                    <img src={add} alt='add' />
-                                </div>
-                                <div className='item item__outline'>
-                                    <span className='txt'>Very very long text</span>
-                                    <img src={add} alt='add' />
-                                </div>
-                                <div className='item item__outline'>
-                                    <span className='txt'>Short long text</span>
-                                    <img src={add} alt='add' />
-                                </div>
-                                <div className='item item__outline'>
-                                    <span className='txt'>Very very very long text</span>
-                                    <img src={add} alt='add' />
-                                </div>
-                                <div className='item item__outline'>
-                                    <span className='txt'>Long text</span>
-                                    <img src={add} alt='add' />
-                                </div>
-                                <div className='item item__outline'>
                                     <span className='txt'>Views</span>
                                     <img src={add} alt='add' />
                                 </div>
@@ -104,6 +83,22 @@ const Categories = (props) => {
                                 </div>
                                 <div className='item item__outline'>
                                     <span className='txt'>Bars</span>
+                                    <img src={add} alt='add' />
+                                </div>
+                                <div className='item item__outline'>
+                                    <span className='txt'>Sport</span>
+                                    <img src={add} alt='add' />
+                                </div>
+                                <div className='item item__outline'>
+                                    <span className='txt'>Relax</span>
+                                    <img src={add} alt='add' />
+                                </div>
+                                <div className='item item__outline'>
+                                    <span className='txt'>Travelling</span>
+                                    <img src={add} alt='add' />
+                                </div>
+                                <div className='item item__outline'>
+                                    <span className='txt'>Adults</span>
                                     <img src={add} alt='add' />
                                 </div>
                                 <div className='item item__outline'>
@@ -119,11 +114,27 @@ const Categories = (props) => {
                                     <img src={add} alt='add' />
                                 </div>
                                 <div className='item item__outline'>
+                                    <span className='txt'>Relax</span>
+                                    <img src={add} alt='add' />
+                                </div>
+                                <div className='item item__outline'>
+                                    <span className='txt'>Travelling</span>
+                                    <img src={add} alt='add' />
+                                </div>
+                                <div className='item item__outline'>
+                                    <span className='txt'>Adults</span>
+                                    <img src={add} alt='add' />
+                                </div>
+                                <div className='item item__outline'>
                                     <span className='txt'>Art</span>
                                     <img src={add} alt='add' />
                                 </div>
                                 <div className='item item__outline'>
                                     <span className='txt'>Bars</span>
+                                    <img src={add} alt='add' />
+                                </div>
+                                <div className='item item__outline'>
+                                    <span className='txt'>Sport</span>
                                     <img src={add} alt='add' />
                                 </div>
                             </div>
