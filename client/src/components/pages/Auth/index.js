@@ -6,7 +6,7 @@ import signup2 from '../../../images/signup2.svg'
 import { login, registration } from '../../../action/userActions'
 import { useState } from 'react'
 import Button from '../../Button'
-import { LOGIN_ROUTE } from '../../../Routes/Paths'
+import { LOGIN_ROUTE } from '../../../routes/Paths'
 import { useDispatch } from 'react-redux'
 import { setUser } from '../Auth/authSlice'
 import { InputAdornment, TextField } from "@material-ui/core"
