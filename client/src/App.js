@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
-import Routes from './Routes'
+import Routes from './routes'
 import Header from './components/Header'
 import { check } from "./action/userActions";
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setUser } from "./components/pages/Auth/authSlice";
 import Loader from "./components/Loader";
 import Invitation from "./components/Invitation";
@@ -11,7 +11,8 @@ import Invitation from "./components/Invitation";
 function App() {
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(true)
-  const [invitationVisible, setInvitation] = useState(false);
+  const isAuth = useSelector(state => state.user.isAuth)
+  const [invitationVisible, setInvitation] = useState(true);
 
   useEffect(() => {
     if (localStorage.token) {
@@ -28,7 +29,7 @@ function App() {
     } else {
       setLoading(false)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (loading) {
@@ -39,7 +40,7 @@ function App() {
       <Router>
         <Header />
         <Routes />
-        {invitationVisible ?
+        {(invitationVisible && !isAuth) ?
           <Invitation setInvitation={setInvitation} /> :
           null
         }

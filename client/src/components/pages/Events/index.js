@@ -4,7 +4,7 @@ import filterImg from '../../../images/filter.svg'
 import Masonry from 'react-masonry-css'
 import { useEffect, useState } from 'react'
 import Tutorial from '../../Tutorial'
-import Categories from '../../Categories'
+import Categories from '../Categories'
 import { useHistory } from 'react-router-dom'
 import { GetEvents } from '../../../action/eventAction'
 import { GetCategories } from '../../../action/Category'
@@ -19,10 +19,10 @@ const Events = () => {
         700: 3,
         400: 2
     }
-    const [categories, setCategories] = useState(false)
+    const [categoriesVisible, setCategoriesVisible] = useState(false)
     const [overflow, setOverflow] = useState()
     const isAuth = useSelector(state => state.user.isAuth)
-    let events = document.getElementById('events')
+    let events = document.documentElement
 
     if (overflow === true) {
         events.style.overflow = 'hidden'
@@ -81,7 +81,7 @@ const Events = () => {
                             </div>
                         ))}
                         <div className={`${styles.tab__item} filter`} onClick={() => {
-                            setCategories(true)
+                            setCategoriesVisible(true)
                         }}>
                             <img className={styles.tab__itemImg} src={filterImg} alt='tab-img' />
                             Filter
@@ -110,14 +110,14 @@ const Events = () => {
                     </Masonry>
                 </div>
             </div>
-            {categories === true && (
+            {categoriesVisible === true && (
                 <Categories
-                    onClose={() => {
-                        setOverflow(false)
-                        setCategories(false)
-                    }}
                     onOpen={() => {
                         setOverflow(true)
+                    }}
+                    onClose={() => {
+                        setOverflow(false)
+                        setCategoriesVisible(false)
                     }}
                 />
             )}

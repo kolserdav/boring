@@ -1,6 +1,6 @@
-import close__blue from '../images/close__blue.svg'
-import add from '../images/add__blue.svg'
-import close from '../images/close.svg'
+import close__blue from '../../../images/close__blue.svg'
+import add from '../../../images/add__blue.svg'
+import close from '../../../images/close.svg'
 
 const Categories = (props) => {
     return (
