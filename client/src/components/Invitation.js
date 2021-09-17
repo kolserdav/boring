@@ -17,9 +17,9 @@ export default function Invitation(props) {
           choise please log in
         </div>
         <div className='buttons'>
-          <Button button_className='btn_primary btn_tutorial'
-            button_type=''
-            button_title='No, thanks'
+          <Button
+            className='btn_primary btn_tutorial'
+            title='No, thanks'
             onClick={hideInvitation} />
           <Link onClick={hideInvitation} to="/signup" className='btn_primary btn_tutorial'>Sign up</Link>
         </div>

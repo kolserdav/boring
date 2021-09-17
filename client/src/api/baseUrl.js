@@ -1,0 +1,1 @@
+export { SERVER_URI as baseUrl } from "../config"

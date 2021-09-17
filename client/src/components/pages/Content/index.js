@@ -4,30 +4,36 @@ import likeImg from '../../../images/like.svg'
 import { useEffect, useState } from 'react'
 import { GetContents } from '../../../action/contentAction'
 import Loader from '../../Loader'
-import { GetCategory } from '../../../action/Category'
+import { addCategories, GetCategory } from '../../../action/categoriesActions'
 import { SERVER_URI } from '../../../config'
 
-const Content = (props) => {
 
+const Content = (props) => {
     const [loading, setLoading] = useState(true)
     const [isFethcingCategory, setIsFetchingCategory] = useState(false)
-    const [content, setContent] = useState([])
     const [step, setStep] = useState(0)
+    const [content, setContent] = useState([])
     const [childCategories, setChildCategories] = useState([])
 
-    useEffect(() => {
-        if (loading) {
-            GetContents()
-                .then(
-                    res => setContent(res.data)
-                    
-                )
-                .finally(() => {
-                    setIsFetchingCategory(true)
-                    setLoading(false)
-                })
+    function handleClick(event) {
+        if (event.target.dataset.action === 'like') {
+            addCategories(childCategories.map(category => category._id))
         }
-    }, [loading])
+        if (step + 1 < content.length) {
+            setStep(step + 1)
+        }
+    }
+
+    useEffect(() => {
+        GetContents()
+            .then(
+                res => setContent(res.data)
+            )
+            .finally(() => {
+                setIsFetchingCategory(true)
+                setLoading(false)
+            })
+    }, [])
 
 
     useEffect(() => {
@@ -39,6 +45,7 @@ const Content = (props) => {
         }
     }, [step, isFethcingCategory, content])
 
+
     if (loading) {
         return <Loader />
     }
@@ -49,19 +56,10 @@ const Content = (props) => {
                     <img className={styles.main__img} src={`${SERVER_URI}/content/${content[step].picture}`} alt={props.title} />
                     <div className={styles.actions}>
                         <div className={styles.action}>
-                            <img src={closeImg} alt='close' onClick={() => {
-                                if (step + 1 < content.length) {
-                                    setStep(step + 1)
-
-                                }
-                            }} />
+                            <img src={closeImg} alt='close' onClick={handleClick} />
                         </div>
                         <div className={styles.action}>
-                            <img onClick={() => {
-                                if (step + 1 < content.length) {
-                                    setStep(step + 1)
-                                }
-                            }} src={likeImg} alt='like' />
+                            <img data-action='like' onClick={handleClick} src={likeImg} alt='like' />
                         </div>
                     </div>
                 </div>

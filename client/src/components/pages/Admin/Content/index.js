@@ -3,7 +3,6 @@
 const Content = () => {
     return (
         <ContentPanel />
-
     )
 }
 

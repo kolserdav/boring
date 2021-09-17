@@ -1,35 +1,23 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
+import { useSelector } from 'react-redux'
 import Routes from './routes'
 import Header from './components/Header'
-import { check } from "./action/userActions";
-import { useDispatch, useSelector } from 'react-redux'
-import { setUser } from "./components/pages/Auth/authSlice";
 import Loader from "./components/Loader";
 import Invitation from "./components/Invitation";
+import { updateToken } from "./action/userActions";
+import { checkAuth } from "./components/pages/Auth/authSlice";
 
 function App() {
-  const dispatch = useDispatch()
-  const [loading, setLoading] = useState(true)
-  const isAuth = useSelector(state => state.user.isAuth)
+  const [loading, setLoading] = useState(false)
+  const isAuth = useSelector(checkAuth)
   const [invitationVisible, setInvitation] = useState(true);
 
   useEffect(() => {
-    if (localStorage.token) {
-      check()
-        .then(data => {
-          dispatch(setUser(data))
-        })
-        .catch(error => {
-          console.log(error)
-        })
-        .finally(() => {
-          setLoading(false)
-        })
-    } else {
-      setLoading(false)
+    const token = localStorage.getItem('token')
+    if (token) {
+      updateToken(token)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (loading) {

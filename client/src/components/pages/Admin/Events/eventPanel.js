@@ -41,8 +41,8 @@ const EventPanel = () => {
                             <label>Введите название</label>
                             <input type='search' />
                             <Button 
-                                button_className='btn_primary'
-                                button_title='Удалить'
+                                className='btn_primary'
+                                title='Удалить'
                             />
                             <div>
                                 *Вывод событий*

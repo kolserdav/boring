@@ -1,34 +1,19 @@
-import axios from 'axios'
-import jwtDecode from 'jwt-decode'
-import { SERVER_URI } from '../config'
+import { fetchUser, loginUser, registerUser, removeUser } from '../components/pages/Auth/authSlice';
+import store from '../store';
 
 
 export const registration = async (email, password) => {
-    const { data } = await axios.post(`${SERVER_URI}/api/user/registration`, {
-        email,
-        password
-    });
-    localStorage.setItem('token', data.token);
-    return jwtDecode(data.token);
-
+    return await store.dispatch(registerUser({email, password})).unwrap();
 }
 
 export const login = async (email, password) => {
-    const { data } = await axios.post(`${SERVER_URI}/api/user/login`, {
-        email,
-        password
-    });
-    localStorage.setItem('token', data.token);
-    return jwtDecode(data.token);
+    return await store.dispatch(loginUser({email, password})).unwrap();
 }
 
 export const logout = () => {
-    localStorage.removeItem('token');
+    store.dispatch(removeUser())
 }
 
-
-export const check = async () => {
-    const { data } = await axios.get(`${SERVER_URI}/api/user/auth`, { headers: { "Authorization": `Bearer ${localStorage.getItem('token')}` } });
-    localStorage.setItem('token', data.token);
-    return jwtDecode(data.token);
+export const updateToken = async (token) => {
+    store.dispatch(fetchUser(token))
 }

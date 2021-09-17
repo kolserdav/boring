@@ -2,7 +2,7 @@ import styles from '../Admin.module.scss'
 import uploadImg from '../../../../images/upload.svg'
 import Button from '../../../Button'
 import { useState } from 'react'
-import { CreateCategory } from '../../../../action/Category'
+import { CreateCategory } from '../../../../action/categoriesActions'
 
 const CreateCategoryPage = () => {
     const [picture, setPicture] = useState()
@@ -51,9 +51,9 @@ const CreateCategoryPage = () => {
                             setColor(e.target.value)
                         }} type="text" name='title' />
                         <Button
-                            button_className='btn_primary'
-                            button_title='Создать событие'
-                            button_type='button'
+                            className='btn_primary'
+                            title='Создать событие'
+                            type='button'
                             onClick={() => {
                                 addData()
                             }}

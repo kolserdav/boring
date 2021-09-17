@@ -22,10 +22,6 @@ const Header = () => {
         setOpen(false);
     };
 
-    function handleLogout(event) {
-        dispatch(removeUser());
-        logout()
-    }
     return (
         <>
             <nav className="header">
@@ -74,7 +70,7 @@ const Header = () => {
                         {isAuth && (
                             <>
                                 <Divider />
-                                <ListItem onClick={handleLogout} button>
+                                <ListItem onClick={logout} button>
                                     <ListItemText primary='Log out' />
                                 </ListItem>
                             </>

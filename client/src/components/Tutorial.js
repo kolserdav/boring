@@ -79,22 +79,22 @@ const Tutorial = () => {
                         </div>
                         {step > 1 &&
                             <Button
-                                button_className='btn_primary btn_tutorial'
-                                button_type=''
+                                className='btn_primary btn_tutorial'
+                                type=''
+                                title='Prev'
                                 onClick={() => {
                                     setStep(step - 1)
                                 }}
-                                button_title='Prev'
                             />
                         }
 
                         <Button
-                            button_className='btn_primary btn_tutorial'
-                            button_type=''
+                            className='btn_primary btn_tutorial'
+                            type=''
+                            title='Next'
                             onClick={() => {
                                 setStep(step + 1)
                             }}
-                            button_title='Next'
                         />
                     </div>
                 </div>

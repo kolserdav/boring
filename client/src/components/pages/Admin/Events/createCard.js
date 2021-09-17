@@ -1,7 +1,7 @@
 import styles from '../Admin.module.scss'
 import uploadImg from '../../../../images/upload.svg'
 import { useEffect, useState } from 'react'
-import { GetCategories } from '../../../../action/Category'
+import { GetCategories } from '../../../../action/categoriesActions'
 import Select from 'react-select'
 import Button from '../../../Button'
 import { CreateEvent } from '../../../../action/eventAction'
@@ -132,22 +132,22 @@ const CreateCard = () => {
                                 className={`basic-multi-select ${styles.select}`}
                             />
                             <Button
-                                button_className='btn_primary'
-                                button_title='Создать событие'
-                                button_type='submit'
+                                className='btn_primary'
+                                title='Создать событие'
+                                type='submit'
                             />
                             <Button
-                                button_className='btn_primary ml-10'
-                                button_title='Предпросмотр'
-                                button_type='button'
+                                className='btn_primary ml-10'
+                                title='Предпросмотр'
+                                type='button'
                                 onClick={() => {
                                     setPreview(true)
                                 }}
                             />
                             <Button
-                                button_className='btn_primary ml-10'
-                                button_title='Test'
-                                button_type='button'
+                                className='btn_primary ml-10'
+                                title='Test'
+                                type='button'
                                 onClick={() => {
                                     console.log(categoriesSelected)
                                 }}

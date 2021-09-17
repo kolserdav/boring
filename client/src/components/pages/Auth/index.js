@@ -1,5 +1,5 @@
 import styles from './Signup.module.scss'
-import { NavLink, useLocation, useHistory } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import signup1 from '../../../images/signup1.svg'
 import signup1Mobile from '../../../images/signup1-mobile.svg'
 import signup2 from '../../../images/signup2.svg'
@@ -7,18 +7,15 @@ import { login, registration } from '../../../action/userActions'
 import { useState } from 'react'
 import Button from '../../Button'
 import { LOGIN_ROUTE } from '../../../routes/Paths'
-import { useDispatch } from 'react-redux'
-import { setUser } from '../Auth/authSlice'
 import { InputAdornment, TextField } from "@material-ui/core"
 import { ReactComponent as EmailIcon } from '../../../images/email.svg'
 import { ReactComponent as PasswordIcon } from '../../../images/password.svg'
 const SignUp = () => {
 
-    const dispatch = useDispatch()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [userExists, setUserExists] = useState(false)
-    const history = useHistory()
+    const [invalidLogin, setInvalidLogin] = useState(false)
+    const [requestPending, setRequestPending] = useState(false)
     const location = useLocation()
     const isLogin = location.pathname === LOGIN_ROUTE
 
@@ -28,12 +25,15 @@ const SignUp = () => {
         switch (target.name) {
             case ('email'):
                 setEmail(target.value)
-                if (userExists) {
-                    setUserExists(false)
+                if (invalidLogin) {
+                    setInvalidLogin(false)
                 }
                 break;
 
             case ('password'):
+                if (invalidLogin && isLogin) {
+                    setInvalidLogin(false)
+                }
                 setPassword(target.value)
                 break;
 
@@ -41,35 +41,31 @@ const SignUp = () => {
         }
     }
 
-    function handleSubmit(event) {
+    async function handleSubmit(event) {
         event.preventDefault()
         if (email && password) {
             switch (isLogin) {
                 case true:
-                    login(email, password)
-                        .then(data => {
-                            console.log(data)
-                            dispatch(setUser(data))
-                            history.push('/');
-                        })
-                        .catch(error => {
-                            if (error.message.includes('404')) console.log('no such user')
-                            else throw error
-                        })
+                    try {
+                        setRequestPending(true);
+                        await login(email, password);
+                    } catch (error) {
+                        if (error.message === 'User not found') {
+                            console.log('no such user')
+                            setInvalidLogin(true)
+                            setRequestPending(false);
+                        }
+                        else throw error
+                    }
                     break;
                 case false:
-                    registration(email, password)
-                        .then(data => {
-                            if (!data) {
-                                throw new Error('user already exists')
-                            }
-                            dispatch(setUser(data))
-                            history.push('/');
-                        })
-                        .catch(error => {
-                            setUserExists(true)
-                            console.log(error.message)
-                        })
+                    try {
+                        setRequestPending(true);
+                        await registration(email, password);
+                    } catch (error) {
+                        setInvalidLogin(true)
+                        setRequestPending(false);
+                    }
                     break;
                 default:
                     return;
@@ -86,23 +82,12 @@ const SignUp = () => {
                     <h1>{isLogin ? 'Log in' : 'Sign up'}</h1>
                     <form onSubmit={handleSubmit}>
                         <div className={styles.form__desc}>
-                            {isLogin
-                                ?
-                                <>
-                                    <span>Don't have an account?</span>
-                                    <NavLink className={styles.link} to={`signup`}> Sign up</NavLink>
-                                </>
-                                :
-                                <>
-                                    <span>Have an account?</span>
-                                    <NavLink className={styles.link} to={`login`}> Log in</NavLink>
-                                </>
-                            }
+                            <span>{isLogin ? 'Don\'t have ' : 'Have'} an account?</span>
+                            <NavLink className={styles.link} to={isLogin ? 'signup' : 'login'}> {isLogin ? 'Sign up' : 'Log in'}</NavLink>
                         </div>
-
                         <TextField
-                            error={userExists}
-                            helperText={userExists ? 'User already exists' : null}
+                            error={invalidLogin}
+                            helperText={invalidLogin ? isLogin ? 'No such user' : 'User already exists' : null}
                             required
                             type='email'
                             name='email'
@@ -155,8 +140,9 @@ const SignUp = () => {
                             </div>
                         }
                         <Button
-                            button_className='btn_auth'
-                            button_title={isLogin ? 'login' : 'Sign up'}
+                            disabled={(requestPending || invalidLogin)}
+                            className='btn_auth'
+                            title={isLogin ? 'login' : 'Sign up'}
                         />
 
                     </form>

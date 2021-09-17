@@ -16,26 +16,26 @@ const Popup = (props) => {
                 {props.type === 'DELETE' && (
                     <>
                         <Button
-                            button_className='btn_primary'
-                            button_title='Удалить'
+                            className='btn_primary'
+                            title='Удалить'
                         />
                         <Button
-                            button_className='btn_primary'
-                            button_title='Обновить'
+                            className='btn_primary'
+                            title='Обновить'
                         />
                     </>
 
                 )}
                 {props.type === 'CREATE' && (
                     <Button
-                        button_className='btn_primary'
-                        button_title='Создать'
+                        className='btn_primary'
+                        title='Создать'
                         onClick={props.onClick}
                     />
                 )}
                 <Button
-                    button_className='btn_primary'
-                    button_title='Закрыть'
+                    className='btn_primary'
+                    title='Закрыть'
                     onClick={props.onClose}
                 />
             </div>

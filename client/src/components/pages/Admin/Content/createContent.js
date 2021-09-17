@@ -1,7 +1,7 @@
 import styles from '../Admin.module.scss'
 import uploadImg from '../../../../images/upload.svg'
 import { useEffect, useState } from 'react'
-import { GetCategories } from '../../../../action/Category'
+import { GetCategories } from '../../../../action/categoriesActions'
 import Select from 'react-select'
 import Button from '../../../Button'
 import { CreateContent } from '../../../../action/contentAction'
@@ -121,9 +121,9 @@ const CreateContentPage = () => {
                             className={`basic-multi-select ${styles.select}`}
                         />
                         <Button
-                            button_className='btn_primary'
-                            button_title='Создать событие'
-                            button_type='button'
+                            className='btn_primary'
+                            title='Создать событие'
+                            type='button'
                             onClick={() => {
                                 addData()
                             }}

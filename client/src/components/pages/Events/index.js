@@ -4,12 +4,13 @@ import filterImg from '../../../images/filter.svg'
 import Masonry from 'react-masonry-css'
 import { useEffect, useState } from 'react'
 import Tutorial from '../../Tutorial'
-import Categories from '../Categories'
+import Filter from '../Filter'
 import { useHistory } from 'react-router-dom'
 import { GetEvents } from '../../../action/eventAction'
-import { GetCategories } from '../../../action/Category'
+import { GetCategories } from '../../../action/categoriesActions'
 import { useSelector } from 'react-redux'
 import { SERVER_URI } from '../../../config'
+import { checkAuth } from '../Auth/authSlice'
 
 const Events = () => {
     const history = useHistory()
@@ -21,7 +22,7 @@ const Events = () => {
     }
     const [categoriesVisible, setCategoriesVisible] = useState(false)
     const [overflow, setOverflow] = useState()
-    const isAuth = useSelector(state => state.user.isAuth)
+    const isAuth = useSelector(checkAuth)
     let events = document.documentElement
 
     if (overflow === true) {
@@ -32,8 +33,8 @@ const Events = () => {
     }
 
     const [fetching, setFetching] = useState(true)
-    const [eventsDa, setEventsDa] = useState([])
     const [currentPage, setCurrentPage] = useState(0)
+    const [eventsDa, setEventsDa] = useState([])
     const [categoriesData, setCategoriesData] = useState([])
 
     useEffect(() => {
@@ -111,7 +112,7 @@ const Events = () => {
                 </div>
             </div>
             {categoriesVisible === true && (
-                <Categories
+                <Filter allCategories={categoriesData}
                     onOpen={() => {
                         setOverflow(true)
                     }}

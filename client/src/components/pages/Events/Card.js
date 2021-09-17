@@ -5,7 +5,7 @@ import closeImg from '../../../images/close_2.svg'
 import { GetEvent } from '../../../action/eventAction'
 import { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
-import { GetCategory } from '../../../action/Category'
+import { GetCategory } from '../../../action/categoriesActions'
 import Loader from '../../Loader'
 import { SERVER_URI } from '../../../config'
 
