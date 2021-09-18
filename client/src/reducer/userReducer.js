@@ -13,13 +13,21 @@ export default function userReducer(state = initialState, action) {
 
     switch (action.type) {
         case SET_USER:
-            return {
-                ...state,
-                token: action.payload,
-                isAuth: true,
-                role: jwt_decode(action.payload)
+            if(!action.payload){
+                return {
+                    ...state,
+                    token: action.payload,
+                    isAuth: true,
+                }
             }
-
+            else {
+                return {
+                    ...state,
+                    token: action.payload,
+                    isAuth: true,
+                    role: jwt_decode(action.payload)
+                }
+            }
         default:
             return state
 

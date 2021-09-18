@@ -68,7 +68,8 @@ const SignUp = () => {
                                     Registration(email, password).then(data => {
                                         dispatch(setUser(data))
                                     })
-                                    history.push('/')
+                                    .finally((res) => console.log(res))
+                                    
                                 }
                             }}
                         />
