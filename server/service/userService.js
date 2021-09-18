@@ -7,8 +7,7 @@ class eventService {
         return user
     }
 
-    async update(id, { categories }) {
-        const parseCategories = JSON.parse(categories)
+    async update(id, categories) {
         const user = await userModel.findById(id, (err, user) => {
             if (err) {
                 console.log(err)
@@ -17,7 +16,7 @@ class eventService {
                 if (!user) {
                     throw new Error('User not found')
                 } else {
-                    user.savedCategories = parseCategories
+                    user.savedCategories = categories
                     user.save((err, updatedUser) => {
                         if (err) {
                             console.log(err)

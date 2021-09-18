@@ -68,7 +68,7 @@ class UserService {
             return res.json(user) 
             
         } catch (e){
-            res.status(500).json(e)
+            res.status(500).json(e) 
         }
     }
 }
