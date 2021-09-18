@@ -6,6 +6,7 @@ import { GetContents } from '../../../action/contentAction'
 import Loader from '../../Loader'
 import { GetCategory } from '../../../action/Category'
 import {SERVER_URI} from '../../../config'
+import { UserUpdate } from '../../../action/userAction'
 
 const Content = (props) => {
 
@@ -13,6 +14,7 @@ const Content = (props) => {
     const [content, setContent] = useState([])
     const [step, setStep] = useState(0)
     const [isFethcingCategory, setIsFetchingCategory] = useState(false)
+    const [categories, setCategories] = useState([])
 
     useEffect(() => {
         if (loading) {
@@ -52,14 +54,18 @@ const Content = (props) => {
                             <img src={closeImg} alt='close' onClick={() => {
                                 if (step + 1 < content.length) {
                                     setStep(step + 1)
-
                                 }
                             }} />
                         </div>
                         <div className={styles.action}>
                             <img onClick={() => {
                                 if (step + 1 < content.length) {
+                                    setCategories(content[step].categoriesChild)
                                     setStep(step + 1)
+                                }
+                                if (step+1 === content.length){
+                                    UserUpdate(categories)
+                                    .finally((res) => console.log(res))
                                 }
                             }} src={likeImg} alt='like' />
                         </div>
@@ -88,6 +94,7 @@ const Content = (props) => {
                     </div>
                 </div>
             </div>
+            <button onClick={() => console.log(categories)}>Test</button>
         </div>
     )
 }
