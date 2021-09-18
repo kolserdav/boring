@@ -54,6 +54,7 @@ export async function putCategoriesRequest(userId, token, categories) {
   const response = await fetch(new URL(`/api/user/${userId}`, baseUrl), {
     method: 'PUT',
     headers: {
+      'Content-Type': 'application/json;charset=utf-8',
       'Authorization': `Bearer ${token}`
     },
     body: JSON.stringify(prepareCategories(categories))
