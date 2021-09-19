@@ -6,13 +6,21 @@ import { useEffect, useState } from 'react'
 import Tutorial from '../../Tutorial'
 import Filter from '../Filter'
 import { useHistory } from 'react-router-dom'
-import { GetEvents } from '../../../action/eventAction'
-import { GetCategories } from '../../../action/categoriesActions'
+import { GetEvents } from '../../../actions/eventAction'
+import { GetCategories } from '../../../actions/categoriesActions'
 import { useSelector } from 'react-redux'
 import { SERVER_URI } from '../../../config'
-import { checkAuth } from '../Auth/authSlice'
+import { checkAuth, getSelectedCategories } from '../../../store/authSlice'
+
+
 
 const Events = () => {
+    function scrollHandler(e) {
+        // if (e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop + window.innerHeight) < 100) {
+        //     setFetching(true)
+        // }
+    }
+
     const history = useHistory()
     const breakpointColumnsObj = {
         default: 5,
@@ -20,33 +28,13 @@ const Events = () => {
         700: 3,
         400: 2
     }
-    const [categoriesVisible, setCategoriesVisible] = useState(false)
-    const [overflow, setOverflow] = useState()
     const isAuth = useSelector(checkAuth)
-    let events = document.documentElement
-
-    if (overflow === true) {
-        events.style.overflow = 'hidden'
-    }
-    if (overflow === false) {
-        events.style.overflow = ''
-    }
-
+    const [filterVisible, setFilterVisible] = useState(false)
     const [fetching, setFetching] = useState(true)
     const [currentPage, setCurrentPage] = useState(0)
-    const [eventsDa, setEventsDa] = useState([])
+    const [eventsData, setEventsData] = useState([])
     const [categoriesData, setCategoriesData] = useState([])
-
-    useEffect(() => {
-        if (fetching) {
-            GetEvents(currentPage)
-                .then(res => {
-                    setEventsDa([...eventsDa, ...res.data])
-                    setCurrentPage(prevState => prevState + 20)
-                })
-                .finally(() => setFetching(false))
-        }
-    })
+    const selectedCategories = useSelector(getSelectedCategories)
 
     useEffect(() => {
         GetCategories()
@@ -62,11 +50,21 @@ const Events = () => {
         }
     }, [])
 
-    const scrollHandler = (e) => {
-        if (e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop + window.innerHeight) < 100) {
-            setFetching(true)
+    useEffect(() => {
+        if (fetching) {
+            GetEvents(currentPage)
+                .then(res => {
+                    setEventsData([...eventsData, ...res.data])
+                    setCurrentPage(prevState => prevState + 20)
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+                .finally(() => setFetching(false))
         }
-    }
+    })
+
+
     return (
         <>
             {!isAuth &&
@@ -82,7 +80,7 @@ const Events = () => {
                             </div>
                         ))}
                         <div className={`${styles.tab__item} filter`} onClick={() => {
-                            setCategoriesVisible(true)
+                            setFilterVisible(true)
                         }}>
                             <img className={styles.tab__itemImg} src={filterImg} alt='tab-img' />
                             Filter
@@ -95,7 +93,7 @@ const Events = () => {
                         className={styles.masonry__grid}
                         columnClassName={styles.masonry__grid__column}
                     >
-                        {eventsDa.map((item, index) => (
+                        {eventsData.map((item, index) => (
                             <div key={index} className={styles.event__card} onClick={() => {
                                 history.push(`/event/${item._id}`)
                             }}>
@@ -111,14 +109,12 @@ const Events = () => {
                     </Masonry>
                 </div>
             </div>
-            {categoriesVisible === true && (
-                <Filter allCategories={categoriesData}
-                    onOpen={() => {
-                        setOverflow(true)
-                    }}
+            {filterVisible === true && (
+                <Filter
+                    allCategories={categoriesData}
+                    selectedCategoriesIds={selectedCategories.map(categoryObj => categoryObj.id)}
                     onClose={() => {
-                        setOverflow(false)
-                        setCategoriesVisible(false)
+                        setFilterVisible(false)
                     }}
                 />
             )}

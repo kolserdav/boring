@@ -1,10 +1,10 @@
 import styles from '../Admin.module.scss'
 import uploadImg from '../../../../images/upload.svg'
 import { useEffect, useState } from 'react'
-import { GetCategories } from '../../../../action/categoriesActions'
+import { GetCategories } from '../../../../actions/categoriesActions'
 import Select from 'react-select'
 import Button from '../../../Button'
-import { CreateEvent } from '../../../../action/eventAction'
+import { CreateEvent } from '../../../../actions/eventAction'
 import Card from './card'
 
 const CreateCard = () => {

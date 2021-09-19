@@ -3,13 +3,11 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { useSelector } from 'react-redux'
 import Routes from './routes'
 import Header from './components/Header'
-import Loader from "./components/Loader";
 import Invitation from "./components/Invitation";
-import { updateToken } from "./action/userActions";
-import { checkAuth } from "./components/pages/Auth/authSlice";
+import { updateToken } from "./actions/userActions";
+import { checkAuth } from "./store/authSlice";
 
 function App() {
-  const [loading, setLoading] = useState(false)
   const isAuth = useSelector(checkAuth)
   const [invitationVisible, setInvitation] = useState(true);
 
@@ -20,9 +18,7 @@ function App() {
     }
   }, [])
 
-  if (loading) {
-    return <Loader />
-  }
+
   return (
     <div className="App">
       <Router>

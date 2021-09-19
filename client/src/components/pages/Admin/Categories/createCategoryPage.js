@@ -2,7 +2,7 @@ import styles from '../Admin.module.scss'
 import uploadImg from '../../../../images/upload.svg'
 import Button from '../../../Button'
 import { useState } from 'react'
-import { CreateCategory } from '../../../../action/categoriesActions'
+import { CreateCategory } from '../../../../actions/categoriesActions'
 
 const CreateCategoryPage = () => {
     const [picture, setPicture] = useState()

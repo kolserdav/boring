@@ -2,9 +2,9 @@ import styles from './Content.module.scss'
 import closeImg from '../../../images/close_2.svg'
 import likeImg from '../../../images/like.svg'
 import { useEffect, useState } from 'react'
-import { GetContents } from '../../../action/contentAction'
+import { GetContents } from '../../../actions/contentAction'
 import Loader from '../../Loader'
-import { addCategories, GetCategory } from '../../../action/categoriesActions'
+import { addCategories, GetCategory } from '../../../actions/categoriesActions'
 import { SERVER_URI } from '../../../config'
 
 

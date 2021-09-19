@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { getCategoriesRequest } from '../api/categories'
-import { asyncUpdateCategories } from '../components/pages/Auth/authSlice'
+import { asyncUpdateCategories } from '../store/authSlice'
 import { SERVER_URI } from '../config'
 import store from '../store'
 

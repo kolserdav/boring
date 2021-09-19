@@ -1,7 +1,9 @@
 import { baseUrl } from "./baseUrl";
 
 function prepareCategories(categories) {
-  return { 'categories': categories.map(category => ({ _id: category })) }
+  return categories.map(category => {
+    return { _id: category.id }
+  })
 }
 
 

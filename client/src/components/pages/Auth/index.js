@@ -1,9 +1,9 @@
-import styles from './Signup.module.scss'
+import styles from './Auth.module.scss'
 import { NavLink, useLocation } from 'react-router-dom'
 import signup1 from '../../../images/signup1.svg'
 import signup1Mobile from '../../../images/signup1-mobile.svg'
 import signup2 from '../../../images/signup2.svg'
-import { login, registration } from '../../../action/userActions'
+import { login, registration } from '../../../actions/userActions'
 import { useState } from 'react'
 import Button from '../../Button'
 import { LOGIN_ROUTE } from '../../../routes/Paths'
@@ -14,7 +14,8 @@ const SignUp = () => {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [invalidLogin, setInvalidLogin] = useState(false)
+    const [emailError, setEmailError] = useState(null)
+    const [passwordError, setPasswordError] = useState(null)
     const [requestPending, setRequestPending] = useState(false)
     const location = useLocation()
     const isLogin = location.pathname === LOGIN_ROUTE
@@ -25,14 +26,14 @@ const SignUp = () => {
         switch (target.name) {
             case ('email'):
                 setEmail(target.value)
-                if (invalidLogin) {
-                    setInvalidLogin(false)
+                if (emailError !== null) {
+                    setEmailError(null)
                 }
                 break;
 
             case ('password'):
-                if (invalidLogin && isLogin) {
-                    setInvalidLogin(false)
+                if (passwordError !== null) {
+                    setPasswordError(null)
                 }
                 setPassword(target.value)
                 break;
@@ -44,6 +45,10 @@ const SignUp = () => {
     async function handleSubmit(event) {
         event.preventDefault()
         if (email && password) {
+            if (!isLogin && (password.length < 8)) {
+                setPasswordError('Passwords must be at least 8 characters long')
+                return
+            }
             switch (isLogin) {
                 case true:
                     try {
@@ -51,11 +56,12 @@ const SignUp = () => {
                         await login(email, password);
                     } catch (error) {
                         if (error.message === 'User not found') {
-                            console.log('no such user')
-                            setInvalidLogin(true)
+                            console.log('User not found')
+                            setEmailError('Wrong email or password')
                             setRequestPending(false);
+                        } else {
+                            throw error
                         }
-                        else throw error
                     }
                     break;
                 case false:
@@ -63,7 +69,7 @@ const SignUp = () => {
                         setRequestPending(true);
                         await registration(email, password);
                     } catch (error) {
-                        setInvalidLogin(true)
+                        setEmailError('User already exists')
                         setRequestPending(false);
                     }
                     break;
@@ -86,9 +92,9 @@ const SignUp = () => {
                             <NavLink className={styles.link} to={isLogin ? 'signup' : 'login'}> {isLogin ? 'Sign up' : 'Log in'}</NavLink>
                         </div>
                         <TextField
-                            error={invalidLogin}
-                            helperText={invalidLogin ? isLogin ? 'No such user' : 'User already exists' : null}
                             required
+                            error={emailError !== null}
+                            helperText={emailError}
                             type='email'
                             name='email'
                             value={email}
@@ -106,6 +112,8 @@ const SignUp = () => {
                         />
                         <TextField
                             required
+                            error={passwordError !== null}
+                            helperText={passwordError}
                             type='password'
                             name='password'
                             value={password}
@@ -122,14 +130,14 @@ const SignUp = () => {
                             }}
                         />
 
-                        <div className={styles.form__input}>
+                        {/* <div className={styles.form__input}>
                             <input onChange={handleChange} value={email} name='email' type='email' placeholder='Your email adress' />
                             <EmailIcon />
                         </div>
                         <div className={styles.form__input}>
                             <input onChange={handleChange} value={password} name='password' type='password' placeholder='Password' />
                             <PasswordIcon />
-                        </div>
+                        </div> */}
                         {!isLogin &&
                             <div className={styles.terms}>
                                 <input required id='terms' type='checkbox' />
@@ -140,7 +148,7 @@ const SignUp = () => {
                             </div>
                         }
                         <Button
-                            disabled={(requestPending || invalidLogin)}
+                            disabled={emailError !== null || passwordError !== null || requestPending}
                             className='btn_auth'
                             title={isLogin ? 'login' : 'Sign up'}
                         />

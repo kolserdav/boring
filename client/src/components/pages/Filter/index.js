@@ -1,9 +1,7 @@
 import close__blue from '../../../images/close__blue.svg'
 import add from '../../../images/add__blue.svg'
 import close from '../../../images/close.svg'
-import { getSelectedCategories } from '../Auth/authSlice'
-import { useSelector } from 'react-redux'
-import { addCategory, removeCategory } from '../../../action/categoriesActions'
+import { addCategory, removeCategory } from '../../../actions/categoriesActions'
 
 export default function Filer(props) {
 
@@ -21,10 +19,7 @@ export default function Filer(props) {
         }
     }
 
-    const { allCategories } = props
-
-    const selectedCategoriesIds = useSelector(getSelectedCategories)
-
+    const { allCategories, selectedCategoriesIds } = props
     const selectedCategories = []
     const notSelectedCategories = []
     allCategories.forEach(category => {

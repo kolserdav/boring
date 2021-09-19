@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import jwtDecode from 'jwt-decode';
-import { fetchUserRequest, loginUserRequest, putCategoriesRequest, registerUserRequest } from '../../../api/user';
+import { fetchUserRequest, loginUserRequest, putCategoriesRequest, registerUserRequest } from '../api/user';
 
 const initialState = {
   id: '',
@@ -65,7 +65,12 @@ export const asyncUpdateCategories = createAsyncThunk('user/pushCategories', asy
 
   switch (action) {
     case 'add':
-      dispatch(addCategories(categoryIds));
+      dispatch(addCategories(categoryIds.map(categoryId => {
+        return {
+          id: categoryId,
+          active: true
+        }
+      })));
       break;
     case 'remove':
       dispatch(removeCategories(categoryIds));
@@ -75,7 +80,13 @@ export const asyncUpdateCategories = createAsyncThunk('user/pushCategories', asy
       return
   }
 
+
   const state = getState()
+
+  if (!state.user.isAuth) {
+    return Promise.reject('no user')
+  }
+
   const allCategories = getSelectedCategories(state);
 
   const userId = state.user.id;
@@ -96,13 +107,22 @@ const authSlice = createSlice({
     removeUser: removeUserAndToken,
     addCategories: (state, action) => {
       for (const category of action.payload) {
-        if (!state.categories.includes(category)) {
+        // category === {id: '125', active: true}
+        // state.categories = [{id: '123', active: true}, {id: '124', active: false}]
+
+        // if (!state.categories.includes(category)) {
+        //   state.categories.push(category)
+        // }
+
+        if (state.categories.find(item => item.id === category.id) === undefined) {
           state.categories.push(category)
         }
       }
     },
     removeCategories: (state, action) => {
-      state.categories = state.categories.filter((item) => !action.payload.includes(item));
+      // category === {id: '125', active: true}
+      // action === ["123", 124]
+      state.categories = state.categories.filter((item) => !action.payload.includes(item.id));
     }
   },
   extraReducers: (builder) => {
