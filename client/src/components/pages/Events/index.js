@@ -7,10 +7,23 @@ import Tutorial from '../../Tutorial'
 import Filter from '../Filter'
 import { useHistory } from 'react-router-dom'
 import { GetEvents } from '../../../actions/eventAction'
-import { GetCategories } from '../../../actions/categoriesActions'
+import { GetCategories, setAllCategoriesActive, toggleCategoryState } from '../../../actions/categoriesActions'
 import { useSelector } from 'react-redux'
 import { SERVER_URI } from '../../../config'
 import { checkAuth, getSelectedCategories } from '../../../store/authSlice'
+
+function CategoryButton(props) {
+    const { active = true, imgId, title, color = '#fff', clickHandler = undefined } = props
+    console.log(active);
+    return (
+        <div data-active={active} style={{ background: color }} className={`${styles.tab__item}`} onClick={clickHandler}>
+            {imgId && <img className={styles.tab__itemImg} src={`${SERVER_URI}/categories/${imgId}`} alt={`${title}`} />}
+            {title ? title : 'loading...'}
+        </div>
+
+    )
+}
+
 
 
 
@@ -33,13 +46,13 @@ const Events = () => {
     const [fetching, setFetching] = useState(true)
     const [currentPage, setCurrentPage] = useState(0)
     const [eventsData, setEventsData] = useState([])
-    const [categoriesData, setCategoriesData] = useState([])
+    const [allCategories, setAllCategories] = useState([])
     const selectedCategories = useSelector(getSelectedCategories)
 
     useEffect(() => {
         GetCategories()
             .then(data => {
-                setCategoriesData(data)
+                setAllCategories(data)
             })
     }, [])
 
@@ -64,6 +77,14 @@ const Events = () => {
         }
     })
 
+    const CategoryButtons = selectedCategories.map((selectedCategory) => {
+        const categoryData = allCategories.find(item => item._id === selectedCategory.id);
+        if (!categoryData) {
+            return <CategoryButton key={selectedCategory.id} />
+        }
+        const { _id: id, picture, title, color } = categoryData
+        return <CategoryButton key={id} active={selectedCategory.active} imgId={picture} title={title} color={color} clickHandler={() => toggleCategoryState(id)} />
+    })
 
     return (
         <>
@@ -73,12 +94,8 @@ const Events = () => {
             <div id="events" className={styles.events}>
                 <div id='tabs'>
                     <div id='tab' className={styles.tab}>
-                        {categoriesData.map((data, index) => (
-                            <div key={index} style={{ background: data.color }} className={`${styles.tab__item}`} >
-                                <img className={styles.tab__itemImg} src={`${SERVER_URI}/categories/${data.picture}`} alt='tab-img' />
-                                {data.title}
-                            </div>
-                        ))}
+                        <CategoryButton title="All" clickHandler={setAllCategoriesActive}/>
+                        {CategoryButtons}
                         <div className={`${styles.tab__item} filter`} onClick={() => {
                             setFilterVisible(true)
                         }}>
@@ -111,7 +128,7 @@ const Events = () => {
             </div>
             {filterVisible === true && (
                 <Filter
-                    allCategories={categoriesData}
+                    allCategories={allCategories}
                     selectedCategoriesIds={selectedCategories.map(categoryObj => categoryObj.id)}
                     onClose={() => {
                         setFilterVisible(false)

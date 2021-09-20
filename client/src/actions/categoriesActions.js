@@ -17,7 +17,7 @@ export const CreateCategory = async (formData) => {
 }
 
 export async function GetCategories() {
-        return getCategoriesRequest();
+    return getCategoriesRequest();
 
 }
 
@@ -47,4 +47,14 @@ export async function removeCategory(categoryId) {
 
 export async function removeCategories(categoryIds) {
     store.dispatch(asyncUpdateCategories({ categoryIds, action: 'remove' }))
+}
+
+export function toggleCategoryState(categoryId) {
+    const categoryIds = [categoryId]
+    store.dispatch(asyncUpdateCategories({ categoryIds, action: 'toggle' }))
+
+}
+
+export function setAllCategoriesActive() {
+    store.dispatch(asyncUpdateCategories({ action: 'allActive' }))
 }

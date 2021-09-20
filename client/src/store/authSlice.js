@@ -75,7 +75,12 @@ export const asyncUpdateCategories = createAsyncThunk('user/pushCategories', asy
     case 'remove':
       dispatch(removeCategories(categoryIds));
       break;
-
+    case 'toggle':
+      dispatch(toggleCategories(categoryIds))
+      break
+    case 'allActive':
+      dispatch(setAllCategoriesActive(categoryIds))
+      break
     default:
       return
   }
@@ -123,6 +128,18 @@ const authSlice = createSlice({
       // category === {id: '125', active: true}
       // action === ["123", 124]
       state.categories = state.categories.filter((item) => !action.payload.includes(item.id));
+    },
+    toggleCategories: (state, action) => {
+      state.categories = state.categories.map(category => {
+        if (action.payload.includes(category.id)) {
+          return { ...category, active: !category.active }
+        } else {
+          return category
+        }
+      })
+    },
+    setAllCategoriesActive: (state) => {
+      state.categories.forEach(category => category.active = true)
     }
   },
   extraReducers: (builder) => {
@@ -137,7 +154,7 @@ const authSlice = createSlice({
   }
 })
 
-export const { setUser, removeUser, addCategories, removeCategories } = authSlice.actions
+export const { setUser, removeUser, addCategories, removeCategories, toggleCategories, setAllCategoriesActive } = authSlice.actions
 
 export const checkAuth = state => state.user.isAuth
 export const getSelectedCategories = state => state.user.categories

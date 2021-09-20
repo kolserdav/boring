@@ -39,7 +39,7 @@ export default function Filer(props) {
                 className='item'
                 key={category._id}>
                 <span className='txt'>{category.title}</span>
-                <img src={close__blue} alt='close' />
+                <img src={close__blue} alt='close' width='24px' height='24px' />
             </div>
         )
     })
@@ -52,7 +52,7 @@ export default function Filer(props) {
                 className='item'
                 key={category._id}>
                 <span className='txt'>{category.title}</span>
-                <img src={add} alt='add' />
+                <img src={add} alt='add' width='24px' height='24px' />
             </div>
         )
     })
