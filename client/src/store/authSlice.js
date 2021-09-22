@@ -102,7 +102,7 @@ export const asyncUpdateCategories = createAsyncThunk('user/pushCategories', asy
 
 const authSlice = createSlice({
   name: 'user',
-  initialState: (userFromToken(initialToken) ? userFromToken(initialToken) : initialState),
+  initialState: (initialToken ? userFromToken(initialToken) : initialState),
   reducers: {
     setUser: (state, action) => {
       state.id = action.payload.id;
