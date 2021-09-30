@@ -1,13 +1,13 @@
 import styles from './Events.module.scss'
-import plus from '../../../images/plus.svg'
-import locationImg from '../../../images/location.svg'
-import closeImg from '../../../images/close_2.svg'
-import { GetEvent } from '../../../actions/eventAction'
+import plus from 'images/plus.svg'
+import locationImg from 'images/location.svg'
+import closeImg from 'images/close_2.svg'
+import { GetEvent } from 'actions/eventAction'
 import { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
-import { GetCategory } from '../../../actions/categoriesActions'
+import { GetCategory } from 'actions/categoriesActions'
 import Loader from '../../Loader'
-import { SERVER_URI } from '../../../config'
+import { SERVER_URI } from 'config'
 
 
 const Card = () => {

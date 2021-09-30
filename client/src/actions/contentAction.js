@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { SERVER_URI } from '../config'
+import { SERVER_URI } from 'config'
 
 export const GetContents = async () => {
     try {

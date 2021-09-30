@@ -1,5 +1,5 @@
-import { fetchUser, loginUser, registerUser, removeUser } from '../store/authSlice';
-import store from '../store';
+import { fetchUser, loginUser, registerUser, removeUser } from 'store/authSlice';
+import store from 'store';
 
 
 export const registration = async (email, password) => {

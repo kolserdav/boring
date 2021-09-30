@@ -1,8 +1,8 @@
-import questionSvg from '../images/question.svg'
-import menuSvg from '../images/menu.svg'
+import questionSvg from 'images/question.svg'
+import menuSvg from 'images/menu.svg'
 import { NavLink } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { logout } from '../actions/userActions'
+import { logout } from 'actions/userActions'
 import Drawer from '@material-ui/core/Drawer';
 import { Divider, IconButton, List, ListItem, ListItemText } from '@material-ui/core'
 import { useState } from 'react'

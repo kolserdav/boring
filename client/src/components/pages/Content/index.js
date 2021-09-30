@@ -24,6 +24,9 @@ const Content = (props) => {
         }
     }
 
+    // Request should be rebuilded
+    // Fetch ALL contents. Each content object to contain all childCategories titles already
+
     useEffect(() => {
         GetContents()
             .then(

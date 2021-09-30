@@ -1,15 +1,15 @@
 import styles from './Auth.module.scss'
 import { NavLink, useLocation } from 'react-router-dom'
-import signup1 from '../../../images/signup1.svg'
-import signup1Mobile from '../../../images/signup1-mobile.svg'
-import signup2 from '../../../images/signup2.svg'
-import { login, registration } from '../../../actions/userActions'
+import signup1 from 'images/signup1.svg'
+import signup1Mobile from 'images/signup1-mobile.svg'
+import signup2 from 'images/signup2.svg'
+import { login, registration } from 'actions/userActions'
 import { useState } from 'react'
 import Button from '../../Button'
-import { LOGIN_ROUTE } from '../../../routes/Paths'
+import { LOGIN_ROUTE } from 'routes/Paths'
 import { InputAdornment, TextField } from "@material-ui/core"
-import { ReactComponent as EmailIcon } from '../../../images/email.svg'
-import { ReactComponent as PasswordIcon } from '../../../images/password.svg'
+import { ReactComponent as EmailIcon } from 'images/email.svg'
+import { ReactComponent as PasswordIcon } from 'images/password.svg'
 const SignUp = () => {
 
     const [email, setEmail] = useState('')
