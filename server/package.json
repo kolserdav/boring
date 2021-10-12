@@ -24,9 +24,13 @@
     "headers": "NODE_ENV=production file-headers"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
+    "@types/html-to-text": "^8.0.1",
+    "@types/jsonwebtoken": "^8.5.5",
     "@types/node": "^16.10.3",
+    "@types/nodemailer": "^6.4.4",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "eslint": "^7.32.0",
@@ -36,15 +40,18 @@
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.26.1",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "file-headers": "^1.0.10",
     "prettier": "^2.4.1",
     "prisma": "^3.2.1",
-    "typescript": "^4.4.3",
-    "file-headers": "^1.0.10"
+    "typescript": "^4.4.3"
   },
   "dependencies": {
     "@prisma/client": "^3.2.1",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "html-to-text": "^8.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "nodemailer": "^6.7.0"
   }
 }
