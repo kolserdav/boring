@@ -1,27 +1,50 @@
 {
-  "name": "sweet",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "type": "module",
-  "scripts": {
-    "start": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "name": "per-js",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "repository": "https://github.com/kolserdav/perjs.git",
+  "author": "kolserdav <serega12101983@gmail.com>",
+  "license": "MIT",
+  "prisma": {
+    "schema": "orm/schema.prisma"
   },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "bcrypt": "^5.0.1",
-    "config": "^3.3.6",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "express-fileupload": "^1.2.1",
-    "http-errors": "^1.8.0",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.13.2",
-    "uuid": "^8.3.2"
+  "scripts": {
+    "start": "node dist/index.js",
+    "dev:watch": "tsc -p . -w",
+    "dev:start": "NODE_ENV=development nodemon ${npm_package_main}",
+    "dev:start:win": "set NODE_ENV=development && nodemon ${npm_package_main}",
+    "build": "tsc -p .",
+    "migrate:dev": "yarn format && yarn generate && prisma migrate dev --preview-feature",
+    "migrate": "prisma migrate deploy --preview-feature && yarn generate",
+    "migrate:reset": "prisma migrate reset --preview-feature",
+    "migrate:status": "prisma migrate status --preview-feature",
+    "studio": "prisma studio",
+    "generate": "prisma generate",
+    "format": "prisma format",
+    "headers": "NODE_ENV=production file-headers"
   },
   "devDependencies": {
-    "nodemon": "^2.0.10"
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "@types/node": "^16.10.3",
+    "@typescript-eslint/eslint-plugin": "^4.33.0",
+    "@typescript-eslint/parser": "^4.33.0",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.26.1",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "prettier": "^2.4.1",
+    "prisma": "^3.2.1",
+    "typescript": "^4.4.3",
+    "file-headers": "^1.0.9"
+  },
+  "dependencies": {
+    "@prisma/client": "^3.2.1",
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.1"
   }
 }
