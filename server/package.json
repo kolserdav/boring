@@ -1,8 +1,8 @@
 {
-  "name": "per-js",
-  "version": "0.0.1",
+  "name": "sweet-server",
+  "version": "0.1.0",
   "main": "dist/index.js",
-  "repository": "https://github.com/kolserdav/perjs.git",
+  "repository": "https://github.com/blindbeat/sweet",
   "author": "kolserdav <uyem.ru@gmail.com>",
   "license": "MIT",
   "prisma": {
