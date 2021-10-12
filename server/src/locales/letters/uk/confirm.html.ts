@@ -7,6 +7,19 @@
  * Copyright: kolserdav (c), All rights reserved
  * Create date: Tue Oct 12 2021 16:26:32 GMT+0700 (Krasnoyarsk Standard Time)
 ******************************************************************************************/
-export * as findFirst from './findFirst';
-export * as create from './create';
-export * as update from './update';
+export default `<!doctype html>
+<html>
+  <head>
+    <style type="text/css">
+      h1 { 
+        font-size: 120%; 
+        font-family: Verdana, Arial, Helvetica, sans-serif; 
+        color: green;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Вітаю {name}!</h1>
+    <p>На вашу пошту зареєстрований акаунт на нашому сервісі. Будь ласка підтвердіть реєстрацію перейшовши за посиланням <a href="{link}">{link}</a>.</p>
+  </body>
+</html>`;
