@@ -6,7 +6,7 @@
  * License Text: Unauthorized copying of this file, via any medium is strictly prohibited
  * Copyright: kolserdav (c), All rights reserved
  * Create date: Tue Oct 12 2021 16:26:32 GMT+0700 (Krasnoyarsk Standard Time)
-******************************************************************************************/
+ ******************************************************************************************/
 import type { Locale } from './types';
 import { MINIMAL_PASSWORD_LENGTH } from '../utils';
 export const locale: Locale = {
@@ -28,10 +28,14 @@ export const locale: Locale = {
   SUCCESS_REGISTRATION: 'Success registration',
   EMAIL_CANT_SEND: "Can't send email",
   FORBIDDEN: 'Forbidden',
-  NOT_AUTHENTICATED: 'Not authenticated',
+  UNAUTHORIZED: 'Unauthorized',
   LINK_EXPIRED: 'Link expired',
   EMAIL_CONFIRMED: 'Email confirmed successfully',
   USER_NOT_FOUND: 'User not found',
   INVALID_CREDENTIALS: 'Invalid credentials',
   SUCCESS_LOGIN: 'Success login',
+  OLD_PASSWORD_IS_REQUIRED: 'Old password is required',
+  PASSWORD_CHANGED: 'Password change successfully',
+  EMAIL_IS_SEND: 'On your email was send the active link',
+  FORGOT_RECEIVED: 'Key for change password received',
 };

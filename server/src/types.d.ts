@@ -6,9 +6,10 @@
  * License Text: Unauthorized copying of this file, via any medium is strictly prohibited
  * Copyright: kolserdav (c), All rights reserved
  * Create date: Tue Oct 12 2021 16:26:32 GMT+0700 (Krasnoyarsk Standard Time)
-******************************************************************************************/
+ ******************************************************************************************/
 /* eslint-disable no-unused-vars */
 import type * as E from 'express';
+import { User } from '@prisma/client';
 import type { Locale } from './locales/types';
 namespace Api {
   export type Status = 'error' | 'warning' | 'success';
@@ -31,6 +32,9 @@ interface ParamsDictionary {
 
 export interface GlobalParams {
   lang: Locale;
+  args: any;
+  parsedToken: JWT | undefined;
+  user: User | undefined;
 }
 
 export interface RequestHandler<Query, Body, Response> {

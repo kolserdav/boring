@@ -6,7 +6,7 @@ content-type: application/json
 {
   "args": {
     "where": {
-      "id": 13
+      "email": "19_pek@mail.ru"
     }
   }
 }

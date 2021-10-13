@@ -6,10 +6,14 @@
  * License Text: Unauthorized copying of this file, via any medium is strictly prohibited
  * Copyright: kolserdav (c), All rights reserved
  * Create date: Tue Oct 12 2021 16:26:32 GMT+0700 (Krasnoyarsk Standard Time)
-******************************************************************************************/
+ ******************************************************************************************/
 import { User, Prisma, PrismaClient } from '@prisma/client';
 import type * as Types from '../../types';
 import * as utils from '../../utils';
+
+const emailTransport = new utils.Email();
+
+const { APP_URL } = process.env;
 
 /**
  * Получить одного пользователя /api/v1/user/findfirst
@@ -30,7 +34,7 @@ interface UserArgs extends Types.GlobalParams {
 
 const middleware: Types.NextHandler<any, UserArgs, any> = async (req, res, next) => {
   const { body, url } = req;
-  const { args, lang, login } = body;
+  const { args, lang, login, user, parsedToken } = body;
   // если идет аутентификация по логину и паролю
   if (url.match(/\/api\/v1\/user\/login/)) {
     if (login === undefined) {
@@ -127,6 +131,132 @@ const middleware: Types.NextHandler<any, UserArgs, any> = async (req, res, next)
       data: user,
       token,
     });
+  } else if (url.match(/\/api\/v1\/user\/sendconfirm/)) {
+    // Если идет запрос повторного письма на подтверждение почты
+    if (!parsedToken || !user) {
+      utils.saveLog({}, req, 'Not implemented in user.findFirst sendconfirm', {
+        parsedToken,
+        user,
+      });
+      return res.status(501).json({
+        status: utils.ERROR,
+        message: lang.SERVER_ERROR,
+        stdErrMessage: utils.getStdErrMessage(
+          new Error('This route must be after auth middleware')
+        ),
+        data: null,
+      });
+    }
+    // Создание ключа для подтверждения почты
+    const confirmKey = utils.getHash(32);
+    // Записывает ключ подтвержения
+    const date = new Date();
+    let confirmUser;
+    try {
+      confirmUser = await prisma.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          confirmKey,
+          createConfirm: date,
+          updated_at: date,
+        },
+      });
+    } catch (err) {
+      utils.saveLog(err, req, 'Error update confirm key for user', { confirmKey, date, user });
+      return res.status(502).json({
+        status: utils.ERROR,
+        message: lang.SERVER_ERROR,
+        stdErrMessage: utils.getStdErrMessage(err),
+        data: user,
+      });
+    }
+    const { email, name } = confirmUser;
+    // Отправляет письмо подтверждения почты
+    const sendEmailRes = await emailTransport.sendEmail(req, {
+      link: `${APP_URL}/confirm?e=${email}&k=${confirmKey}`,
+      lang,
+      email,
+      type: 'confirm',
+      name: name || email,
+    });
+    if (sendEmailRes.status === utils.ERROR) {
+      return res.status(502).json({
+        status: utils.ERROR,
+        message: lang.SERVER_ERROR,
+        stdErrMessage: sendEmailRes.stdErrMessage,
+        data: user,
+      });
+    }
+    return res.status(201).json({
+      status: utils.SUCCESS,
+      message: lang.EMAIL_IS_SEND,
+      data: confirmUser,
+    });
+  } else if (url.match(/\/api\/v1\/user\/sendforgot/)) {
+    // Если идет запрос письма на смену пароля
+    if (!parsedToken || !user) {
+      utils.saveLog({}, req, 'Not implemented in user.findFirst sendforgot', {
+        parsedToken,
+        user,
+      });
+      return res.status(501).json({
+        status: utils.ERROR,
+        message: lang.SERVER_ERROR,
+        stdErrMessage: utils.getStdErrMessage(
+          new Error('This route must be after auth middleware')
+        ),
+        data: null,
+      });
+    }
+    // Создание ключа для смены пароля
+    const forgotKey = utils.getHash(32);
+    // Записывает ключ подтвержения
+    const date = new Date();
+    let forgotUser;
+    try {
+      forgotUser = await prisma.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          forgotKey,
+          createForgot: date,
+          updated_at: date,
+        },
+      });
+    } catch (err) {
+      utils.saveLog(err, req, 'Error update forgot key for user', { forgotKey, date, user });
+      return res.status(502).json({
+        status: utils.ERROR,
+        message: lang.SERVER_ERROR,
+        stdErrMessage: utils.getStdErrMessage(err),
+        data: user,
+      });
+    }
+    const { email, name } = forgotUser;
+    // Отправляет письмо с сылкой для смены пароля
+    const sendEmailRes = await emailTransport.sendEmail(req, {
+      link: `${APP_URL}/forgot?e=${email}&k=${forgotKey}`,
+      lang,
+      email,
+      type: 'forgot',
+      name: name || email,
+    });
+    if (sendEmailRes.status === utils.ERROR) {
+      return res.status(502).json({
+        status: utils.ERROR,
+        message: lang.SERVER_ERROR,
+        stdErrMessage: sendEmailRes.stdErrMessage,
+        data: user,
+      });
+    }
+    return res.status(201).json({
+      status: utils.SUCCESS,
+      message: lang.EMAIL_IS_SEND,
+      data: forgotUser,
+    });
   }
   next();
 };
@@ -134,7 +264,6 @@ const middleware: Types.NextHandler<any, UserArgs, any> = async (req, res, next)
 const handler: Types.RequestHandler<any, UserArgs, User | null> = async (req, res) => {
   const { body } = req;
   const { args, lang } = body;
-  console.log(lang);
   let result;
   try {
     result = await prisma.user.findFirst(args);
