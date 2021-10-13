@@ -15,12 +15,32 @@ import { PrismaClient, Prisma } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
+/**
+ * Глобальные поля которые запрещено менять напрямую
+ */
+const GLOBAL_CLOSED_FIELDS_FOR_ALL = [
+  'password',
+  'email',
+  'confirmKey',
+  'confirmed',
+  'createConfirm',
+  'forgotKey',
+  'createForgot',
+  'created_at',
+  'updated_at',
+];
+
+/**
+ * Глобальный языковой объект
+ * из которого выдергивается нужная
+ * локаль для обработки каждого запроса
+ */
 let langObjects: {
   [lang: string]: {
     locale: Locale;
   };
-};
-langObjects = Object.assign({}, locales);
+} = locales;
+
 /**
  * посредник добавляющий объект lang в body запроса
  * в соответствии с переданными заголовком lang
@@ -80,11 +100,11 @@ interface CheckRoleParams<
      * Список полей которые пользователь не может менять.
      * Если andAdmin=true то не действует на админа
      */
-    closedSelf?: Field[];
+    closedSelf?: (Field | keyof typeof Prisma.ModelName)[];
     /**
      * Список полей которые администратор не может менять если даже andAdmin=tue.
      */
-    closedAdmin?: Field[];
+    closedAdmin?: (Field | keyof typeof Prisma.ModelName)[];
   };
 }
 
@@ -111,7 +131,7 @@ export const auth = <Model extends keyof typeof Prisma.ModelName>(
     // @ts-ignore
     keyof typeof Prisma[`${Model}ScalarFieldEnum`]
   >
-): Types.NextHandler<any, any, any> => {
+): Types.NextHandler<any, Types.GlobalParams, any> => {
   const { onlyAdmin, selfUsage } = params;
   return async (req, res, next) => {
     const { body } = req;
@@ -149,6 +169,7 @@ export const auth = <Model extends keyof typeof Prisma.ModelName>(
         data: null,
       });
     }
+    req.body.user = user;
     if (user.password !== password) {
       return res.status(403).json({
         status: utils.WARNING,
@@ -168,6 +189,22 @@ export const auth = <Model extends keyof typeof Prisma.ModelName>(
     }
     let selfResult;
     if (selfUsage) {
+      if (!args) {
+        return res.status(400).json({
+          status: utils.WARNING,
+          message: lang.SERVER_ERROR,
+          stdErrMessage: utils.getStdErrMessage(new Error('Argument args is missing')),
+          data: null,
+        });
+      }
+      if (!args.where) {
+        return res.status(400).json({
+          status: utils.WARNING,
+          message: lang.SERVER_ERROR,
+          stdErrMessage: utils.getStdErrMessage(new Error('Argument args.where is missing')),
+          data: null,
+        });
+      }
       const { where } = args;
       try {
         // @ts-ignore
@@ -220,7 +257,10 @@ export const auth = <Model extends keyof typeof Prisma.ModelName>(
       for (const prop in args.data) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const anyProp: any = prop;
-        if (closedSelf.indexOf(anyProp) !== -1) {
+        if (
+          closedSelf.indexOf(anyProp) !== -1 ||
+          GLOBAL_CLOSED_FIELDS_FOR_ALL.indexOf(anyProp) !== -1
+        ) {
           return res.status(401).json({
             status: utils.WARNING,
             message: lang.UNAUTHORIZED,
@@ -244,7 +284,10 @@ export const auth = <Model extends keyof typeof Prisma.ModelName>(
       for (const prop in args.data) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const anyProp: any = prop;
-        if (closedAdmin.indexOf(anyProp) !== -1) {
+        if (
+          closedAdmin.indexOf(anyProp) !== -1 ||
+          GLOBAL_CLOSED_FIELDS_FOR_ALL.indexOf(anyProp) !== -1
+        ) {
           return res.status(401).json({
             status: utils.WARNING,
             message: lang.UNAUTHORIZED,
@@ -256,6 +299,7 @@ export const auth = <Model extends keyof typeof Prisma.ModelName>(
         }
       }
     }
+    req.body.parsedToken = parsedToken;
     next();
   };
 };

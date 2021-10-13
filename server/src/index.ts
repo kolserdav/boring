@@ -28,14 +28,26 @@ app.post(
       field: 'id',
       model: 'User',
       andAdmin: true,
-      closedSelf: ['email', 'password', 'role'],
-      closedAdmin: ['email', 'password'],
+      closedSelf: ['role'],
+      closedAdmin: [],
     },
   }),
   api.user.update.middleware,
   api.user.update.handler
 );
 app.post('/api/v1/user/confirm', api.user.update.middleware, api.user.update.handler);
+app.post(
+  '/api/v1/user/changepass',
+  middleware.auth<'User'>({
+    selfUsage: {
+      field: 'id',
+      model: 'User',
+      andAdmin: false,
+    },
+  }),
+  api.user.update.middleware,
+  api.user.update.handler
+);
 //// Временные апи пока нет страниц
 app.get('/confirm', api.user.update.middleware, api.user.update.handler);
 

@@ -34,4 +34,6 @@ export const locale: Locale = {
   USER_NOT_FOUND: 'User not found',
   INVALID_CREDENTIALS: 'Invalid credentials',
   SUCCESS_LOGIN: 'Success login',
+  OLD_PASSWORD_IS_REQUIRED: 'Old password is required',
+  PASSWORD_CHANGED: 'Password change successfully',
 };

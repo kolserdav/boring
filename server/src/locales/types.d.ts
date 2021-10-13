@@ -32,4 +32,6 @@ export interface Locale {
   USER_NOT_FOUND: string;
   INVALID_CREDENTIALS: string;
   SUCCESS_LOGIN: string;
+  OLD_PASSWORD_IS_REQUIRED: string;
+  PASSWORD_CHANGED: string;
 }

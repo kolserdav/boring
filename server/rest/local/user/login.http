@@ -5,7 +5,7 @@ content-type: application/json
 // Параметры
 {
   "login": {
-    "email": "test1@test.test",
+    "email": "19_pek@mail.ru",
     "password": "123456"
   }
 }
