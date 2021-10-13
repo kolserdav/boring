@@ -226,7 +226,6 @@ const handler: Types.RequestHandler<any, UserArgs, User | null> = async (req, re
       token,
     });
   }
-  console.log(new Date());
   // Отправляет письмо подтверждения почты
   const sendEmailRes = await emailTransport.sendEmail(req, {
     link: `${APP_URL}/confirm?e=${email}&k=${confirmKey}`,
@@ -244,7 +243,6 @@ const handler: Types.RequestHandler<any, UserArgs, User | null> = async (req, re
       token,
     });
   }
-  console.log(new Date());
   return res.status(201).json({
     status: utils.SUCCESS,
     message: lang.SUCCESS_REGISTRATION,

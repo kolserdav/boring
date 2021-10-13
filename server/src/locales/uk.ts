@@ -36,4 +36,6 @@ export const locale: Locale = {
   SUCCESS_LOGIN: 'Success login',
   OLD_PASSWORD_IS_REQUIRED: 'Old password is required',
   PASSWORD_CHANGED: 'Password change successfully',
+  EMAIL_IS_SEND: 'On your email was send the active link',
+  FORGOT_RECEIVED: 'Key for change password received',
 };

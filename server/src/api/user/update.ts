@@ -31,6 +31,12 @@ interface UserArgs extends Types.GlobalParams {
     password: string;
     passwordRepeat: string;
   };
+  changePasswordByKey?: {
+    key: string;
+    oldPassword: string;
+    password: string;
+    passwordRepeat: string;
+  };
 }
 
 const middleware: Types.NextHandler<any, UserArgs, any> = async (req, res, next) => {
@@ -61,6 +67,76 @@ const middleware: Types.NextHandler<any, UserArgs, any> = async (req, res, next)
     _confirm = true;
   } else if (url.match(/^\/api\/v1\/user\/changepass/)) {
     _changePass = true;
+  } else if (url.match(/^\/forgot/)) {
+    // если идет смена пароля по ключу то остальные изменения отклоняет
+    newArgs.data = {};
+    if (!e || !k) {
+      return res.status(400).json({
+        status: utils.WARNING,
+        message: lang.BAD_REQUEST,
+        stdErrMessage: utils.getStdErrMessage(new Error(`Missing argument - e: ${e}, k: ${k}`)),
+        data: null,
+      });
+    }
+    let _user;
+    try {
+      _user = await prisma.user.findFirst({
+        where: {
+          email: e,
+        },
+      });
+    } catch (e) {
+      utils.saveLog(e, req, 'Error get user by email while chnage pass by key', { _email, _key });
+      return res.status(500).json({
+        status: utils.ERROR,
+        message: lang.SERVER_ERROR,
+        stdErrMessage: utils.getStdErrMessage(e),
+        data: null,
+      });
+    }
+    if (_user === null) {
+      return res.status(404).json({
+        status: utils.WARNING,
+        message: lang.USER_NOT_FOUND,
+        stdErrMessage: utils.getStdErrMessage(new Error('User not found')),
+        data: null,
+      });
+    }
+    if (_user.forgotKey !== k) {
+      return res.status(403).json({
+        status: utils.WARNING,
+        message: lang.FORBIDDEN,
+        stdErrMessage: utils.getStdErrMessage(new Error('Forgot key is not accepted')),
+        data: null,
+      });
+    }
+    const forgotKey = utils.getHash(32);
+    const date = new Date();
+    try {
+      _user = await prisma.user.update({
+        where: {
+          id: _user.id,
+        },
+        data: {
+          forgotKey,
+          createForgot: date,
+          updated_at: date,
+        },
+      });
+    } catch (e) {
+      utils.saveLog(e, req, 'Error update user confirm', { user });
+      return res.status(500).json({
+        status: utils.ERROR,
+        message: lang.SERVER_ERROR,
+        stdErrMessage: utils.getStdErrMessage(e),
+        data: null,
+      });
+    }
+    return res.status(201).json({
+      status: utils.SUCCESS,
+      message: lang.FORGOT_RECEIVED,
+      data: _user,
+    });
   }
   // Если идет подтверждение почты
   if (_confirm) {
@@ -287,6 +363,7 @@ const middleware: Types.NextHandler<any, UserArgs, any> = async (req, res, next)
       token,
     });
   }
+  newArgs.data = newArgs.data || {};
   newArgs.data.updated_at = new Date();
   req.body.args = newArgs;
   next();

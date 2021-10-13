@@ -34,4 +34,6 @@ export interface Locale {
   SUCCESS_LOGIN: string;
   OLD_PASSWORD_IS_REQUIRED: string;
   PASSWORD_CHANGED: string;
+  EMAIL_IS_SEND: string;
+  FORGOT_RECEIVED: string;
 }
