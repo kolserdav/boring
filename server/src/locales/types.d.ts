@@ -6,7 +6,7 @@
  * License Text: Unauthorized copying of this file, via any medium is strictly prohibited
  * Copyright: kolserdav (c), All rights reserved
  * Create date: Tue Oct 12 2021 16:26:32 GMT+0700 (Krasnoyarsk Standard Time)
-******************************************************************************************/
+ ******************************************************************************************/
 export interface Locale {
   value: 'en' | 'ru' | 'uk';
   SERVER_ERROR: string;
@@ -26,7 +26,7 @@ export interface Locale {
   SUCCESS_REGISTRATION: string;
   EMAIL_CANT_SEND: string;
   FORBIDDEN: string;
-  NOT_AUTHENTICATED: string;
+  UNAUTHORIZED: string;
   LINK_EXPIRED: string;
   EMAIL_CONFIRMED: string;
   USER_NOT_FOUND: string;
