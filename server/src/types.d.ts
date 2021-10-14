@@ -21,6 +21,9 @@ namespace Api {
     stdErrMessage?: string;
     code?: string;
     token?: string;
+    skip?: number | null;
+    take?: number | null;
+    count?: number | null;
   }
 }
 

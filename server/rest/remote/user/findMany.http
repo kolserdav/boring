@@ -7,9 +7,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTksInBhc3N3b
 
 // параметры
 {
-  "args": {
-    "where": {
-      "role": "admin"
-    }
-  }
+  "where": {
+    "id": 11,
+  },
+  "skip": 1,
+  "take": 2,
 }

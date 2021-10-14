@@ -9,7 +9,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTksInBhc3N3b
 {
   "args": {
     "where": {
-      "role": "user"
-    }
+    
+  },
+  "skip": 2,
+  "take": 2
   }
 }
