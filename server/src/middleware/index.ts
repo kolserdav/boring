@@ -7,6 +7,9 @@
  * Copyright: kolserdav (c), All rights reserved
  * Create date: Tue Oct 12 2021 16:26:32 GMT+0700 (Krasnoyarsk Standard Time)
  ******************************************************************************************/
+/**
+ * Глобальные посредники
+ */
 import type * as Types from '../types';
 import * as locales from '../locales';
 import { Locale } from '../locales/types';

@@ -7,5 +7,8 @@
  * Copyright: kolserdav (c), All rights reserved
  * Create date: Tue Oct 12 2021 16:26:32 GMT+0700 (Krasnoyarsk Standard Time)
  ******************************************************************************************/
+/**
+ * Экспортирует пространство имен api
+ */
 export * as user from './user';
 export * as category from './category';
