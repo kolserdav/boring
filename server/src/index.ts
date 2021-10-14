@@ -72,6 +72,7 @@ app.post(
   api.user.findFirst.middleware,
   api.user.findFirst.handler
 );
+app.post('/api/v1/user/changepassbykey', api.user.update.middleware, api.user.update.handler);
 //// Временные апи пока нет страниц
 app.get('/confirm', api.user.update.middleware, api.user.update.handler);
 app.get('/forgot', api.user.update.middleware, api.user.update.handler);

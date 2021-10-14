@@ -24,7 +24,7 @@ const { NODE_ENV, JSONWEBTOKEN_KEY }: any = process.env;
 const DEV = NODE_ENV === 'development';
 
 export const MINIMAL_PASSWORD_LENGTH = 6;
-export const CONFIRM_EMAIL_LIVE_DAYS = 3;
+export const FORGOT_PASSWORD_KEY_LIVE_DAYS = 3;
 export const PASSWORD_SALT_ROUNDS = 10;
 
 export const CODES = {
