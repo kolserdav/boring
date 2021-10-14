@@ -16,7 +16,7 @@
  * )
  */
 // Для переноса этого файла себе на фронтенд не забываем генерированный файл типов призмы
-import { Prisma as P, User, PrismaPromise } from './generated/prisma';
+import { Prisma as P, User, PrismaPromise } from './prisma';
 import Types from '../types';
 
 /**
