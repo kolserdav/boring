@@ -4,7 +4,7 @@
 
 - [API документация](./docs/API.md)
 - [Инструкция для разработчика](./docs/CONTRIBUTING.md)
-- [Лог изменений](./CHANGELOG.md)
+- [Лог изменений](./docs/CHANGELOG.md)
 
 ## Зависимости
 
