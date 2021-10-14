@@ -16,7 +16,7 @@ const prisma = new PrismaClient();
 /**
  * Получить несколько пользователей /api/v1/user/findmany
  * @param {{args: Prisma.UserFindManyArgs}}
- * @returns {User | null}
+ * @returns {User[]}
  */
 interface Args extends Types.GlobalParams {
   args: Prisma.UserFindManyArgs;
@@ -43,7 +43,7 @@ const handler: Types.RequestHandler<any, Args, User[]> = async (req, res) => {
     return res.status(500).json({
       status: utils.ERROR,
       message: lang.SERVER_ERROR,
-      data: null,
+      data: [],
       stdErrMessage: utils.getStdErrMessage(err),
     });
   }
@@ -51,7 +51,7 @@ const handler: Types.RequestHandler<any, Args, User[]> = async (req, res) => {
     return res.status(404).json({
       status: utils.WARNING,
       message: lang.NOT_FOUND,
-      data: null,
+      data: [],
     });
   }
   return res.status(200).json({
