@@ -11,22 +11,23 @@ import { User, Prisma, PrismaClient } from '@prisma/client';
 import type * as Types from '../../types';
 import * as utils from '../../utils';
 
+const prisma = new PrismaClient();
+
 /**
  * Изменить одного пользователя /api/v1/user/update
  * Подтвердить почту /api/v1/user/confirm
  * @param {{args: Prisma.UserUpdateArgs}}
  * @returns {User | null}
  */
-
-const prisma = new PrismaClient();
-
-interface UserArgs extends Types.GlobalParams {
+interface Args extends Types.GlobalParams {
   args: Prisma.UserUpdateArgs;
   confirm?: {
     email: string;
     key: string;
   };
   changePassword?: {
+    key?: string;
+    email?: string;
     oldPassword: string;
     password: string;
     passwordRepeat: string;
@@ -39,7 +40,7 @@ interface UserArgs extends Types.GlobalParams {
   };
 }
 
-const middleware: Types.NextHandler<any, UserArgs, any> = async (req, res, next) => {
+const middleware: Types.NextHandler<any, Args, any> = async (req, res, next) => {
   const { body, url, method, query } = req;
   const { e, k } = query;
   const { args, lang, confirm, parsedToken, user, changePassword } = body;
@@ -65,7 +66,10 @@ const middleware: Types.NextHandler<any, UserArgs, any> = async (req, res, next)
     _email = email;
     _key = key;
     _confirm = true;
-  } else if (url.match(/^\/api\/v1\/user\/changepass/)) {
+  } else if (
+    url.match(/^\/api\/v1\/user\/changepass/) ||
+    url.match(/^\/api\/v1\/user\/changepassbykey/)
+  ) {
     _changePass = true;
   } else if (url.match(/^\/forgot/)) {
     // если идет смена пароля по ключу то остальные изменения отклоняет
@@ -220,19 +224,6 @@ const middleware: Types.NextHandler<any, UserArgs, any> = async (req, res, next)
   // Если идет смена пароля пользователем
   if (_changePass) {
     newArgs.data = {};
-    // Эту ошибку со статусом 501 выдаст только если по ошибке данный роут не закрыли посредником auth
-    // Но это закрыто, так что она никогда не сработает, служит только для типизации
-    if (!parsedToken || !user) {
-      utils.saveLog({}, req, 'Not implemented in user.update', { parsedToken, user });
-      return res.status(501).json({
-        status: utils.ERROR,
-        message: lang.SERVER_ERROR,
-        stdErrMessage: utils.getStdErrMessage(
-          new Error('This route must be after auth middleware')
-        ),
-        data: null,
-      });
-    }
     if (changePassword === undefined) {
       return res.status(400).json({
         status: utils.WARNING,
@@ -243,7 +234,76 @@ const middleware: Types.NextHandler<any, UserArgs, any> = async (req, res, next)
         data: null,
       });
     }
-    const { oldPassword, password, passwordRepeat } = changePassword;
+    const { oldPassword, password, passwordRepeat, key, email } = changePassword;
+    let _user;
+    if (!parsedToken || !user) {
+      if (!key || !email) {
+        return res.status(400).json({
+          status: utils.WARNING,
+          message: lang.BAD_REQUEST,
+          stdErrMessage: utils.getStdErrMessage(
+            new Error('Missing key or email in changePassword object')
+          ),
+          data: null,
+        });
+      }
+      try {
+        _user = await prisma.user.findFirst({
+          where: {
+            email,
+          },
+        });
+      } catch (e) {
+        utils.saveLog(e, req, 'Error get user by email while chnage password by key', {
+          changePassword,
+        });
+        return res.status(500).json({
+          status: utils.ERROR,
+          message: lang.BAD_REQUEST,
+          stdErrMessage: utils.getStdErrMessage(e),
+          code: utils.CODES.data,
+          data: null,
+        });
+      }
+      // пользователь не найден
+      if (_user === null) {
+        return res.status(204).json({
+          status: utils.WARNING,
+          message: lang.BAD_REQUEST,
+          stdErrMessage: utils.getStdErrMessage(
+            new Error('User not found in change password by key')
+          ),
+          data: null,
+        });
+      }
+      // Не соответстует ключ или отсутствует дата создания ключа
+      const createForgot = _user.createForgot?.getTime();
+      if (key !== _user.forgotKey || !createForgot) {
+        return res.status(203).json({
+          status: utils.WARNING,
+          message: lang.BAD_REQUEST,
+          stdErrMessage: utils.getStdErrMessage(new Error('Forgot key not allowed')),
+          data: null,
+        });
+      }
+      // Не истекла ли дата жизни ключа
+      const dateNow = Date.now();
+      const time = (dateNow - createForgot) / 1000 / 3600 / 24;
+      if (time >= utils.FORGOT_PASSWORD_KEY_LIVE_DAYS) {
+        return res.status(203).json({
+          status: utils.WARNING,
+          message: lang.LINK_EXPIRED,
+          stdErrMessage: utils.getStdErrMessage(
+            new Error(
+              `utils.FORGOT_PASSWORD_KEY_LIVE_DAYS : ${utils.FORGOT_PASSWORD_KEY_LIVE_DAYS}`
+            )
+          ),
+          data: e,
+        });
+      }
+    } else {
+      _user = user;
+    }
     if (!oldPassword) {
       return res.status(400).json({
         status: utils.WARNING,
@@ -253,7 +313,7 @@ const middleware: Types.NextHandler<any, UserArgs, any> = async (req, res, next)
         data: null,
       });
     }
-    const checkPass = await utils.comparePasswords(oldPassword, user.password, req);
+    const checkPass = await utils.comparePasswords(oldPassword, _user.password, req);
     if (checkPass.data === null) {
       return res.status(500).json({
         status: utils.ERROR,
@@ -322,14 +382,19 @@ const middleware: Types.NextHandler<any, UserArgs, any> = async (req, res, next)
       });
     }
     let updatedUser;
+    // Создает новый ключ
+    const forgotKey = utils.getHash(32);
+    const date = new Date();
     try {
       updatedUser = await prisma.user.update({
         where: {
-          id: user.id,
+          id: _user.id,
         },
         data: {
           password: passHash.data,
-          updated_at: new Date(),
+          forgotKey,
+          createForgot: date,
+          updated_at: date,
         },
       });
     } catch (e) {
@@ -343,7 +408,7 @@ const middleware: Types.NextHandler<any, UserArgs, any> = async (req, res, next)
     }
     const token = utils.createToken(
       {
-        id: user.id,
+        id: _user.id,
         password: passHash.data,
       },
       req
@@ -369,7 +434,7 @@ const middleware: Types.NextHandler<any, UserArgs, any> = async (req, res, next)
   next();
 };
 
-const handler: Types.RequestHandler<any, UserArgs, User | null> = async (req, res) => {
+const handler: Types.RequestHandler<any, Args, User | null> = async (req, res) => {
   const { body } = req;
   const { args, lang } = body;
   let result;

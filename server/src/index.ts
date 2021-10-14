@@ -72,6 +72,19 @@ app.post(
   api.user.findFirst.middleware,
   api.user.findFirst.handler
 );
+app.post(
+  '/api/v1/user/delete',
+  middleware.auth<'User'>({
+    selfUsage: {
+      field: 'id',
+      model: 'User',
+      andAdmin: true,
+    },
+  }),
+  api.user.delete.middleware,
+  api.user.delete.handler
+);
+app.post('/api/v1/user/changepassbykey', api.user.update.middleware, api.user.update.handler);
 //// Временные апи пока нет страниц
 app.get('/confirm', api.user.update.middleware, api.user.update.handler);
 app.get('/forgot', api.user.update.middleware, api.user.update.handler);

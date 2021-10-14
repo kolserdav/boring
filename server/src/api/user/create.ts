@@ -11,20 +11,19 @@ import { User, Prisma, PrismaClient } from '@prisma/client';
 import type * as Types from '../../types';
 import * as utils from '../../utils';
 
-/**
- * /api/v1/user/create Регистрация
- * Создать одного пользователя
- * @param {{args: Prisma.UserCreateArgs}}
- * @returns {User | null}
- */
-
 //// Объявление констант и типов
 const prisma = new PrismaClient();
 const emailTransport = new utils.Email();
 
 const { APP_URL } = process.env;
 
-interface UserArgs extends Types.GlobalParams {
+/**
+ * /api/v1/user/create Регистрация
+ * Создать одного пользователя
+ * @param {{args: Prisma.UserCreateArgs}}
+ * @returns {User | null}
+ */
+interface Args extends Types.GlobalParams {
   args: Prisma.UserCreateArgs;
   passwordRepeat: string;
 }
@@ -36,7 +35,7 @@ interface UserArgs extends Types.GlobalParams {
  * @param next
  * @returns
  */
-const middleware: Types.NextHandler<any, UserArgs, any> = async (req, res, next) => {
+const middleware: Types.NextHandler<any, Args, any> = async (req, res, next) => {
   const { body } = req;
   const { args, lang, passwordRepeat } = body;
   //// проверка переданных параметров
@@ -148,7 +147,7 @@ const middleware: Types.NextHandler<any, UserArgs, any> = async (req, res, next)
  * @param res
  * @returns
  */
-const handler: Types.RequestHandler<any, UserArgs, User | null> = async (req, res) => {
+const handler: Types.RequestHandler<any, Args, User | null> = async (req, res) => {
   const { body } = req;
   const { args, lang } = body;
   const { data } = args;

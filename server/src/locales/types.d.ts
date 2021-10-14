@@ -36,4 +36,5 @@ export interface Locale {
   PASSWORD_CHANGED: string;
   EMAIL_IS_SEND: string;
   FORGOT_RECEIVED: string;
+  DELETED: string;
 }
