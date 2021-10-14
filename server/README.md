@@ -5,6 +5,7 @@
 - [API документация](./docs/API.md)
 - [Инструкция для разработчика](./docs/CONTRIBUTING.md)
 - [Лог изменений](./docs/CHANGELOG.md)
+- [Лицензия](./LICENSE)
 
 ## Зависимости
 
