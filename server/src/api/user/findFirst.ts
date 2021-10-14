@@ -15,16 +15,15 @@ const emailTransport = new utils.Email();
 
 const { APP_URL } = process.env;
 
+const prisma = new PrismaClient();
+
 /**
  * Получить одного пользователя /api/v1/user/findfirst
  * Залогиниться /api/v1/user/login
  * @param {{args: Prisma.UserFindFirstArgs}}
  * @returns {User | null}
  */
-
-const prisma = new PrismaClient();
-
-interface UserArgs extends Types.GlobalParams {
+interface Args extends Types.GlobalParams {
   args: Prisma.UserFindFirstArgs;
   login?: {
     email: string;
@@ -32,7 +31,7 @@ interface UserArgs extends Types.GlobalParams {
   };
 }
 
-const middleware: Types.NextHandler<any, UserArgs, any> = async (req, res, next) => {
+const middleware: Types.NextHandler<any, Args, any> = async (req, res, next) => {
   const { body, url } = req;
   const { args, lang, login, user, parsedToken } = body;
   // если идет аутентификация по логину и паролю
@@ -261,7 +260,7 @@ const middleware: Types.NextHandler<any, UserArgs, any> = async (req, res, next)
   next();
 };
 
-const handler: Types.RequestHandler<any, UserArgs, User | null> = async (req, res) => {
+const handler: Types.RequestHandler<any, Args, User | null> = async (req, res) => {
   const { body } = req;
   const { args, lang } = body;
   let result;

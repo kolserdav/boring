@@ -11,16 +11,15 @@ import { User, Prisma, PrismaClient } from '@prisma/client';
 import type * as Types from '../../types';
 import * as utils from '../../utils';
 
+const prisma = new PrismaClient();
+
 /**
  * Изменить одного пользователя /api/v1/user/update
  * Подтвердить почту /api/v1/user/confirm
  * @param {{args: Prisma.UserUpdateArgs}}
  * @returns {User | null}
  */
-
-const prisma = new PrismaClient();
-
-interface UserArgs extends Types.GlobalParams {
+interface Args extends Types.GlobalParams {
   args: Prisma.UserUpdateArgs;
   confirm?: {
     email: string;
@@ -41,7 +40,7 @@ interface UserArgs extends Types.GlobalParams {
   };
 }
 
-const middleware: Types.NextHandler<any, UserArgs, any> = async (req, res, next) => {
+const middleware: Types.NextHandler<any, Args, any> = async (req, res, next) => {
   const { body, url, method, query } = req;
   const { e, k } = query;
   const { args, lang, confirm, parsedToken, user, changePassword } = body;
@@ -435,7 +434,7 @@ const middleware: Types.NextHandler<any, UserArgs, any> = async (req, res, next)
   next();
 };
 
-const handler: Types.RequestHandler<any, UserArgs, User | null> = async (req, res) => {
+const handler: Types.RequestHandler<any, Args, User | null> = async (req, res) => {
   const { body } = req;
   const { args, lang } = body;
   let result;
