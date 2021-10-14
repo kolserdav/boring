@@ -39,4 +39,5 @@ export const locale: Locale = {
   EMAIL_IS_SEND: 'On your email was send the active link',
   FORGOT_RECEIVED: 'Key for change password received',
   DELETED: 'Deleted successfully',
+  CATEGORY_TITLE_EXISTS: 'Category with the same title are exists',
 };

@@ -19,6 +19,7 @@ app.use(cors({ origin: '*' }));
 app.use(express.json({ limit: '5mb' }));
 // Глобальный языковой посредник
 app.use(middleware.getLang);
+
 ////// апи запросы с посредниками
 //// API пользователя
 // получить одного пользователя
@@ -107,24 +108,48 @@ app.post(
   api.user.findMany.middleware,
   api.user.findMany.handler
 );
+
 //// API категорий
-app.post('/api/v1/category/create', api.category.create.middleware, api.category.create.handler);
-app.post('/api/v1/category/update', api.category.update.middleware, api.category.update.handler);
+// создать категорию
+app.post(
+  '/api/v1/category/create',
+  middleware.auth({
+    onlyAdmin: true,
+  }),
+  api.category.create.middleware,
+  api.category.create.handler
+);
+// изменить категорию
+app.post(
+  '/api/v1/category/update',
+  middleware.auth({
+    onlyAdmin: true,
+  }),
+  api.category.update.middleware,
+  api.category.update.handler
+);
+// получить одну категорию
 app.post(
   '/api/v1/category/findfirst',
   api.category.findFirst.middleware,
   api.category.findFirst.handler
 );
+// получить несколько категорий
 app.post(
   '/api/v1/category/findmany',
   api.category.findMany.middleware,
   api.category.findMany.handler
 );
+// удалить одну категорию
 app.post(
-  '/api/v1/category/findMany',
-  api.category.findMany.middleware,
-  api.category.findMany.handler
+  '/api/v1/category/delete',
+  middleware.auth({
+    onlyAdmin: true,
+  }),
+  api.category.delete.middleware,
+  api.category.delete.handler
 );
+
 //// Временные апи пока нет страниц
 // страница при переходе по ссылке подтверждения почты
 app.get('/confirm', api.user.update.middleware, api.user.update.handler);

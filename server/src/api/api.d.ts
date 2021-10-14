@@ -19,6 +19,19 @@
 import { Prisma as P, User, PrismaPromise } from './prisma';
 import Types from '../types';
 
+// ПЕСОЧНИЦА. Внимание! эта функция не вызывается так как у методов нет реализации
+// используется только для получения помощи от IDE в подборе запроса по типам
+async () => {
+  userFindMany({
+    where: {
+      id: 11,
+    },
+    skip: 1,
+    take: 2,
+  });
+};
+
+//// Базовые методы пользователя
 /**
  * Получить одного пользователя
  * @param {P.UserFindFirstArgs} args
@@ -89,14 +102,73 @@ export async function userUpdate<T extends P.UserDeleteArgs>(
   >
 >;
 
-// ПЕСОЧНИЦА. Внимание! эта функция не вызывается так как у методов нет реализации
-// используется только для получения помощи от IDE в подборе запроса по типам
-async () => {
-  userFindMany({
-    where: {
-      id: 11,
-    },
-    skip: 1,
-    take: 2,
-  });
-};
+////// Методы категорий ///////
+/**
+ * Получить одну категорию
+ * @param {P.CategoryFindFirstArgs} args
+ */
+export async function categoryFindFirst<T extends P.CategoryFindFirstArgs>(
+  args: P.SelectSubset<T, P.CategoryFindFirstArgs>
+): Promise<
+  P.CheckSelect<
+    T,
+    Types.Api.Result<User | null>,
+    PrismaPromise<Types.Api.Result<P.UserGetPayload<T>>>
+  >
+>;
+
+/**
+ * Получить несколько категорий
+ * @param {P.CategoryFindManyArgs} args
+ */
+export async function categoryFindMany<T extends P.CategoryFindManyArgs>(
+  args: P.SelectSubset<T, P.CategoryFindManyArgs>
+): Promise<
+  P.CheckSelect<
+    T,
+    Types.Api.Result<User | null>,
+    PrismaPromise<Types.Api.Result<P.UserGetPayload<T>>>
+  >
+>;
+
+/**
+ * Создать одну категорию
+ * @param {P.CategoryCreateArgs} args
+ */
+export async function categoryCreate<T extends P.CategoryCreateArgs>(
+  args: P.SelectSubset<T, P.CategoryCreateArgs>
+): Promise<
+  P.CheckSelect<
+    T,
+    Types.Api.Result<User | null>,
+    PrismaPromise<Types.Api.Result<P.UserGetPayload<T>>>
+  >
+>;
+
+/**
+ * Изменить одну категорию
+ * @param {P.CategoryUpdateArgs} args
+ */
+export async function categoryUpdate<T extends P.CategoryUpdateArgs>(
+  args: P.SelectSubset<T, P.CategoryUpdateArgs>
+): Promise<
+  P.CheckSelect<
+    T,
+    Types.Api.Result<User | null>,
+    PrismaPromise<Types.Api.Result<P.UserGetPayload<T>>>
+  >
+>;
+
+/**
+ * Удалить одну категорию
+ * @param {P.CategoryDeleteArgs} args
+ */
+export async function categoryUpdate<T extends P.CategoryDeleteArgs>(
+  args: P.SelectSubset<T, P.CategoryDeleteArgs>
+): Promise<
+  P.CheckSelect<
+    T,
+    Types.Api.Result<User | null>,
+    PrismaPromise<Types.Api.Result<P.UserGetPayload<T>>>
+  >
+>;
