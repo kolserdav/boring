@@ -7,14 +7,26 @@
  * Copyright: kolserdav (c), All rights reserved
  * Create date: Tue Oct 12 2021 16:26:32 GMT+0700 (Krasnoyarsk Standard Time)
  ******************************************************************************************/
+/**
+ * Индекный файл сервера
+ */
 import express from 'express';
 import cors from 'cors';
 import * as api from './api';
 import * as middleware from './middleware';
+import * as utils from './utils';
 
 const app = express();
 
 app.use(cors({ origin: '*' }));
+
+// Отлавливаем неожиданные исключения
+process.on('uncaughtException', (err: Error, origin: any) => {
+  utils.saveLog(err, utils.getEmptyRequest('uE'), 'uncaughtException', { origin });
+});
+process.on('unhandledRejection', (reason: Error, promise) => {
+  utils.saveLog(reason, utils.getEmptyRequest('uR'), 'unhandledRejection', {});
+});
 
 app.use(express.json({ limit: '5mb' }));
 // Глобальный языковой посредник
@@ -156,4 +168,7 @@ app.get('/confirm', api.user.update.middleware, api.user.update.handler);
 // страницы при переходе по ссылке получения ключа для смены пароля
 app.get('/forgot', api.user.update.middleware, api.user.update.handler);
 
-app.listen(3333);
+const port = 3333;
+app.listen(port, () => {
+  utils.saveLog({}, utils.getEmptyRequest('/start'), `Listen on port ${port}`, {});
+});

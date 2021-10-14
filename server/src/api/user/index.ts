@@ -7,6 +7,9 @@
  * Copyright: kolserdav (c), All rights reserved
  * Create date: Tue Oct 12 2021 16:26:32 GMT+0700 (Krasnoyarsk Standard Time)
  ******************************************************************************************/
+/**
+ * Экспортирует пространство имен user
+ */
 export * as findFirst from './findFirst';
 export * as findMany from './findMany';
 export * as create from './create';

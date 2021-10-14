@@ -7,6 +7,9 @@
  * Copyright: kolserdav (c), All rights reserved
  * Create date: Tue Oct 12 2021 16:26:32 GMT+0700 (Krasnoyarsk Standard Time)
  ******************************************************************************************/
+/**
+ * Вспомогательные функции
+ */
 import type express from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -403,4 +406,13 @@ export class Email {
         });
     });
   }
+}
+
+/**
+ * Простой контекст для вызова без контекста
+ * @param pathname [string]
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function getEmptyRequest(url: string): any {
+  return { url };
 }
