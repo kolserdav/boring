@@ -7,19 +7,19 @@
  * Copyright: kolserdav (c), All rights reserved
  * Create date: Tue Oct 12 2021 16:26:32 GMT+0700 (Krasnoyarsk Standard Time)
  ******************************************************************************************/
-import { User, Prisma, PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient, Category } from '@prisma/client';
 import type * as Types from '../../types';
 import * as utils from '../../utils';
 
 const prisma = new PrismaClient();
 
 /**
- * Удаление одного пользователя /api/v1/user/delete
- * @param {{args: Prisma.UserDeleteArgs}}
- * @returns {User | null}
+ * получение одной категории /api/v1/category/findFirst
+ * @param {{args: Prisma.CategoryFindFirstArgs}}
+ * @returns {Category | null}
  */
 interface Args extends Types.GlobalParams {
-  args: Prisma.UserDeleteArgs;
+  args: Prisma.CategoryFindFirstArgs;
   login?: {
     email: string;
     password: string;
@@ -32,14 +32,14 @@ const middleware: Types.NextHandler<any, Args, any> = async (req, res, next) => 
   next();
 };
 
-const handler: Types.RequestHandler<any, Args, User | null> = async (req, res) => {
+const handler: Types.RequestHandler<any, Args, Category | null> = async (req, res) => {
   const { body } = req;
   const { args, lang } = body;
   let result;
   try {
-    result = await prisma.user.delete(args);
+    result = await prisma.category.findFirst(args);
   } catch (err) {
-    utils.saveLog(err, req, 'Error delete user', body);
+    utils.saveLog(err, req, 'Error get category', body);
     return res.status(500).json({
       status: utils.ERROR,
       message: lang.SERVER_ERROR,
@@ -54,9 +54,9 @@ const handler: Types.RequestHandler<any, Args, User | null> = async (req, res) =
       data: null,
     });
   }
-  return res.status(201).json({
+  return res.status(200).json({
     status: utils.SUCCESS,
-    message: lang.DELETED,
+    message: lang.DATA_RECEIVED,
     data: result,
   });
 };

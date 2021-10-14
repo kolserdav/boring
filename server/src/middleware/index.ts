@@ -174,7 +174,9 @@ export const auth = <Model extends keyof typeof Prisma.ModelName>(
       return res.status(403).json({
         status: utils.WARNING,
         message: lang.FORBIDDEN,
-        stdErrMessage: utils.getStdErrMessage(new Error(`Password was changed ${{ parsedToken }}`)),
+        stdErrMessage: utils.getStdErrMessage(
+          new Error(`Password was changed ${JSON.stringify(parsedToken)}`)
+        ),
         data: null,
       });
     }
