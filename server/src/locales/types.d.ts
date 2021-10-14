@@ -37,4 +37,5 @@ export interface Locale {
   EMAIL_IS_SEND: string;
   FORGOT_RECEIVED: string;
   DELETED: string;
+  CATEGORY_TITLE_EXISTS: string;
 }
