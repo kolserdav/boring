@@ -6,7 +6,7 @@
  * License Text: Unauthorized copying of this file, via any medium is strictly prohibited
  * Copyright: kolserdav (c), All rights reserved
  * Create date: Thu Oct 14 2021 11:26:44 GMT+0700 (Krasnoyarsk Standard Time)
-******************************************************************************************/
+ ******************************************************************************************/
 /* eslint-disable no-case-declarations */
 
 /**
@@ -29,7 +29,7 @@ import path from 'path';
         __dirname,
         '../../node_modules/.prisma/client/index.d.ts'
       );
-      const generateTypesPath = path.resolve(__dirname, '../../src/api/generated/prisma.d.ts');
+      const generateTypesPath = path.resolve(__dirname, '../../src/api/prisma.d.ts');
       try {
         fs.copyFileSync(databaseTypesPath, generateTypesPath);
       } catch (e) {
