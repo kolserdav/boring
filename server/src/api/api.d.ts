@@ -92,9 +92,11 @@ export async function userUpdate<T extends P.UserDeleteArgs>(
 // ПЕСОЧНИЦА. Внимание! эта функция не вызывается так как у методов нет реализации
 // используется только для получения помощи от IDE в подборе запроса по типам
 async () => {
-  userFindFirst({
+  userFindMany({
     where: {
       id: 11,
     },
+    skip: 1,
+    take: 2,
   });
 };

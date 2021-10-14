@@ -29,12 +29,29 @@ interface Args extends Types.GlobalParams {
 const middleware: Types.NextHandler<any, Args, any> = async (req, res, next) => {
   const { body } = req;
   const { args, lang } = body;
+  const newArgs = args !== undefined ? args : {};
+  req.body.args = newArgs;
   next();
 };
 
 const handler: Types.RequestHandler<any, Args, User[]> = async (req, res) => {
   const { body } = req;
   const { args, lang } = body;
+  const { where, skip, take } = args;
+  let count;
+  try {
+    count = await prisma.user.count({
+      where,
+    });
+  } catch (e) {
+    utils.saveLog(e, req, 'Error get count of users', { where });
+    return res.status(500).json({
+      status: utils.ERROR,
+      message: lang.SERVER_ERROR,
+      stdErrMessage: utils.getStdErrMessage(e),
+      data: [],
+    });
+  }
   let result;
   try {
     result = await prisma.user.findMany(args);
@@ -58,6 +75,9 @@ const handler: Types.RequestHandler<any, Args, User[]> = async (req, res) => {
     status: utils.SUCCESS,
     message: lang.DATA_RECEIVED,
     data: result,
+    count,
+    skip: skip || null,
+    take: take || null,
   });
 };
 
