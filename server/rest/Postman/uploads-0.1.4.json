@@ -19,9 +19,10 @@
 								"type": "text"
 							},
 							{
-								"key": "args",
-								"value": "{}",
-								"type": "text"
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"body": {
@@ -31,11 +32,17 @@
 									"key": "image",
 									"type": "file",
 									"src": "/home/kol/Pictures/2.png"
+								},
+								{
+									"key": "",
+									"value": "",
+									"type": "text",
+									"disabled": true
 								}
 							]
 						},
 						"url": {
-							"raw": "http://localhost:3333/api/v1/category/imageupload?image",
+							"raw": "http://localhost:3333/api/v1/category/imageupload",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -50,7 +57,8 @@
 							"query": [
 								{
 									"key": "image",
-									"value": null
+									"value": null,
+									"disabled": true
 								}
 							]
 						}
@@ -69,13 +77,14 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTksInBhc3N3b3JkIjoiJDJiJDEwJEJXcURhYXBXakdKeTc4TEtWRnpmLnV2MUg5c2p1UE92ZHhMdnRPWUZ4dUxaa05HZHprYnRxIiwiaWF0IjoxNjM0MTk1MTMzfQ.c_HInOsIfbKt82fCKfq4NzcfqRJsJmdKdLaWM_hYb2o",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDUsInBhc3N3b3JkIjoiJDJiJDEwJFc3Zy9QNFpoRXdyUHRDbFFLcWtjYU8xNDhSUERYSnRBUC9FZmQzV1ZyUnJ5NkZmRlZlQ0xHIiwiaWF0IjoxNjM0MjkxMTc5fQ.uQ_IMss1IdwBw7-d7mUxH-Jvu--1J21pnhJuQx3kjFo",
 								"type": "text"
 							},
 							{
-								"key": "args",
+								"key": "",
 								"value": "{}",
-								"type": "text"
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"body": {
@@ -84,7 +93,13 @@
 								{
 									"key": "image",
 									"type": "file",
-									"src": []
+									"src": "/home/kol/Pictures/2.png"
+								},
+								{
+									"key": "",
+									"value": "{}",
+									"type": "text",
+									"disabled": true
 								}
 							]
 						},
