@@ -138,7 +138,8 @@ export const auth = <Model extends keyof typeof Prisma.ModelName>(
   const { onlyAdmin, selfUsage } = params;
   return async (req, res, next) => {
     const { body } = req;
-    const { lang, args } = body;
+    const { lang, args: _args } = body;
+    const args = _args || {};
     const { authorization }: any = req.headers;
     const parsedToken = utils.parseToken(authorization, req);
     if (parsedToken === null) {
@@ -193,15 +194,15 @@ export const auth = <Model extends keyof typeof Prisma.ModelName>(
       });
     }
     let selfResult;
-    if (!args) {
-      return res.status(400).json({
-        status: utils.WARNING,
-        message: lang.SERVER_ERROR,
-        stdErrMessage: utils.getStdErrMessage(new Error('Argument args is missing')),
-        data: null,
-      });
-    }
     if (selfUsage) {
+      if (!args) {
+        return res.status(400).json({
+          status: utils.WARNING,
+          message: lang.SERVER_ERROR,
+          stdErrMessage: utils.getStdErrMessage(new Error('Argument args is missing')),
+          data: null,
+        });
+      }
       if (!args.where) {
         return res.status(400).json({
           status: utils.WARNING,
