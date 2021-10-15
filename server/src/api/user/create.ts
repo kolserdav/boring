@@ -168,7 +168,7 @@ const handler: Types.RequestHandler<any, Args, User | null> = async (req, res) =
   try {
     user = await prisma.user.create(newArgs);
   } catch (err) {
-    utils.saveLog(err, req, 'Error get user', body);
+    utils.saveLog(err, req, 'Error get user', { args: body.args });
     return res.status(500).json({
       status: utils.ERROR,
       message: lang.SERVER_ERROR,

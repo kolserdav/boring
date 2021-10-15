@@ -18,19 +18,43 @@
  */
 // Для переноса этого файла себе на фронтенд не забываем генерированный файл типов призмы
 import { Prisma as P, User, PrismaPromise } from './prisma';
-import Types from '../types';
+import Types from '../src/types';
 
 // ПЕСОЧНИЦА. Внимание! эта функция не вызывается так как у методов нет реализации
 // используется только для получения помощи от IDE в подборе запроса по типам
 async () => {
   userFindMany({
     where: {
-      id: 11,
+      id: 12,
     },
     skip: 1,
     take: 2,
   });
+  const d = await categoryUpdate({
+    where: {
+      id: 1,
+    },
+    data: {
+      image: 1,
+    },
+    select: {
+      id: true,
+    },
+  });
 };
+
+/**
+ * Псевдо метод запроса на сервер
+ * @param args
+ * @returns
+ */
+function getResult(args: any): any {
+  return {
+    status: 'success',
+    message: 'success',
+    data: args,
+  };
+}
 
 //// Базовые методы пользователя
 /**
@@ -45,7 +69,9 @@ export async function userFindFirst<T extends P.UserFindFirstArgs>(
     Types.Api.Result<User | null>,
     PrismaPromise<Types.Api.Result<P.UserGetPayload<T>>>
   >
->;
+> {
+  return getResult(args);
+}
 
 /**
  * Получить несколько пользователей
@@ -59,7 +85,9 @@ export async function userFindMany<T extends P.UserFindManyArgs>(
     Types.Api.Result<User | null>,
     PrismaPromise<Types.Api.Result<P.UserGetPayload<T>>>
   >
->;
+> {
+  return getResult(args);
+}
 
 /**
  * Создать одного пользователя
@@ -73,7 +101,9 @@ export async function userCreate<T extends P.UserCreateArgs>(
     Types.Api.Result<User | null>,
     PrismaPromise<Types.Api.Result<P.UserGetPayload<T>>>
   >
->;
+> {
+  return getResult(args);
+}
 
 /**
  * Изменить данные одного пользователя
@@ -87,13 +117,15 @@ export async function userUpdate<T extends P.UserUpdateArgs>(
     Types.Api.Result<User | null>,
     PrismaPromise<Types.Api.Result<P.UserGetPayload<T>>>
   >
->;
+> {
+  return getResult(args);
+}
 
 /**
  * Удалить одного пользователя
  * @param {P.UserDeleteArgs} args
  */
-export async function userUpdate<T extends P.UserDeleteArgs>(
+export async function userDelete<T extends P.UserDeleteArgs>(
   args: P.SelectSubset<T, P.UserDeleteArgs>
 ): Promise<
   P.CheckSelect<
@@ -101,7 +133,9 @@ export async function userUpdate<T extends P.UserDeleteArgs>(
     Types.Api.Result<User | null>,
     PrismaPromise<Types.Api.Result<P.UserGetPayload<T>>>
   >
->;
+> {
+  return getResult(args);
+}
 
 ////// Методы категорий ///////
 /**
@@ -116,7 +150,9 @@ export async function categoryFindFirst<T extends P.CategoryFindFirstArgs>(
     Types.Api.Result<User | null>,
     PrismaPromise<Types.Api.Result<P.UserGetPayload<T>>>
   >
->;
+> {
+  return getResult(args);
+}
 
 /**
  * Получить несколько категорий
@@ -130,7 +166,9 @@ export async function categoryFindMany<T extends P.CategoryFindManyArgs>(
     Types.Api.Result<User | null>,
     PrismaPromise<Types.Api.Result<P.UserGetPayload<T>>>
   >
->;
+> {
+  return getResult(args);
+}
 
 /**
  * Создать одну категорию
@@ -144,7 +182,9 @@ export async function categoryCreate<T extends P.CategoryCreateArgs>(
     Types.Api.Result<User | null>,
     PrismaPromise<Types.Api.Result<P.UserGetPayload<T>>>
   >
->;
+> {
+  return getResult(args);
+}
 
 /**
  * Изменить одну категорию
@@ -158,13 +198,15 @@ export async function categoryUpdate<T extends P.CategoryUpdateArgs>(
     Types.Api.Result<User | null>,
     PrismaPromise<Types.Api.Result<P.UserGetPayload<T>>>
   >
->;
+> {
+  return getResult(args);
+}
 
 /**
  * Удалить одну категорию
  * @param {P.CategoryDeleteArgs} args
  */
-export async function categoryUpdate<T extends P.CategoryDeleteArgs>(
+export async function categoryDelete<T extends P.CategoryDeleteArgs>(
   args: P.SelectSubset<T, P.CategoryDeleteArgs>
 ): Promise<
   P.CheckSelect<
@@ -172,4 +214,6 @@ export async function categoryUpdate<T extends P.CategoryDeleteArgs>(
     Types.Api.Result<User | null>,
     PrismaPromise<Types.Api.Result<P.UserGetPayload<T>>>
   >
->;
+> {
+  return getResult(args);
+}

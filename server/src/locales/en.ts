@@ -40,4 +40,5 @@ export const locale: Locale = {
   FORGOT_RECEIVED: 'Key for change password received',
   DELETED: 'Deleted successfully',
   CATEGORY_TITLE_EXISTS: 'Category with the same title are exists',
+  IMAGE_SAVED: 'Image saved',
 };

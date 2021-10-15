@@ -15,10 +15,21 @@ import cors from 'cors';
 import * as api from './api';
 import * as middleware from './middleware';
 import * as utils from './utils';
+import multer from 'multer';
 
 const app = express();
-
-app.use(cors({ origin: '*' }));
+// Хранилище
+const storageCategory = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/category');
+  },
+  filename: (req, file, cb) => {
+    let imageType: RegExpMatchArray | string | null = file.originalname.match(/\.\w{3,4}$/);
+    imageType = imageType ? imageType[0] : '';
+    cb(null, utils.getHash(24) + imageType);
+  },
+});
+const uploadCategory = multer({ storage: storageCategory });
 
 // Отлавливаем неожиданные исключения
 process.on('uncaughtException', (err: Error, origin: any) => {
@@ -28,9 +39,11 @@ process.on('unhandledRejection', (reason: Error, promise) => {
   utils.saveLog(reason, utils.getEmptyRequest('uR'), 'unhandledRejection', {});
 });
 
+// Глобальные посредники
+app.use(cors({ origin: '*' }));
 app.use(express.json({ limit: '5mb' }));
-// Глобальный языковой посредник
 app.use(middleware.getLang);
+app.use('/uploads', express.static(__dirname + './uploads'));
 
 ////// апи запросы с посредниками
 //// API пользователя
@@ -160,6 +173,16 @@ app.post(
   }),
   api.category.delete.middleware,
   api.category.delete.handler
+);
+app.post(
+  '/api/v1/category/imageupload',
+  middleware.auth({
+    onlyAdmin: true,
+  }),
+  uploadCategory.single('image'),
+  middleware.getLang,
+  api.category.update.middleware,
+  api.category.update.handler
 );
 
 //// Временные апи пока нет страниц

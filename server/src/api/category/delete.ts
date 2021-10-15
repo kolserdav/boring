@@ -6,7 +6,7 @@
  * License Text: Unauthorized copying of this file, via any medium is strictly prohibited
  * Copyright: kolserdav (c), All rights reserved
  * Create date: Thu Oct 14 2021 17:09:33 GMT+0700 (Krasnoyarsk Standard Time)
-******************************************************************************************/
+ ******************************************************************************************/
 import { Prisma, PrismaClient, Category } from '@prisma/client';
 import type * as Types from '../../types';
 import * as utils from '../../utils';

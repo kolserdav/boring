@@ -7,10 +7,16 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// перечисление ролей
+// перечисления
 enum Roles {
   admin
   user
+}
+
+// перечисление ролей
+enum ImagOrigin {
+  category
+  event
 }
 
 // Таблица пользователей
@@ -38,9 +44,10 @@ model Category {
   id           Int            @id @default(autoincrement())
   title        String         @unique
   description  String?        @db.MediumText
-  image        String
+  image        Int
   adminId      Int? // Ид админа создавшего или изменившего категорию
   User         User?          @relation(fields: [adminId], references: [id])
+  Image        Image          @relation(fields: [image], references: [id])
   updated_at   DateTime       @default(now())
   created_at   DateTime       @default(now())
   UserCategory UserCategory[] // связь с пользователями привязавшими себе эту категорию
@@ -62,9 +69,10 @@ model Event {
   id          Int         @id @default(autoincrement())
   title       String      @unique
   description String?     @db.MediumText
-  image       String
+  image       Int
   adminId     Int? // Ид админа создавшего или изменившего категорию
   User        User?       @relation(fields: [adminId], references: [id])
+  Image       Image       @relation(fields: [image], references: [id])
   updated_at  DateTime    @default(now())
   created_at  DateTime    @default(now())
   Favorites   Favorites[] // Связь событий с пользователями отметившими как понравившиеся
@@ -79,4 +87,22 @@ model Favorites {
   Event      Event    @relation(fields: [categoryId], references: [id])
   updated_at DateTime @default(now())
   created_at DateTime @default(now())
+}
+
+// Таблица изображений
+model Image {
+  id           Int        @id @default(autoincrement())
+  fieldname    String
+  originalname String
+  encoding     String
+  mimetype     String
+  destination  String
+  origin       ImagOrigin // category | event
+  filename     String
+  path         String     @unique
+  size         Int
+  updated_at   DateTime   @default(now())
+  created_at   DateTime   @default(now())
+  Category     Category[]
+  Event        Event[]
 }
