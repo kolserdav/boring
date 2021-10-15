@@ -37,9 +37,6 @@ async () => {
     data: {
       image: 1,
     },
-    select: {
-      id: true,
-    },
   });
 };
 

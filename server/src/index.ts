@@ -185,6 +185,16 @@ app.post(
   api.category.update.handler
 );
 
+// Удаление изображений, добавление получение и изменение через категорию или событие
+app.post(
+  '/api/v1/image/delete',
+  middleware.auth({
+    onlyAdmin: true,
+  }),
+  api.image.delete.middleware,
+  api.image.delete.handler
+);
+
 //// Временные апи пока нет страниц
 // страница при переходе по ссылке подтверждения почты
 app.get('/confirm', api.user.update.middleware, api.user.update.handler);
