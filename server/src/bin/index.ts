@@ -29,7 +29,7 @@ import path from 'path';
         __dirname,
         '../../node_modules/.prisma/client/index.d.ts'
       );
-      const generateTypesPath = path.resolve(__dirname, '../../src/api/prisma.d.ts');
+      const generateTypesPath = path.resolve(__dirname, '../../rest/prisma.d.ts');
       try {
         fs.copyFileSync(databaseTypesPath, generateTypesPath);
       } catch (e) {

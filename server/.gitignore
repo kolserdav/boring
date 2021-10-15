@@ -3,3 +3,6 @@ node_modules
 !app/.env
 dist
 yarn-error.log
+uploads/*
+!uploads/category/.gitkeep
+!uploads/event/.gitkeep

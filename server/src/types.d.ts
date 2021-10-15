@@ -59,3 +59,14 @@ export interface JWT {
   id: number;
   password: string;
 }
+
+export type MulterFile = {
+  fieldname: string;
+  originalname: string;
+  encoding: string;
+  mimetype: string;
+  destination: string;
+  filename: string;
+  path: string;
+  size: number;
+};

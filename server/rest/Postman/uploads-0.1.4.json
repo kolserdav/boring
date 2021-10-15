@@ -1,0 +1,112 @@
+{
+	"info": {
+		"_postman_id": "affc1f44-7adf-44d4-8ca8-82f971b4b50d",
+		"name": "BWImageUploads",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "local",
+			"item": [
+				{
+					"name": "Image category upload",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicGFzc3dvcmQiOiIkMmIkMTAkQ3NuYWk4REpqN2guSmtCeU03OWNxLjNkRi5xYzZZOE9xWVFwSlFEVFJyNGdUd2J3ME42cG0iLCJpYXQiOjE2MzQyODgzNjd9.lSEGvDbUKeWa1-5YQt3KmrnELYkjF7nY_a29VmEtmrA",
+								"type": "text"
+							},
+							{
+								"key": "args",
+								"value": "{}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/home/kol/Pictures/2.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3333/api/v1/category/imageupload?image",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3333",
+							"path": [
+								"api",
+								"v1",
+								"category",
+								"imageupload"
+							],
+							"query": [
+								{
+									"key": "image",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "remote",
+			"item": [
+				{
+					"name": "Image category upload",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTksInBhc3N3b3JkIjoiJDJiJDEwJEJXcURhYXBXakdKeTc4TEtWRnpmLnV2MUg5c2p1UE92ZHhMdnRPWUZ4dUxaa05HZHprYnRxIiwiaWF0IjoxNjM0MTk1MTMzfQ.c_HInOsIfbKt82fCKfq4NzcfqRJsJmdKdLaWM_hYb2o",
+								"type": "text"
+							},
+							{
+								"key": "args",
+								"value": "{}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "https://boring-weekend.uyem.ru/api/v1/category/imageupload",
+							"protocol": "https",
+							"host": [
+								"boring-weekend",
+								"uyem",
+								"ru"
+							],
+							"path": [
+								"api",
+								"v1",
+								"category",
+								"imageupload"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

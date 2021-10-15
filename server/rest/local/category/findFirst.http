@@ -6,7 +6,10 @@ content-type: application/json
 {
   "args": {
     "where": {
-      "id": 3
+      "id": 1
+    },
+    "include": {
+      "Image": true
     }
   }
 }

@@ -38,4 +38,5 @@ export interface Locale {
   FORGOT_RECEIVED: string;
   DELETED: string;
   CATEGORY_TITLE_EXISTS: string;
+  IMAGE_SAVED: string;
 }

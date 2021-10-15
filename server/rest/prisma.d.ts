@@ -39,7 +39,7 @@ export type Category = {
   id: number
   title: string
   description: string | null
-  image: string
+  image: number
   adminId: number | null
   updated_at: Date
   created_at: Date
@@ -65,7 +65,7 @@ export type Event = {
   id: number
   title: string
   description: string | null
-  image: string
+  image: number
   adminId: number | null
   updated_at: Date
   created_at: Date
@@ -79,6 +79,25 @@ export type Favorites = {
   id: number
   userId: number
   categoryId: number
+  updated_at: Date
+  created_at: Date
+}
+
+/**
+ * Model Image
+ */
+
+export type Image = {
+  id: number
+  fieldname: string
+  originalname: string
+  encoding: string
+  mimetype: string
+  destination: string
+  origin: ImagOrigin
+  filename: string
+  path: string
+  size: number
   updated_at: Date
   created_at: Date
 }
@@ -97,6 +116,14 @@ export const Roles: {
 };
 
 export type Roles = (typeof Roles)[keyof typeof Roles]
+
+
+export const ImagOrigin: {
+  category: 'category',
+  event: 'event'
+};
+
+export type ImagOrigin = (typeof ImagOrigin)[keyof typeof ImagOrigin]
 
 
 /**
@@ -289,6 +316,16 @@ export class PrismaClient<
     * ```
     */
   get favorites(): Prisma.FavoritesDelegate<GlobalReject>;
+
+  /**
+   * `prisma.image`: Exposes CRUD operations for the **Image** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Images
+    * const images = await prisma.image.findMany()
+    * ```
+    */
+  get image(): Prisma.ImageDelegate<GlobalReject>;
 }
 
 export namespace Prisma {
@@ -685,7 +722,8 @@ export namespace Prisma {
     Category: 'Category',
     UserCategory: 'UserCategory',
     Event: 'Event',
-    Favorites: 'Favorites'
+    Favorites: 'Favorites',
+    Image: 'Image'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -992,6 +1030,58 @@ export namespace Prisma {
      * 
     **/
     select?: EventCountOutputTypeSelect | null
+  }
+
+
+
+  /**
+   * Count Type ImageCountOutputType
+   */
+
+
+  export type ImageCountOutputType = {
+    Category: number
+    Event: number
+  }
+
+  export type ImageCountOutputTypeSelect = {
+    Category?: boolean
+    Event?: boolean
+  }
+
+  export type ImageCountOutputTypeGetPayload<
+    S extends boolean | null | undefined | ImageCountOutputTypeArgs,
+    U = keyof S
+      > = S extends true
+        ? ImageCountOutputType
+    : S extends undefined
+    ? never
+    : S extends ImageCountOutputTypeArgs
+    ?'include' extends U
+    ? ImageCountOutputType 
+    : 'select' extends U
+    ? {
+    [P in TrueKeys<S['select']>]: P extends keyof ImageCountOutputType ?ImageCountOutputType [P]
+  : 
+     never
+  } 
+    : ImageCountOutputType
+  : ImageCountOutputType
+
+
+
+
+  // Custom InputTypes
+
+  /**
+   * ImageCountOutputType without action
+   */
+  export type ImageCountOutputTypeArgs = {
+    /**
+     * Select specific fields to fetch from the ImageCountOutputType
+     * 
+    **/
+    select?: ImageCountOutputTypeSelect | null
   }
 
 
@@ -1986,11 +2076,13 @@ export namespace Prisma {
 
   export type CategoryAvgAggregateOutputType = {
     id: number | null
+    image: number | null
     adminId: number | null
   }
 
   export type CategorySumAggregateOutputType = {
     id: number | null
+    image: number | null
     adminId: number | null
   }
 
@@ -1998,7 +2090,7 @@ export namespace Prisma {
     id: number | null
     title: string | null
     description: string | null
-    image: string | null
+    image: number | null
     adminId: number | null
     updated_at: Date | null
     created_at: Date | null
@@ -2008,7 +2100,7 @@ export namespace Prisma {
     id: number | null
     title: string | null
     description: string | null
-    image: string | null
+    image: number | null
     adminId: number | null
     updated_at: Date | null
     created_at: Date | null
@@ -2028,11 +2120,13 @@ export namespace Prisma {
 
   export type CategoryAvgAggregateInputType = {
     id?: true
+    image?: true
     adminId?: true
   }
 
   export type CategorySumAggregateInputType = {
     id?: true
+    image?: true
     adminId?: true
   }
 
@@ -2163,7 +2257,7 @@ export namespace Prisma {
     id: number
     title: string
     description: string | null
-    image: string
+    image: number
     adminId: number | null
     updated_at: Date
     created_at: Date
@@ -2195,6 +2289,7 @@ export namespace Prisma {
     image?: boolean
     adminId?: boolean
     User?: boolean | UserArgs
+    Image?: boolean | ImageArgs
     updated_at?: boolean
     created_at?: boolean
     UserCategory?: boolean | UserCategoryFindManyArgs
@@ -2203,6 +2298,7 @@ export namespace Prisma {
 
   export type CategoryInclude = {
     User?: boolean | UserArgs
+    Image?: boolean | ImageArgs
     UserCategory?: boolean | UserCategoryFindManyArgs
     _count?: boolean | CategoryCountOutputTypeArgs
   }
@@ -2220,6 +2316,8 @@ export namespace Prisma {
     [P in TrueKeys<S['include']>]: 
           P extends 'User'
         ? UserGetPayload<S['include'][P]> | null :
+        P extends 'Image'
+        ? ImageGetPayload<S['include'][P]> :
         P extends 'UserCategory'
         ? Array < UserCategoryGetPayload<S['include'][P]>>  :
         P extends '_count'
@@ -2231,6 +2329,8 @@ export namespace Prisma {
   : 
           P extends 'User'
         ? UserGetPayload<S['select'][P]> | null :
+        P extends 'Image'
+        ? ImageGetPayload<S['select'][P]> :
         P extends 'UserCategory'
         ? Array < UserCategoryGetPayload<S['select'][P]>>  :
         P extends '_count'
@@ -2575,6 +2675,8 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
     User<T extends UserArgs = {}>(args?: Subset<T, UserArgs>): CheckSelect<T, Prisma__UserClient<User | null >, Prisma__UserClient<UserGetPayload<T> | null >>;
+
+    Image<T extends ImageArgs = {}>(args?: Subset<T, ImageArgs>): CheckSelect<T, Prisma__ImageClient<Image | null >, Prisma__ImageClient<ImageGetPayload<T> | null >>;
 
     UserCategory<T extends UserCategoryFindManyArgs = {}>(args?: Subset<T, UserCategoryFindManyArgs>): CheckSelect<T, PrismaPromise<Array<UserCategory>>, PrismaPromise<Array<UserCategoryGetPayload<T>>>>;
 
@@ -3806,11 +3908,13 @@ export namespace Prisma {
 
   export type EventAvgAggregateOutputType = {
     id: number | null
+    image: number | null
     adminId: number | null
   }
 
   export type EventSumAggregateOutputType = {
     id: number | null
+    image: number | null
     adminId: number | null
   }
 
@@ -3818,7 +3922,7 @@ export namespace Prisma {
     id: number | null
     title: string | null
     description: string | null
-    image: string | null
+    image: number | null
     adminId: number | null
     updated_at: Date | null
     created_at: Date | null
@@ -3828,7 +3932,7 @@ export namespace Prisma {
     id: number | null
     title: string | null
     description: string | null
-    image: string | null
+    image: number | null
     adminId: number | null
     updated_at: Date | null
     created_at: Date | null
@@ -3848,11 +3952,13 @@ export namespace Prisma {
 
   export type EventAvgAggregateInputType = {
     id?: true
+    image?: true
     adminId?: true
   }
 
   export type EventSumAggregateInputType = {
     id?: true
+    image?: true
     adminId?: true
   }
 
@@ -3983,7 +4089,7 @@ export namespace Prisma {
     id: number
     title: string
     description: string | null
-    image: string
+    image: number
     adminId: number | null
     updated_at: Date
     created_at: Date
@@ -4015,6 +4121,7 @@ export namespace Prisma {
     image?: boolean
     adminId?: boolean
     User?: boolean | UserArgs
+    Image?: boolean | ImageArgs
     updated_at?: boolean
     created_at?: boolean
     Favorites?: boolean | FavoritesFindManyArgs
@@ -4023,6 +4130,7 @@ export namespace Prisma {
 
   export type EventInclude = {
     User?: boolean | UserArgs
+    Image?: boolean | ImageArgs
     Favorites?: boolean | FavoritesFindManyArgs
     _count?: boolean | EventCountOutputTypeArgs
   }
@@ -4040,6 +4148,8 @@ export namespace Prisma {
     [P in TrueKeys<S['include']>]: 
           P extends 'User'
         ? UserGetPayload<S['include'][P]> | null :
+        P extends 'Image'
+        ? ImageGetPayload<S['include'][P]> :
         P extends 'Favorites'
         ? Array < FavoritesGetPayload<S['include'][P]>>  :
         P extends '_count'
@@ -4051,6 +4161,8 @@ export namespace Prisma {
   : 
           P extends 'User'
         ? UserGetPayload<S['select'][P]> | null :
+        P extends 'Image'
+        ? ImageGetPayload<S['select'][P]> :
         P extends 'Favorites'
         ? Array < FavoritesGetPayload<S['select'][P]>>  :
         P extends '_count'
@@ -4395,6 +4507,8 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
     User<T extends UserArgs = {}>(args?: Subset<T, UserArgs>): CheckSelect<T, Prisma__UserClient<User | null >, Prisma__UserClient<UserGetPayload<T> | null >>;
+
+    Image<T extends ImageArgs = {}>(args?: Subset<T, ImageArgs>): CheckSelect<T, Prisma__ImageClient<Image | null >, Prisma__ImageClient<ImageGetPayload<T> | null >>;
 
     Favorites<T extends FavoritesFindManyArgs = {}>(args?: Subset<T, FavoritesFindManyArgs>): CheckSelect<T, PrismaPromise<Array<Favorites>>, PrismaPromise<Array<FavoritesGetPayload<T>>>>;
 
@@ -5612,6 +5726,965 @@ export namespace Prisma {
 
 
   /**
+   * Model Image
+   */
+
+
+  export type AggregateImage = {
+    _count: ImageCountAggregateOutputType | null
+    _avg: ImageAvgAggregateOutputType | null
+    _sum: ImageSumAggregateOutputType | null
+    _min: ImageMinAggregateOutputType | null
+    _max: ImageMaxAggregateOutputType | null
+  }
+
+  export type ImageAvgAggregateOutputType = {
+    id: number | null
+    size: number | null
+  }
+
+  export type ImageSumAggregateOutputType = {
+    id: number | null
+    size: number | null
+  }
+
+  export type ImageMinAggregateOutputType = {
+    id: number | null
+    fieldname: string | null
+    originalname: string | null
+    encoding: string | null
+    mimetype: string | null
+    destination: string | null
+    origin: ImagOrigin | null
+    filename: string | null
+    path: string | null
+    size: number | null
+    updated_at: Date | null
+    created_at: Date | null
+  }
+
+  export type ImageMaxAggregateOutputType = {
+    id: number | null
+    fieldname: string | null
+    originalname: string | null
+    encoding: string | null
+    mimetype: string | null
+    destination: string | null
+    origin: ImagOrigin | null
+    filename: string | null
+    path: string | null
+    size: number | null
+    updated_at: Date | null
+    created_at: Date | null
+  }
+
+  export type ImageCountAggregateOutputType = {
+    id: number
+    fieldname: number
+    originalname: number
+    encoding: number
+    mimetype: number
+    destination: number
+    origin: number
+    filename: number
+    path: number
+    size: number
+    updated_at: number
+    created_at: number
+    _all: number
+  }
+
+
+  export type ImageAvgAggregateInputType = {
+    id?: true
+    size?: true
+  }
+
+  export type ImageSumAggregateInputType = {
+    id?: true
+    size?: true
+  }
+
+  export type ImageMinAggregateInputType = {
+    id?: true
+    fieldname?: true
+    originalname?: true
+    encoding?: true
+    mimetype?: true
+    destination?: true
+    origin?: true
+    filename?: true
+    path?: true
+    size?: true
+    updated_at?: true
+    created_at?: true
+  }
+
+  export type ImageMaxAggregateInputType = {
+    id?: true
+    fieldname?: true
+    originalname?: true
+    encoding?: true
+    mimetype?: true
+    destination?: true
+    origin?: true
+    filename?: true
+    path?: true
+    size?: true
+    updated_at?: true
+    created_at?: true
+  }
+
+  export type ImageCountAggregateInputType = {
+    id?: true
+    fieldname?: true
+    originalname?: true
+    encoding?: true
+    mimetype?: true
+    destination?: true
+    origin?: true
+    filename?: true
+    path?: true
+    size?: true
+    updated_at?: true
+    created_at?: true
+    _all?: true
+  }
+
+  export type ImageAggregateArgs = {
+    /**
+     * Filter which Image to aggregate.
+     * 
+    **/
+    where?: ImageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Images to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<ImageOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     * 
+    **/
+    cursor?: ImageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Images from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Images.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Images
+    **/
+    _count?: true | ImageCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ImageAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ImageSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ImageMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ImageMaxAggregateInputType
+  }
+
+  export type GetImageAggregateType<T extends ImageAggregateArgs> = {
+        [P in keyof T & keyof AggregateImage]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateImage[P]>
+      : GetScalarType<T[P], AggregateImage[P]>
+  }
+
+
+    
+    
+  export type ImageGroupByArgs = {
+    where?: ImageWhereInput
+    orderBy?: Enumerable<ImageOrderByWithAggregationInput>
+    by: Array<ImageScalarFieldEnum>
+    having?: ImageScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ImageCountAggregateInputType | true
+    _avg?: ImageAvgAggregateInputType
+    _sum?: ImageSumAggregateInputType
+    _min?: ImageMinAggregateInputType
+    _max?: ImageMaxAggregateInputType
+  }
+
+
+  export type ImageGroupByOutputType = {
+    id: number
+    fieldname: string
+    originalname: string
+    encoding: string
+    mimetype: string
+    destination: string
+    origin: ImagOrigin
+    filename: string
+    path: string
+    size: number
+    updated_at: Date
+    created_at: Date
+    _count: ImageCountAggregateOutputType | null
+    _avg: ImageAvgAggregateOutputType | null
+    _sum: ImageSumAggregateOutputType | null
+    _min: ImageMinAggregateOutputType | null
+    _max: ImageMaxAggregateOutputType | null
+  }
+
+  type GetImageGroupByPayload<T extends ImageGroupByArgs> = Promise<
+    Array<
+      PickArray<ImageGroupByOutputType, T['by']> & 
+        {
+          [P in ((keyof T) & (keyof ImageGroupByOutputType))]: P extends '_count' 
+            ? T[P] extends boolean 
+              ? number 
+              : GetScalarType<T[P], ImageGroupByOutputType[P]> 
+            : GetScalarType<T[P], ImageGroupByOutputType[P]>
+        }
+      > 
+    >
+
+
+  export type ImageSelect = {
+    id?: boolean
+    fieldname?: boolean
+    originalname?: boolean
+    encoding?: boolean
+    mimetype?: boolean
+    destination?: boolean
+    origin?: boolean
+    filename?: boolean
+    path?: boolean
+    size?: boolean
+    updated_at?: boolean
+    created_at?: boolean
+    Category?: boolean | CategoryFindManyArgs
+    Event?: boolean | EventFindManyArgs
+    _count?: boolean | ImageCountOutputTypeArgs
+  }
+
+  export type ImageInclude = {
+    Category?: boolean | CategoryFindManyArgs
+    Event?: boolean | EventFindManyArgs
+    _count?: boolean | ImageCountOutputTypeArgs
+  }
+
+  export type ImageGetPayload<
+    S extends boolean | null | undefined | ImageArgs,
+    U = keyof S
+      > = S extends true
+        ? Image
+    : S extends undefined
+    ? never
+    : S extends ImageArgs | ImageFindManyArgs
+    ?'include' extends U
+    ? Image  & {
+    [P in TrueKeys<S['include']>]: 
+          P extends 'Category'
+        ? Array < CategoryGetPayload<S['include'][P]>>  :
+        P extends 'Event'
+        ? Array < EventGetPayload<S['include'][P]>>  :
+        P extends '_count'
+        ? ImageCountOutputTypeGetPayload<S['include'][P]> | null : never
+  } 
+    : 'select' extends U
+    ? {
+    [P in TrueKeys<S['select']>]: P extends keyof Image ?Image [P]
+  : 
+          P extends 'Category'
+        ? Array < CategoryGetPayload<S['select'][P]>>  :
+        P extends 'Event'
+        ? Array < EventGetPayload<S['select'][P]>>  :
+        P extends '_count'
+        ? ImageCountOutputTypeGetPayload<S['select'][P]> | null : never
+  } 
+    : Image
+  : Image
+
+
+  type ImageCountArgs = Merge<
+    Omit<ImageFindManyArgs, 'select' | 'include'> & {
+      select?: ImageCountAggregateInputType | true
+    }
+  >
+
+  export interface ImageDelegate<GlobalRejectSettings> {
+    /**
+     * Find zero or one Image that matches the filter.
+     * @param {ImageFindUniqueArgs} args - Arguments to find a Image
+     * @example
+     * // Get one Image
+     * const image = await prisma.image.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends ImageFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, ImageFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Image'> extends True ? CheckSelect<T, Prisma__ImageClient<Image>, Prisma__ImageClient<ImageGetPayload<T>>> : CheckSelect<T, Prisma__ImageClient<Image | null >, Prisma__ImageClient<ImageGetPayload<T> | null >>
+
+    /**
+     * Find the first Image that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ImageFindFirstArgs} args - Arguments to find a Image
+     * @example
+     * // Get one Image
+     * const image = await prisma.image.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends ImageFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, ImageFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Image'> extends True ? CheckSelect<T, Prisma__ImageClient<Image>, Prisma__ImageClient<ImageGetPayload<T>>> : CheckSelect<T, Prisma__ImageClient<Image | null >, Prisma__ImageClient<ImageGetPayload<T> | null >>
+
+    /**
+     * Find zero or more Images that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ImageFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Images
+     * const images = await prisma.image.findMany()
+     * 
+     * // Get first 10 Images
+     * const images = await prisma.image.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const imageWithIdOnly = await prisma.image.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends ImageFindManyArgs>(
+      args?: SelectSubset<T, ImageFindManyArgs>
+    ): CheckSelect<T, PrismaPromise<Array<Image>>, PrismaPromise<Array<ImageGetPayload<T>>>>
+
+    /**
+     * Create a Image.
+     * @param {ImageCreateArgs} args - Arguments to create a Image.
+     * @example
+     * // Create one Image
+     * const Image = await prisma.image.create({
+     *   data: {
+     *     // ... data to create a Image
+     *   }
+     * })
+     * 
+    **/
+    create<T extends ImageCreateArgs>(
+      args: SelectSubset<T, ImageCreateArgs>
+    ): CheckSelect<T, Prisma__ImageClient<Image>, Prisma__ImageClient<ImageGetPayload<T>>>
+
+    /**
+     * Create many Images.
+     *     @param {ImageCreateManyArgs} args - Arguments to create many Images.
+     *     @example
+     *     // Create many Images
+     *     const image = await prisma.image.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends ImageCreateManyArgs>(
+      args?: SelectSubset<T, ImageCreateManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Image.
+     * @param {ImageDeleteArgs} args - Arguments to delete one Image.
+     * @example
+     * // Delete one Image
+     * const Image = await prisma.image.delete({
+     *   where: {
+     *     // ... filter to delete one Image
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends ImageDeleteArgs>(
+      args: SelectSubset<T, ImageDeleteArgs>
+    ): CheckSelect<T, Prisma__ImageClient<Image>, Prisma__ImageClient<ImageGetPayload<T>>>
+
+    /**
+     * Update one Image.
+     * @param {ImageUpdateArgs} args - Arguments to update one Image.
+     * @example
+     * // Update one Image
+     * const image = await prisma.image.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends ImageUpdateArgs>(
+      args: SelectSubset<T, ImageUpdateArgs>
+    ): CheckSelect<T, Prisma__ImageClient<Image>, Prisma__ImageClient<ImageGetPayload<T>>>
+
+    /**
+     * Delete zero or more Images.
+     * @param {ImageDeleteManyArgs} args - Arguments to filter Images to delete.
+     * @example
+     * // Delete a few Images
+     * const { count } = await prisma.image.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends ImageDeleteManyArgs>(
+      args?: SelectSubset<T, ImageDeleteManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Images.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ImageUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Images
+     * const image = await prisma.image.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends ImageUpdateManyArgs>(
+      args: SelectSubset<T, ImageUpdateManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Image.
+     * @param {ImageUpsertArgs} args - Arguments to update or create a Image.
+     * @example
+     * // Update or create a Image
+     * const image = await prisma.image.upsert({
+     *   create: {
+     *     // ... data to create a Image
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Image we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends ImageUpsertArgs>(
+      args: SelectSubset<T, ImageUpsertArgs>
+    ): CheckSelect<T, Prisma__ImageClient<Image>, Prisma__ImageClient<ImageGetPayload<T>>>
+
+    /**
+     * Count the number of Images.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ImageCountArgs} args - Arguments to filter Images to count.
+     * @example
+     * // Count the number of Images
+     * const count = await prisma.image.count({
+     *   where: {
+     *     // ... the filter for the Images we want to count
+     *   }
+     * })
+    **/
+    count<T extends ImageCountArgs>(
+      args?: Subset<T, ImageCountArgs>,
+    ): PrismaPromise<
+      T extends _Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ImageCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Image.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ImageAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ImageAggregateArgs>(args: Subset<T, ImageAggregateArgs>): PrismaPromise<GetImageAggregateType<T>>
+
+    /**
+     * Group by Image.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ImageGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ImageGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ImageGroupByArgs['orderBy'] }
+        : { orderBy?: ImageGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ImageGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetImageGroupByPayload<T> : Promise<InputErrors>
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Image.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in 
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__ImageClient<T> implements PrismaPromise<T> {
+    [prisma]: true;
+    private readonly _dmmf;
+    private readonly _fetcher;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+    readonly [Symbol.toStringTag]: 'PrismaClientPromise';
+
+    Category<T extends CategoryFindManyArgs = {}>(args?: Subset<T, CategoryFindManyArgs>): CheckSelect<T, PrismaPromise<Array<Category>>, PrismaPromise<Array<CategoryGetPayload<T>>>>;
+
+    Event<T extends EventFindManyArgs = {}>(args?: Subset<T, EventFindManyArgs>): CheckSelect<T, PrismaPromise<Array<Event>>, PrismaPromise<Array<EventGetPayload<T>>>>;
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+  // Custom InputTypes
+
+  /**
+   * Image findUnique
+   */
+  export type ImageFindUniqueArgs = {
+    /**
+     * Select specific fields to fetch from the Image
+     * 
+    **/
+    select?: ImageSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ImageInclude | null
+    /**
+     * Throw an Error if a Image can't be found
+     * 
+    **/
+    rejectOnNotFound?: RejectOnNotFound
+    /**
+     * Filter, which Image to fetch.
+     * 
+    **/
+    where: ImageWhereUniqueInput
+  }
+
+
+  /**
+   * Image findFirst
+   */
+  export type ImageFindFirstArgs = {
+    /**
+     * Select specific fields to fetch from the Image
+     * 
+    **/
+    select?: ImageSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ImageInclude | null
+    /**
+     * Throw an Error if a Image can't be found
+     * 
+    **/
+    rejectOnNotFound?: RejectOnNotFound
+    /**
+     * Filter, which Image to fetch.
+     * 
+    **/
+    where?: ImageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Images to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<ImageOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Images.
+     * 
+    **/
+    cursor?: ImageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Images from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Images.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Images.
+     * 
+    **/
+    distinct?: Enumerable<ImageScalarFieldEnum>
+  }
+
+
+  /**
+   * Image findMany
+   */
+  export type ImageFindManyArgs = {
+    /**
+     * Select specific fields to fetch from the Image
+     * 
+    **/
+    select?: ImageSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ImageInclude | null
+    /**
+     * Filter, which Images to fetch.
+     * 
+    **/
+    where?: ImageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Images to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<ImageOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Images.
+     * 
+    **/
+    cursor?: ImageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Images from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Images.
+     * 
+    **/
+    skip?: number
+    distinct?: Enumerable<ImageScalarFieldEnum>
+  }
+
+
+  /**
+   * Image create
+   */
+  export type ImageCreateArgs = {
+    /**
+     * Select specific fields to fetch from the Image
+     * 
+    **/
+    select?: ImageSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ImageInclude | null
+    /**
+     * The data needed to create a Image.
+     * 
+    **/
+    data: XOR<ImageCreateInput, ImageUncheckedCreateInput>
+  }
+
+
+  /**
+   * Image createMany
+   */
+  export type ImageCreateManyArgs = {
+    data: Enumerable<ImageCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * Image update
+   */
+  export type ImageUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the Image
+     * 
+    **/
+    select?: ImageSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ImageInclude | null
+    /**
+     * The data needed to update a Image.
+     * 
+    **/
+    data: XOR<ImageUpdateInput, ImageUncheckedUpdateInput>
+    /**
+     * Choose, which Image to update.
+     * 
+    **/
+    where: ImageWhereUniqueInput
+  }
+
+
+  /**
+   * Image updateMany
+   */
+  export type ImageUpdateManyArgs = {
+    data: XOR<ImageUpdateManyMutationInput, ImageUncheckedUpdateManyInput>
+    where?: ImageWhereInput
+  }
+
+
+  /**
+   * Image upsert
+   */
+  export type ImageUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the Image
+     * 
+    **/
+    select?: ImageSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ImageInclude | null
+    /**
+     * The filter to search for the Image to update in case it exists.
+     * 
+    **/
+    where: ImageWhereUniqueInput
+    /**
+     * In case the Image found by the `where` argument doesn't exist, create a new Image with this data.
+     * 
+    **/
+    create: XOR<ImageCreateInput, ImageUncheckedCreateInput>
+    /**
+     * In case the Image was found with the provided `where` argument, update it with this data.
+     * 
+    **/
+    update: XOR<ImageUpdateInput, ImageUncheckedUpdateInput>
+  }
+
+
+  /**
+   * Image delete
+   */
+  export type ImageDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the Image
+     * 
+    **/
+    select?: ImageSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ImageInclude | null
+    /**
+     * Filter which Image to delete.
+     * 
+    **/
+    where: ImageWhereUniqueInput
+  }
+
+
+  /**
+   * Image deleteMany
+   */
+  export type ImageDeleteManyArgs = {
+    where?: ImageWhereInput
+  }
+
+
+  /**
+   * Image without action
+   */
+  export type ImageArgs = {
+    /**
+     * Select specific fields to fetch from the Image
+     * 
+    **/
+    select?: ImageSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ImageInclude | null
+  }
+
+
+
+  /**
    * Enums
    */
 
@@ -5682,6 +6755,24 @@ export namespace Prisma {
   };
 
   export type FavoritesScalarFieldEnum = (typeof FavoritesScalarFieldEnum)[keyof typeof FavoritesScalarFieldEnum]
+
+
+  export const ImageScalarFieldEnum: {
+    id: 'id',
+    fieldname: 'fieldname',
+    originalname: 'originalname',
+    encoding: 'encoding',
+    mimetype: 'mimetype',
+    destination: 'destination',
+    origin: 'origin',
+    filename: 'filename',
+    path: 'path',
+    size: 'size',
+    updated_at: 'updated_at',
+    created_at: 'created_at'
+  };
+
+  export type ImageScalarFieldEnum = (typeof ImageScalarFieldEnum)[keyof typeof ImageScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -5788,9 +6879,10 @@ export namespace Prisma {
     id?: IntFilter | number
     title?: StringFilter | string
     description?: StringNullableFilter | string | null
-    image?: StringFilter | string
+    image?: IntFilter | number
     adminId?: IntNullableFilter | number | null
     User?: XOR<UserRelationFilter, UserWhereInput> | null
+    Image?: XOR<ImageRelationFilter, ImageWhereInput>
     updated_at?: DateTimeFilter | Date | string
     created_at?: DateTimeFilter | Date | string
     UserCategory?: UserCategoryListRelationFilter
@@ -5803,6 +6895,7 @@ export namespace Prisma {
     image?: SortOrder
     adminId?: SortOrder
     User?: UserOrderByWithRelationInput
+    Image?: ImageOrderByWithRelationInput
     updated_at?: SortOrder
     created_at?: SortOrder
     UserCategory?: UserCategoryOrderByRelationAggregateInput
@@ -5835,7 +6928,7 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter | number
     title?: StringWithAggregatesFilter | string
     description?: StringNullableWithAggregatesFilter | string | null
-    image?: StringWithAggregatesFilter | string
+    image?: IntWithAggregatesFilter | number
     adminId?: IntNullableWithAggregatesFilter | number | null
     updated_at?: DateTimeWithAggregatesFilter | Date | string
     created_at?: DateTimeWithAggregatesFilter | Date | string
@@ -5899,9 +6992,10 @@ export namespace Prisma {
     id?: IntFilter | number
     title?: StringFilter | string
     description?: StringNullableFilter | string | null
-    image?: StringFilter | string
+    image?: IntFilter | number
     adminId?: IntNullableFilter | number | null
     User?: XOR<UserRelationFilter, UserWhereInput> | null
+    Image?: XOR<ImageRelationFilter, ImageWhereInput>
     updated_at?: DateTimeFilter | Date | string
     created_at?: DateTimeFilter | Date | string
     Favorites?: FavoritesListRelationFilter
@@ -5914,6 +7008,7 @@ export namespace Prisma {
     image?: SortOrder
     adminId?: SortOrder
     User?: UserOrderByWithRelationInput
+    Image?: ImageOrderByWithRelationInput
     updated_at?: SortOrder
     created_at?: SortOrder
     Favorites?: FavoritesOrderByRelationAggregateInput
@@ -5946,7 +7041,7 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter | number
     title?: StringWithAggregatesFilter | string
     description?: StringNullableWithAggregatesFilter | string | null
-    image?: StringWithAggregatesFilter | string
+    image?: IntWithAggregatesFilter | number
     adminId?: IntNullableWithAggregatesFilter | number | null
     updated_at?: DateTimeWithAggregatesFilter | Date | string
     created_at?: DateTimeWithAggregatesFilter | Date | string
@@ -5999,6 +7094,86 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter | number
     userId?: IntWithAggregatesFilter | number
     categoryId?: IntWithAggregatesFilter | number
+    updated_at?: DateTimeWithAggregatesFilter | Date | string
+    created_at?: DateTimeWithAggregatesFilter | Date | string
+  }
+
+  export type ImageWhereInput = {
+    AND?: Enumerable<ImageWhereInput>
+    OR?: Enumerable<ImageWhereInput>
+    NOT?: Enumerable<ImageWhereInput>
+    id?: IntFilter | number
+    fieldname?: StringFilter | string
+    originalname?: StringFilter | string
+    encoding?: StringFilter | string
+    mimetype?: StringFilter | string
+    destination?: StringFilter | string
+    origin?: EnumImagOriginFilter | ImagOrigin
+    filename?: StringFilter | string
+    path?: StringFilter | string
+    size?: IntFilter | number
+    updated_at?: DateTimeFilter | Date | string
+    created_at?: DateTimeFilter | Date | string
+    Category?: CategoryListRelationFilter
+    Event?: EventListRelationFilter
+  }
+
+  export type ImageOrderByWithRelationInput = {
+    id?: SortOrder
+    fieldname?: SortOrder
+    originalname?: SortOrder
+    encoding?: SortOrder
+    mimetype?: SortOrder
+    destination?: SortOrder
+    origin?: SortOrder
+    filename?: SortOrder
+    path?: SortOrder
+    size?: SortOrder
+    updated_at?: SortOrder
+    created_at?: SortOrder
+    Category?: CategoryOrderByRelationAggregateInput
+    Event?: EventOrderByRelationAggregateInput
+  }
+
+  export type ImageWhereUniqueInput = {
+    id?: number
+    path?: string
+  }
+
+  export type ImageOrderByWithAggregationInput = {
+    id?: SortOrder
+    fieldname?: SortOrder
+    originalname?: SortOrder
+    encoding?: SortOrder
+    mimetype?: SortOrder
+    destination?: SortOrder
+    origin?: SortOrder
+    filename?: SortOrder
+    path?: SortOrder
+    size?: SortOrder
+    updated_at?: SortOrder
+    created_at?: SortOrder
+    _count?: ImageCountOrderByAggregateInput
+    _avg?: ImageAvgOrderByAggregateInput
+    _max?: ImageMaxOrderByAggregateInput
+    _min?: ImageMinOrderByAggregateInput
+    _sum?: ImageSumOrderByAggregateInput
+  }
+
+  export type ImageScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<ImageScalarWhereWithAggregatesInput>
+    OR?: Enumerable<ImageScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<ImageScalarWhereWithAggregatesInput>
+    id?: IntWithAggregatesFilter | number
+    fieldname?: StringWithAggregatesFilter | string
+    originalname?: StringWithAggregatesFilter | string
+    encoding?: StringWithAggregatesFilter | string
+    mimetype?: StringWithAggregatesFilter | string
+    destination?: StringWithAggregatesFilter | string
+    origin?: EnumImagOriginWithAggregatesFilter | ImagOrigin
+    filename?: StringWithAggregatesFilter | string
+    path?: StringWithAggregatesFilter | string
+    size?: IntWithAggregatesFilter | number
     updated_at?: DateTimeWithAggregatesFilter | Date | string
     created_at?: DateTimeWithAggregatesFilter | Date | string
   }
@@ -6124,10 +7299,10 @@ export namespace Prisma {
   export type CategoryCreateInput = {
     title: string
     description?: string | null
-    image: string
     updated_at?: Date | string
     created_at?: Date | string
     User?: UserCreateNestedOneWithoutCategoryInput
+    Image: ImageCreateNestedOneWithoutCategoryInput
     UserCategory?: UserCategoryCreateNestedManyWithoutCategoryInput
   }
 
@@ -6135,7 +7310,7 @@ export namespace Prisma {
     id?: number
     title: string
     description?: string | null
-    image: string
+    image: number
     adminId?: number | null
     updated_at?: Date | string
     created_at?: Date | string
@@ -6145,10 +7320,10 @@ export namespace Prisma {
   export type CategoryUpdateInput = {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     User?: UserUpdateOneWithoutCategoryInput
+    Image?: ImageUpdateOneRequiredWithoutCategoryInput
     UserCategory?: UserCategoryUpdateManyWithoutCategoryInput
   }
 
@@ -6156,7 +7331,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
+    image?: IntFieldUpdateOperationsInput | number
     adminId?: NullableIntFieldUpdateOperationsInput | number | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6167,7 +7342,7 @@ export namespace Prisma {
     id?: number
     title: string
     description?: string | null
-    image: string
+    image: number
     adminId?: number | null
     updated_at?: Date | string
     created_at?: Date | string
@@ -6176,7 +7351,6 @@ export namespace Prisma {
   export type CategoryUpdateManyMutationInput = {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -6185,7 +7359,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
+    image?: IntFieldUpdateOperationsInput | number
     adminId?: NullableIntFieldUpdateOperationsInput | number | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6245,10 +7419,10 @@ export namespace Prisma {
   export type EventCreateInput = {
     title: string
     description?: string | null
-    image: string
     updated_at?: Date | string
     created_at?: Date | string
     User?: UserCreateNestedOneWithoutEventInput
+    Image: ImageCreateNestedOneWithoutEventInput
     Favorites?: FavoritesCreateNestedManyWithoutEventInput
   }
 
@@ -6256,7 +7430,7 @@ export namespace Prisma {
     id?: number
     title: string
     description?: string | null
-    image: string
+    image: number
     adminId?: number | null
     updated_at?: Date | string
     created_at?: Date | string
@@ -6266,10 +7440,10 @@ export namespace Prisma {
   export type EventUpdateInput = {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     User?: UserUpdateOneWithoutEventInput
+    Image?: ImageUpdateOneRequiredWithoutEventInput
     Favorites?: FavoritesUpdateManyWithoutEventInput
   }
 
@@ -6277,7 +7451,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
+    image?: IntFieldUpdateOperationsInput | number
     adminId?: NullableIntFieldUpdateOperationsInput | number | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6288,7 +7462,7 @@ export namespace Prisma {
     id?: number
     title: string
     description?: string | null
-    image: string
+    image: number
     adminId?: number | null
     updated_at?: Date | string
     created_at?: Date | string
@@ -6297,7 +7471,6 @@ export namespace Prisma {
   export type EventUpdateManyMutationInput = {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -6306,7 +7479,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
+    image?: IntFieldUpdateOperationsInput | number
     adminId?: NullableIntFieldUpdateOperationsInput | number | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6359,6 +7532,116 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     userId?: IntFieldUpdateOperationsInput | number
     categoryId?: IntFieldUpdateOperationsInput | number
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ImageCreateInput = {
+    fieldname: string
+    originalname: string
+    encoding: string
+    mimetype: string
+    destination: string
+    origin: ImagOrigin
+    filename: string
+    path: string
+    size: number
+    updated_at?: Date | string
+    created_at?: Date | string
+    Category?: CategoryCreateNestedManyWithoutImageInput
+    Event?: EventCreateNestedManyWithoutImageInput
+  }
+
+  export type ImageUncheckedCreateInput = {
+    id?: number
+    fieldname: string
+    originalname: string
+    encoding: string
+    mimetype: string
+    destination: string
+    origin: ImagOrigin
+    filename: string
+    path: string
+    size: number
+    updated_at?: Date | string
+    created_at?: Date | string
+    Category?: CategoryUncheckedCreateNestedManyWithoutImageInput
+    Event?: EventUncheckedCreateNestedManyWithoutImageInput
+  }
+
+  export type ImageUpdateInput = {
+    fieldname?: StringFieldUpdateOperationsInput | string
+    originalname?: StringFieldUpdateOperationsInput | string
+    encoding?: StringFieldUpdateOperationsInput | string
+    mimetype?: StringFieldUpdateOperationsInput | string
+    destination?: StringFieldUpdateOperationsInput | string
+    origin?: EnumImagOriginFieldUpdateOperationsInput | ImagOrigin
+    filename?: StringFieldUpdateOperationsInput | string
+    path?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Category?: CategoryUpdateManyWithoutImageInput
+    Event?: EventUpdateManyWithoutImageInput
+  }
+
+  export type ImageUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    fieldname?: StringFieldUpdateOperationsInput | string
+    originalname?: StringFieldUpdateOperationsInput | string
+    encoding?: StringFieldUpdateOperationsInput | string
+    mimetype?: StringFieldUpdateOperationsInput | string
+    destination?: StringFieldUpdateOperationsInput | string
+    origin?: EnumImagOriginFieldUpdateOperationsInput | ImagOrigin
+    filename?: StringFieldUpdateOperationsInput | string
+    path?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Category?: CategoryUncheckedUpdateManyWithoutImageInput
+    Event?: EventUncheckedUpdateManyWithoutImageInput
+  }
+
+  export type ImageCreateManyInput = {
+    id?: number
+    fieldname: string
+    originalname: string
+    encoding: string
+    mimetype: string
+    destination: string
+    origin: ImagOrigin
+    filename: string
+    path: string
+    size: number
+    updated_at?: Date | string
+    created_at?: Date | string
+  }
+
+  export type ImageUpdateManyMutationInput = {
+    fieldname?: StringFieldUpdateOperationsInput | string
+    originalname?: StringFieldUpdateOperationsInput | string
+    encoding?: StringFieldUpdateOperationsInput | string
+    mimetype?: StringFieldUpdateOperationsInput | string
+    destination?: StringFieldUpdateOperationsInput | string
+    origin?: EnumImagOriginFieldUpdateOperationsInput | ImagOrigin
+    filename?: StringFieldUpdateOperationsInput | string
+    path?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ImageUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    fieldname?: StringFieldUpdateOperationsInput | string
+    originalname?: StringFieldUpdateOperationsInput | string
+    encoding?: StringFieldUpdateOperationsInput | string
+    mimetype?: StringFieldUpdateOperationsInput | string
+    destination?: StringFieldUpdateOperationsInput | string
+    origin?: EnumImagOriginFieldUpdateOperationsInput | ImagOrigin
+    filename?: StringFieldUpdateOperationsInput | string
+    path?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -6641,6 +7924,11 @@ export namespace Prisma {
     isNot?: UserWhereInput
   }
 
+  export type ImageRelationFilter = {
+    is?: ImageWhereInput
+    isNot?: ImageWhereInput
+  }
+
   export type CategoryCountOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
@@ -6653,6 +7941,7 @@ export namespace Prisma {
 
   export type CategoryAvgOrderByAggregateInput = {
     id?: SortOrder
+    image?: SortOrder
     adminId?: SortOrder
   }
 
@@ -6678,6 +7967,7 @@ export namespace Prisma {
 
   export type CategorySumOrderByAggregateInput = {
     id?: SortOrder
+    image?: SortOrder
     adminId?: SortOrder
   }
 
@@ -6750,6 +8040,7 @@ export namespace Prisma {
 
   export type EventAvgOrderByAggregateInput = {
     id?: SortOrder
+    image?: SortOrder
     adminId?: SortOrder
   }
 
@@ -6775,6 +8066,7 @@ export namespace Prisma {
 
   export type EventSumOrderByAggregateInput = {
     id?: SortOrder
+    image?: SortOrder
     adminId?: SortOrder
   }
 
@@ -6817,6 +8109,78 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     categoryId?: SortOrder
+  }
+
+  export type EnumImagOriginFilter = {
+    equals?: ImagOrigin
+    in?: Enumerable<ImagOrigin>
+    notIn?: Enumerable<ImagOrigin>
+    not?: NestedEnumImagOriginFilter | ImagOrigin
+  }
+
+  export type ImageCountOrderByAggregateInput = {
+    id?: SortOrder
+    fieldname?: SortOrder
+    originalname?: SortOrder
+    encoding?: SortOrder
+    mimetype?: SortOrder
+    destination?: SortOrder
+    origin?: SortOrder
+    filename?: SortOrder
+    path?: SortOrder
+    size?: SortOrder
+    updated_at?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type ImageAvgOrderByAggregateInput = {
+    id?: SortOrder
+    size?: SortOrder
+  }
+
+  export type ImageMaxOrderByAggregateInput = {
+    id?: SortOrder
+    fieldname?: SortOrder
+    originalname?: SortOrder
+    encoding?: SortOrder
+    mimetype?: SortOrder
+    destination?: SortOrder
+    origin?: SortOrder
+    filename?: SortOrder
+    path?: SortOrder
+    size?: SortOrder
+    updated_at?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type ImageMinOrderByAggregateInput = {
+    id?: SortOrder
+    fieldname?: SortOrder
+    originalname?: SortOrder
+    encoding?: SortOrder
+    mimetype?: SortOrder
+    destination?: SortOrder
+    origin?: SortOrder
+    filename?: SortOrder
+    path?: SortOrder
+    size?: SortOrder
+    updated_at?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type ImageSumOrderByAggregateInput = {
+    id?: SortOrder
+    size?: SortOrder
+  }
+
+  export type EnumImagOriginWithAggregatesFilter = {
+    equals?: ImagOrigin
+    in?: Enumerable<ImagOrigin>
+    notIn?: Enumerable<ImagOrigin>
+    not?: NestedEnumImagOriginWithAggregatesFilter | ImagOrigin
+    _count?: NestedIntFilter
+    _min?: NestedEnumImagOriginFilter
+    _max?: NestedEnumImagOriginFilter
   }
 
   export type CategoryCreateNestedManyWithoutUserInput = {
@@ -7025,6 +8389,12 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type ImageCreateNestedOneWithoutCategoryInput = {
+    create?: XOR<ImageCreateWithoutCategoryInput, ImageUncheckedCreateWithoutCategoryInput>
+    connectOrCreate?: ImageCreateOrConnectWithoutCategoryInput
+    connect?: ImageWhereUniqueInput
+  }
+
   export type UserCategoryCreateNestedManyWithoutCategoryInput = {
     create?: XOR<Enumerable<UserCategoryCreateWithoutCategoryInput>, Enumerable<UserCategoryUncheckedCreateWithoutCategoryInput>>
     connectOrCreate?: Enumerable<UserCategoryCreateOrConnectWithoutCategoryInput>
@@ -7047,6 +8417,14 @@ export namespace Prisma {
     disconnect?: boolean
     delete?: boolean
     update?: XOR<UserUpdateWithoutCategoryInput, UserUncheckedUpdateWithoutCategoryInput>
+  }
+
+  export type ImageUpdateOneRequiredWithoutCategoryInput = {
+    create?: XOR<ImageCreateWithoutCategoryInput, ImageUncheckedCreateWithoutCategoryInput>
+    connectOrCreate?: ImageCreateOrConnectWithoutCategoryInput
+    upsert?: ImageUpsertWithoutCategoryInput
+    connect?: ImageWhereUniqueInput
+    update?: XOR<ImageUpdateWithoutCategoryInput, ImageUncheckedUpdateWithoutCategoryInput>
   }
 
   export type UserCategoryUpdateManyWithoutCategoryInput = {
@@ -7119,6 +8497,12 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type ImageCreateNestedOneWithoutEventInput = {
+    create?: XOR<ImageCreateWithoutEventInput, ImageUncheckedCreateWithoutEventInput>
+    connectOrCreate?: ImageCreateOrConnectWithoutEventInput
+    connect?: ImageWhereUniqueInput
+  }
+
   export type FavoritesCreateNestedManyWithoutEventInput = {
     create?: XOR<Enumerable<FavoritesCreateWithoutEventInput>, Enumerable<FavoritesUncheckedCreateWithoutEventInput>>
     connectOrCreate?: Enumerable<FavoritesCreateOrConnectWithoutEventInput>
@@ -7141,6 +8525,14 @@ export namespace Prisma {
     disconnect?: boolean
     delete?: boolean
     update?: XOR<UserUpdateWithoutEventInput, UserUncheckedUpdateWithoutEventInput>
+  }
+
+  export type ImageUpdateOneRequiredWithoutEventInput = {
+    create?: XOR<ImageCreateWithoutEventInput, ImageUncheckedCreateWithoutEventInput>
+    connectOrCreate?: ImageCreateOrConnectWithoutEventInput
+    upsert?: ImageUpsertWithoutEventInput
+    connect?: ImageWhereUniqueInput
+    update?: XOR<ImageUpdateWithoutEventInput, ImageUncheckedUpdateWithoutEventInput>
   }
 
   export type FavoritesUpdateManyWithoutEventInput = {
@@ -7197,6 +8589,94 @@ export namespace Prisma {
     upsert?: EventUpsertWithoutFavoritesInput
     connect?: EventWhereUniqueInput
     update?: XOR<EventUpdateWithoutFavoritesInput, EventUncheckedUpdateWithoutFavoritesInput>
+  }
+
+  export type CategoryCreateNestedManyWithoutImageInput = {
+    create?: XOR<Enumerable<CategoryCreateWithoutImageInput>, Enumerable<CategoryUncheckedCreateWithoutImageInput>>
+    connectOrCreate?: Enumerable<CategoryCreateOrConnectWithoutImageInput>
+    createMany?: CategoryCreateManyImageInputEnvelope
+    connect?: Enumerable<CategoryWhereUniqueInput>
+  }
+
+  export type EventCreateNestedManyWithoutImageInput = {
+    create?: XOR<Enumerable<EventCreateWithoutImageInput>, Enumerable<EventUncheckedCreateWithoutImageInput>>
+    connectOrCreate?: Enumerable<EventCreateOrConnectWithoutImageInput>
+    createMany?: EventCreateManyImageInputEnvelope
+    connect?: Enumerable<EventWhereUniqueInput>
+  }
+
+  export type CategoryUncheckedCreateNestedManyWithoutImageInput = {
+    create?: XOR<Enumerable<CategoryCreateWithoutImageInput>, Enumerable<CategoryUncheckedCreateWithoutImageInput>>
+    connectOrCreate?: Enumerable<CategoryCreateOrConnectWithoutImageInput>
+    createMany?: CategoryCreateManyImageInputEnvelope
+    connect?: Enumerable<CategoryWhereUniqueInput>
+  }
+
+  export type EventUncheckedCreateNestedManyWithoutImageInput = {
+    create?: XOR<Enumerable<EventCreateWithoutImageInput>, Enumerable<EventUncheckedCreateWithoutImageInput>>
+    connectOrCreate?: Enumerable<EventCreateOrConnectWithoutImageInput>
+    createMany?: EventCreateManyImageInputEnvelope
+    connect?: Enumerable<EventWhereUniqueInput>
+  }
+
+  export type EnumImagOriginFieldUpdateOperationsInput = {
+    set?: ImagOrigin
+  }
+
+  export type CategoryUpdateManyWithoutImageInput = {
+    create?: XOR<Enumerable<CategoryCreateWithoutImageInput>, Enumerable<CategoryUncheckedCreateWithoutImageInput>>
+    connectOrCreate?: Enumerable<CategoryCreateOrConnectWithoutImageInput>
+    upsert?: Enumerable<CategoryUpsertWithWhereUniqueWithoutImageInput>
+    createMany?: CategoryCreateManyImageInputEnvelope
+    connect?: Enumerable<CategoryWhereUniqueInput>
+    set?: Enumerable<CategoryWhereUniqueInput>
+    disconnect?: Enumerable<CategoryWhereUniqueInput>
+    delete?: Enumerable<CategoryWhereUniqueInput>
+    update?: Enumerable<CategoryUpdateWithWhereUniqueWithoutImageInput>
+    updateMany?: Enumerable<CategoryUpdateManyWithWhereWithoutImageInput>
+    deleteMany?: Enumerable<CategoryScalarWhereInput>
+  }
+
+  export type EventUpdateManyWithoutImageInput = {
+    create?: XOR<Enumerable<EventCreateWithoutImageInput>, Enumerable<EventUncheckedCreateWithoutImageInput>>
+    connectOrCreate?: Enumerable<EventCreateOrConnectWithoutImageInput>
+    upsert?: Enumerable<EventUpsertWithWhereUniqueWithoutImageInput>
+    createMany?: EventCreateManyImageInputEnvelope
+    connect?: Enumerable<EventWhereUniqueInput>
+    set?: Enumerable<EventWhereUniqueInput>
+    disconnect?: Enumerable<EventWhereUniqueInput>
+    delete?: Enumerable<EventWhereUniqueInput>
+    update?: Enumerable<EventUpdateWithWhereUniqueWithoutImageInput>
+    updateMany?: Enumerable<EventUpdateManyWithWhereWithoutImageInput>
+    deleteMany?: Enumerable<EventScalarWhereInput>
+  }
+
+  export type CategoryUncheckedUpdateManyWithoutImageInput = {
+    create?: XOR<Enumerable<CategoryCreateWithoutImageInput>, Enumerable<CategoryUncheckedCreateWithoutImageInput>>
+    connectOrCreate?: Enumerable<CategoryCreateOrConnectWithoutImageInput>
+    upsert?: Enumerable<CategoryUpsertWithWhereUniqueWithoutImageInput>
+    createMany?: CategoryCreateManyImageInputEnvelope
+    connect?: Enumerable<CategoryWhereUniqueInput>
+    set?: Enumerable<CategoryWhereUniqueInput>
+    disconnect?: Enumerable<CategoryWhereUniqueInput>
+    delete?: Enumerable<CategoryWhereUniqueInput>
+    update?: Enumerable<CategoryUpdateWithWhereUniqueWithoutImageInput>
+    updateMany?: Enumerable<CategoryUpdateManyWithWhereWithoutImageInput>
+    deleteMany?: Enumerable<CategoryScalarWhereInput>
+  }
+
+  export type EventUncheckedUpdateManyWithoutImageInput = {
+    create?: XOR<Enumerable<EventCreateWithoutImageInput>, Enumerable<EventUncheckedCreateWithoutImageInput>>
+    connectOrCreate?: Enumerable<EventCreateOrConnectWithoutImageInput>
+    upsert?: Enumerable<EventUpsertWithWhereUniqueWithoutImageInput>
+    createMany?: EventCreateManyImageInputEnvelope
+    connect?: Enumerable<EventWhereUniqueInput>
+    set?: Enumerable<EventWhereUniqueInput>
+    disconnect?: Enumerable<EventWhereUniqueInput>
+    delete?: Enumerable<EventWhereUniqueInput>
+    update?: Enumerable<EventUpdateWithWhereUniqueWithoutImageInput>
+    updateMany?: Enumerable<EventUpdateManyWithWhereWithoutImageInput>
+    deleteMany?: Enumerable<EventScalarWhereInput>
   }
 
   export type NestedIntFilter = {
@@ -7417,12 +8897,29 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter | number | null
   }
 
+  export type NestedEnumImagOriginFilter = {
+    equals?: ImagOrigin
+    in?: Enumerable<ImagOrigin>
+    notIn?: Enumerable<ImagOrigin>
+    not?: NestedEnumImagOriginFilter | ImagOrigin
+  }
+
+  export type NestedEnumImagOriginWithAggregatesFilter = {
+    equals?: ImagOrigin
+    in?: Enumerable<ImagOrigin>
+    notIn?: Enumerable<ImagOrigin>
+    not?: NestedEnumImagOriginWithAggregatesFilter | ImagOrigin
+    _count?: NestedIntFilter
+    _min?: NestedEnumImagOriginFilter
+    _max?: NestedEnumImagOriginFilter
+  }
+
   export type CategoryCreateWithoutUserInput = {
     title: string
     description?: string | null
-    image: string
     updated_at?: Date | string
     created_at?: Date | string
+    Image: ImageCreateNestedOneWithoutCategoryInput
     UserCategory?: UserCategoryCreateNestedManyWithoutCategoryInput
   }
 
@@ -7430,7 +8927,7 @@ export namespace Prisma {
     id?: number
     title: string
     description?: string | null
-    image: string
+    image: number
     updated_at?: Date | string
     created_at?: Date | string
     UserCategory?: UserCategoryUncheckedCreateNestedManyWithoutCategoryInput
@@ -7472,9 +8969,9 @@ export namespace Prisma {
   export type EventCreateWithoutUserInput = {
     title: string
     description?: string | null
-    image: string
     updated_at?: Date | string
     created_at?: Date | string
+    Image: ImageCreateNestedOneWithoutEventInput
     Favorites?: FavoritesCreateNestedManyWithoutEventInput
   }
 
@@ -7482,7 +8979,7 @@ export namespace Prisma {
     id?: number
     title: string
     description?: string | null
-    image: string
+    image: number
     updated_at?: Date | string
     created_at?: Date | string
     Favorites?: FavoritesUncheckedCreateNestedManyWithoutEventInput
@@ -7544,7 +9041,7 @@ export namespace Prisma {
     id?: IntFilter | number
     title?: StringFilter | string
     description?: StringNullableFilter | string | null
-    image?: StringFilter | string
+    image?: IntFilter | number
     adminId?: IntNullableFilter | number | null
     updated_at?: DateTimeFilter | Date | string
     created_at?: DateTimeFilter | Date | string
@@ -7600,7 +9097,7 @@ export namespace Prisma {
     id?: IntFilter | number
     title?: StringFilter | string
     description?: StringNullableFilter | string | null
-    image?: StringFilter | string
+    image?: IntFilter | number
     adminId?: IntNullableFilter | number | null
     updated_at?: DateTimeFilter | Date | string
     created_at?: DateTimeFilter | Date | string
@@ -7673,6 +9170,42 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutCategoryInput, UserUncheckedCreateWithoutCategoryInput>
   }
 
+  export type ImageCreateWithoutCategoryInput = {
+    fieldname: string
+    originalname: string
+    encoding: string
+    mimetype: string
+    destination: string
+    origin: ImagOrigin
+    filename: string
+    path: string
+    size: number
+    updated_at?: Date | string
+    created_at?: Date | string
+    Event?: EventCreateNestedManyWithoutImageInput
+  }
+
+  export type ImageUncheckedCreateWithoutCategoryInput = {
+    id?: number
+    fieldname: string
+    originalname: string
+    encoding: string
+    mimetype: string
+    destination: string
+    origin: ImagOrigin
+    filename: string
+    path: string
+    size: number
+    updated_at?: Date | string
+    created_at?: Date | string
+    Event?: EventUncheckedCreateNestedManyWithoutImageInput
+  }
+
+  export type ImageCreateOrConnectWithoutCategoryInput = {
+    where: ImageWhereUniqueInput
+    create: XOR<ImageCreateWithoutCategoryInput, ImageUncheckedCreateWithoutCategoryInput>
+  }
+
   export type UserCategoryCreateWithoutCategoryInput = {
     updated_at?: Date | string
     created_at?: Date | string
@@ -7736,6 +9269,42 @@ export namespace Prisma {
     Favorites?: FavoritesUncheckedUpdateManyWithoutUserInput
   }
 
+  export type ImageUpsertWithoutCategoryInput = {
+    update: XOR<ImageUpdateWithoutCategoryInput, ImageUncheckedUpdateWithoutCategoryInput>
+    create: XOR<ImageCreateWithoutCategoryInput, ImageUncheckedCreateWithoutCategoryInput>
+  }
+
+  export type ImageUpdateWithoutCategoryInput = {
+    fieldname?: StringFieldUpdateOperationsInput | string
+    originalname?: StringFieldUpdateOperationsInput | string
+    encoding?: StringFieldUpdateOperationsInput | string
+    mimetype?: StringFieldUpdateOperationsInput | string
+    destination?: StringFieldUpdateOperationsInput | string
+    origin?: EnumImagOriginFieldUpdateOperationsInput | ImagOrigin
+    filename?: StringFieldUpdateOperationsInput | string
+    path?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Event?: EventUpdateManyWithoutImageInput
+  }
+
+  export type ImageUncheckedUpdateWithoutCategoryInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    fieldname?: StringFieldUpdateOperationsInput | string
+    originalname?: StringFieldUpdateOperationsInput | string
+    encoding?: StringFieldUpdateOperationsInput | string
+    mimetype?: StringFieldUpdateOperationsInput | string
+    destination?: StringFieldUpdateOperationsInput | string
+    origin?: EnumImagOriginFieldUpdateOperationsInput | ImagOrigin
+    filename?: StringFieldUpdateOperationsInput | string
+    path?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Event?: EventUncheckedUpdateManyWithoutImageInput
+  }
+
   export type UserCategoryUpsertWithWhereUniqueWithoutCategoryInput = {
     where: UserCategoryWhereUniqueInput
     update: XOR<UserCategoryUpdateWithoutCategoryInput, UserCategoryUncheckedUpdateWithoutCategoryInput>
@@ -7795,17 +9364,17 @@ export namespace Prisma {
   export type CategoryCreateWithoutUserCategoryInput = {
     title: string
     description?: string | null
-    image: string
     updated_at?: Date | string
     created_at?: Date | string
     User?: UserCreateNestedOneWithoutCategoryInput
+    Image: ImageCreateNestedOneWithoutCategoryInput
   }
 
   export type CategoryUncheckedCreateWithoutUserCategoryInput = {
     id?: number
     title: string
     description?: string | null
-    image: string
+    image: number
     adminId?: number | null
     updated_at?: Date | string
     created_at?: Date | string
@@ -7864,17 +9433,17 @@ export namespace Prisma {
   export type CategoryUpdateWithoutUserCategoryInput = {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     User?: UserUpdateOneWithoutCategoryInput
+    Image?: ImageUpdateOneRequiredWithoutCategoryInput
   }
 
   export type CategoryUncheckedUpdateWithoutUserCategoryInput = {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
+    image?: IntFieldUpdateOperationsInput | number
     adminId?: NullableIntFieldUpdateOperationsInput | number | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7918,6 +9487,42 @@ export namespace Prisma {
   export type UserCreateOrConnectWithoutEventInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutEventInput, UserUncheckedCreateWithoutEventInput>
+  }
+
+  export type ImageCreateWithoutEventInput = {
+    fieldname: string
+    originalname: string
+    encoding: string
+    mimetype: string
+    destination: string
+    origin: ImagOrigin
+    filename: string
+    path: string
+    size: number
+    updated_at?: Date | string
+    created_at?: Date | string
+    Category?: CategoryCreateNestedManyWithoutImageInput
+  }
+
+  export type ImageUncheckedCreateWithoutEventInput = {
+    id?: number
+    fieldname: string
+    originalname: string
+    encoding: string
+    mimetype: string
+    destination: string
+    origin: ImagOrigin
+    filename: string
+    path: string
+    size: number
+    updated_at?: Date | string
+    created_at?: Date | string
+    Category?: CategoryUncheckedCreateNestedManyWithoutImageInput
+  }
+
+  export type ImageCreateOrConnectWithoutEventInput = {
+    where: ImageWhereUniqueInput
+    create: XOR<ImageCreateWithoutEventInput, ImageUncheckedCreateWithoutEventInput>
   }
 
   export type FavoritesCreateWithoutEventInput = {
@@ -7983,6 +9588,42 @@ export namespace Prisma {
     Favorites?: FavoritesUncheckedUpdateManyWithoutUserInput
   }
 
+  export type ImageUpsertWithoutEventInput = {
+    update: XOR<ImageUpdateWithoutEventInput, ImageUncheckedUpdateWithoutEventInput>
+    create: XOR<ImageCreateWithoutEventInput, ImageUncheckedCreateWithoutEventInput>
+  }
+
+  export type ImageUpdateWithoutEventInput = {
+    fieldname?: StringFieldUpdateOperationsInput | string
+    originalname?: StringFieldUpdateOperationsInput | string
+    encoding?: StringFieldUpdateOperationsInput | string
+    mimetype?: StringFieldUpdateOperationsInput | string
+    destination?: StringFieldUpdateOperationsInput | string
+    origin?: EnumImagOriginFieldUpdateOperationsInput | ImagOrigin
+    filename?: StringFieldUpdateOperationsInput | string
+    path?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Category?: CategoryUpdateManyWithoutImageInput
+  }
+
+  export type ImageUncheckedUpdateWithoutEventInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    fieldname?: StringFieldUpdateOperationsInput | string
+    originalname?: StringFieldUpdateOperationsInput | string
+    encoding?: StringFieldUpdateOperationsInput | string
+    mimetype?: StringFieldUpdateOperationsInput | string
+    destination?: StringFieldUpdateOperationsInput | string
+    origin?: EnumImagOriginFieldUpdateOperationsInput | ImagOrigin
+    filename?: StringFieldUpdateOperationsInput | string
+    path?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Category?: CategoryUncheckedUpdateManyWithoutImageInput
+  }
+
   export type FavoritesUpsertWithWhereUniqueWithoutEventInput = {
     where: FavoritesWhereUniqueInput
     update: XOR<FavoritesUpdateWithoutEventInput, FavoritesUncheckedUpdateWithoutEventInput>
@@ -8042,17 +9683,17 @@ export namespace Prisma {
   export type EventCreateWithoutFavoritesInput = {
     title: string
     description?: string | null
-    image: string
     updated_at?: Date | string
     created_at?: Date | string
     User?: UserCreateNestedOneWithoutEventInput
+    Image: ImageCreateNestedOneWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutFavoritesInput = {
     id?: number
     title: string
     description?: string | null
-    image: string
+    image: number
     adminId?: number | null
     updated_at?: Date | string
     created_at?: Date | string
@@ -8111,27 +9752,117 @@ export namespace Prisma {
   export type EventUpdateWithoutFavoritesInput = {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     User?: UserUpdateOneWithoutEventInput
+    Image?: ImageUpdateOneRequiredWithoutEventInput
   }
 
   export type EventUncheckedUpdateWithoutFavoritesInput = {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
+    image?: IntFieldUpdateOperationsInput | number
     adminId?: NullableIntFieldUpdateOperationsInput | number | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CategoryCreateWithoutImageInput = {
+    title: string
+    description?: string | null
+    updated_at?: Date | string
+    created_at?: Date | string
+    User?: UserCreateNestedOneWithoutCategoryInput
+    UserCategory?: UserCategoryCreateNestedManyWithoutCategoryInput
+  }
+
+  export type CategoryUncheckedCreateWithoutImageInput = {
+    id?: number
+    title: string
+    description?: string | null
+    adminId?: number | null
+    updated_at?: Date | string
+    created_at?: Date | string
+    UserCategory?: UserCategoryUncheckedCreateNestedManyWithoutCategoryInput
+  }
+
+  export type CategoryCreateOrConnectWithoutImageInput = {
+    where: CategoryWhereUniqueInput
+    create: XOR<CategoryCreateWithoutImageInput, CategoryUncheckedCreateWithoutImageInput>
+  }
+
+  export type CategoryCreateManyImageInputEnvelope = {
+    data: Enumerable<CategoryCreateManyImageInput>
+    skipDuplicates?: boolean
+  }
+
+  export type EventCreateWithoutImageInput = {
+    title: string
+    description?: string | null
+    updated_at?: Date | string
+    created_at?: Date | string
+    User?: UserCreateNestedOneWithoutEventInput
+    Favorites?: FavoritesCreateNestedManyWithoutEventInput
+  }
+
+  export type EventUncheckedCreateWithoutImageInput = {
+    id?: number
+    title: string
+    description?: string | null
+    adminId?: number | null
+    updated_at?: Date | string
+    created_at?: Date | string
+    Favorites?: FavoritesUncheckedCreateNestedManyWithoutEventInput
+  }
+
+  export type EventCreateOrConnectWithoutImageInput = {
+    where: EventWhereUniqueInput
+    create: XOR<EventCreateWithoutImageInput, EventUncheckedCreateWithoutImageInput>
+  }
+
+  export type EventCreateManyImageInputEnvelope = {
+    data: Enumerable<EventCreateManyImageInput>
+    skipDuplicates?: boolean
+  }
+
+  export type CategoryUpsertWithWhereUniqueWithoutImageInput = {
+    where: CategoryWhereUniqueInput
+    update: XOR<CategoryUpdateWithoutImageInput, CategoryUncheckedUpdateWithoutImageInput>
+    create: XOR<CategoryCreateWithoutImageInput, CategoryUncheckedCreateWithoutImageInput>
+  }
+
+  export type CategoryUpdateWithWhereUniqueWithoutImageInput = {
+    where: CategoryWhereUniqueInput
+    data: XOR<CategoryUpdateWithoutImageInput, CategoryUncheckedUpdateWithoutImageInput>
+  }
+
+  export type CategoryUpdateManyWithWhereWithoutImageInput = {
+    where: CategoryScalarWhereInput
+    data: XOR<CategoryUpdateManyMutationInput, CategoryUncheckedUpdateManyWithoutCategoryInput>
+  }
+
+  export type EventUpsertWithWhereUniqueWithoutImageInput = {
+    where: EventWhereUniqueInput
+    update: XOR<EventUpdateWithoutImageInput, EventUncheckedUpdateWithoutImageInput>
+    create: XOR<EventCreateWithoutImageInput, EventUncheckedCreateWithoutImageInput>
+  }
+
+  export type EventUpdateWithWhereUniqueWithoutImageInput = {
+    where: EventWhereUniqueInput
+    data: XOR<EventUpdateWithoutImageInput, EventUncheckedUpdateWithoutImageInput>
+  }
+
+  export type EventUpdateManyWithWhereWithoutImageInput = {
+    where: EventScalarWhereInput
+    data: XOR<EventUpdateManyMutationInput, EventUncheckedUpdateManyWithoutEventInput>
   }
 
   export type CategoryCreateManyUserInput = {
     id?: number
     title: string
     description?: string | null
-    image: string
+    image: number
     updated_at?: Date | string
     created_at?: Date | string
   }
@@ -8147,7 +9878,7 @@ export namespace Prisma {
     id?: number
     title: string
     description?: string | null
-    image: string
+    image: number
     updated_at?: Date | string
     created_at?: Date | string
   }
@@ -8162,9 +9893,9 @@ export namespace Prisma {
   export type CategoryUpdateWithoutUserInput = {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Image?: ImageUpdateOneRequiredWithoutCategoryInput
     UserCategory?: UserCategoryUpdateManyWithoutCategoryInput
   }
 
@@ -8172,7 +9903,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
+    image?: IntFieldUpdateOperationsInput | number
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     UserCategory?: UserCategoryUncheckedUpdateManyWithoutCategoryInput
@@ -8182,7 +9913,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
+    image?: IntFieldUpdateOperationsInput | number
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -8210,9 +9941,9 @@ export namespace Prisma {
   export type EventUpdateWithoutUserInput = {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Image?: ImageUpdateOneRequiredWithoutEventInput
     Favorites?: FavoritesUpdateManyWithoutEventInput
   }
 
@@ -8220,7 +9951,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
+    image?: IntFieldUpdateOperationsInput | number
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Favorites?: FavoritesUncheckedUpdateManyWithoutEventInput
@@ -8230,7 +9961,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    image?: StringFieldUpdateOperationsInput | string
+    image?: IntFieldUpdateOperationsInput | number
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -8293,6 +10024,62 @@ export namespace Prisma {
     userId?: IntFieldUpdateOperationsInput | number
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CategoryCreateManyImageInput = {
+    id?: number
+    title: string
+    description?: string | null
+    adminId?: number | null
+    updated_at?: Date | string
+    created_at?: Date | string
+  }
+
+  export type EventCreateManyImageInput = {
+    id?: number
+    title: string
+    description?: string | null
+    adminId?: number | null
+    updated_at?: Date | string
+    created_at?: Date | string
+  }
+
+  export type CategoryUpdateWithoutImageInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    User?: UserUpdateOneWithoutCategoryInput
+    UserCategory?: UserCategoryUpdateManyWithoutCategoryInput
+  }
+
+  export type CategoryUncheckedUpdateWithoutImageInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    adminId?: NullableIntFieldUpdateOperationsInput | number | null
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    UserCategory?: UserCategoryUncheckedUpdateManyWithoutCategoryInput
+  }
+
+  export type EventUpdateWithoutImageInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    User?: UserUpdateOneWithoutEventInput
+    Favorites?: FavoritesUpdateManyWithoutEventInput
+  }
+
+  export type EventUncheckedUpdateWithoutImageInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    adminId?: NullableIntFieldUpdateOperationsInput | number | null
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Favorites?: FavoritesUncheckedUpdateManyWithoutEventInput
   }
 
 

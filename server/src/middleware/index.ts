@@ -193,15 +193,15 @@ export const auth = <Model extends keyof typeof Prisma.ModelName>(
       });
     }
     let selfResult;
+    if (!args) {
+      return res.status(400).json({
+        status: utils.WARNING,
+        message: lang.SERVER_ERROR,
+        stdErrMessage: utils.getStdErrMessage(new Error('Argument args is missing')),
+        data: null,
+      });
+    }
     if (selfUsage) {
-      if (!args) {
-        return res.status(400).json({
-          status: utils.WARNING,
-          message: lang.SERVER_ERROR,
-          stdErrMessage: utils.getStdErrMessage(new Error('Argument args is missing')),
-          data: null,
-        });
-      }
       if (!args.where) {
         return res.status(400).json({
           status: utils.WARNING,
@@ -256,6 +256,7 @@ export const auth = <Model extends keyof typeof Prisma.ModelName>(
         }
       }
     }
+
     // Проверка закрытых полей для самосоятельной замены
     const closedSelf = params.selfUsage?.closedSelf;
     if (closedSelf && closedSelf?.length !== 0 && !(_admin && selfUsage?.andAdmin)) {

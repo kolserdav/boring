@@ -6,7 +6,7 @@
  * License Text: Unauthorized copying of this file, via any medium is strictly prohibited
  * Copyright: kolserdav (c), All rights reserved
  * Create date: Thu Oct 14 2021 17:09:33 GMT+0700 (Krasnoyarsk Standard Time)
-******************************************************************************************/
+ ******************************************************************************************/
 import { Prisma, PrismaClient, Category } from '@prisma/client';
 import type * as Types from '../../types';
 import * as utils from '../../utils';
@@ -66,12 +66,14 @@ const middleware: Types.NextHandler<any, Args, any> = async (req, res, next) => 
 
 const handler: Types.RequestHandler<any, Args, Category | null> = async (req, res) => {
   const { body } = req;
-  const { args, lang } = body;
+  const { args: _args, lang, user } = body;
+  const args = Object.assign({}, _args);
+  args.data.adminId = user?.id || null;
   let result;
   try {
     result = await prisma.category.create(args);
   } catch (err) {
-    utils.saveLog(err, req, 'Error create category', body);
+    utils.saveLog(err, req, 'Error create category', { args: body.args });
     return res.status(500).json({
       status: utils.ERROR,
       message: lang.SERVER_ERROR,
