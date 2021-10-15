@@ -20,8 +20,10 @@
 import { Prisma as P, User, PrismaPromise } from './prisma';
 import Types from '../src/types';
 
-// ПЕСОЧНИЦА. Внимание! эта функция не вызывается так как у методов нет реализации
+// ПЕСОЧНИЦА.
 // используется только для получения помощи от IDE в подборе запроса по типам
+// Внимание! Эта песочница будет обновляться, чтобы держать свою песочницу на фронте
+// создан файл sandbox.ts
 async () => {
   userFindMany({
     where: {
@@ -205,6 +207,87 @@ export async function categoryUpdate<T extends P.CategoryUpdateArgs>(
  */
 export async function categoryDelete<T extends P.CategoryDeleteArgs>(
   args: P.SelectSubset<T, P.CategoryDeleteArgs>
+): Promise<
+  P.CheckSelect<
+    T,
+    Types.Api.Result<User | null>,
+    PrismaPromise<Types.Api.Result<P.UserGetPayload<T>>>
+  >
+> {
+  return getResult(args);
+}
+
+////// Методы cобытий ///////
+/**
+ * Получить одно событие
+ * @param {P.EventFindFirstArgs} args
+ */
+export async function eventFindFirst<T extends P.EventFindFirstArgs>(
+  args: P.SelectSubset<T, P.EventFindFirstArgs>
+): Promise<
+  P.CheckSelect<
+    T,
+    Types.Api.Result<User | null>,
+    PrismaPromise<Types.Api.Result<P.UserGetPayload<T>>>
+  >
+> {
+  return getResult(args);
+}
+
+/**
+ * Получить несколько событий
+ * @param {P.EventFindManyArgs} args
+ */
+export async function eventFindMany<T extends P.EventFindManyArgs>(
+  args: P.SelectSubset<T, P.EventFindManyArgs>
+): Promise<
+  P.CheckSelect<
+    T,
+    Types.Api.Result<User | null>,
+    PrismaPromise<Types.Api.Result<P.UserGetPayload<T>>>
+  >
+> {
+  return getResult(args);
+}
+
+/**
+ * Создать одно событие
+ * @param {P.EventCreateArgs} args
+ */
+export async function eventCreate<T extends P.EventCreateArgs>(
+  args: P.SelectSubset<T, P.EventCreateArgs>
+): Promise<
+  P.CheckSelect<
+    T,
+    Types.Api.Result<User | null>,
+    PrismaPromise<Types.Api.Result<P.UserGetPayload<T>>>
+  >
+> {
+  return getResult(args);
+}
+
+/**
+ * Изменить одно событие
+ * @param {P.EventUpdateArgs} args
+ */
+export async function evnentUpdate<T extends P.EventUpdateArgs>(
+  args: P.SelectSubset<T, P.EventUpdateArgs>
+): Promise<
+  P.CheckSelect<
+    T,
+    Types.Api.Result<User | null>,
+    PrismaPromise<Types.Api.Result<P.UserGetPayload<T>>>
+  >
+> {
+  return getResult(args);
+}
+
+/**
+ * Удалить одно событие
+ * @param {P.EventDeleteArgs} args
+ */
+export async function eventDelete<T extends P.EventDeleteArgs>(
+  args: P.SelectSubset<T, P.EventDeleteArgs>
 ): Promise<
   P.CheckSelect<
     T,

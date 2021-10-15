@@ -1,0 +1,14 @@
+// Создание события 
+POST http://localhost:3333/api/v1/event/create HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicGFzc3dvcmQiOiIkMmIkMTAkQ3NuYWk4REpqN2guSmtCeU03OWNxLjNkRi5xYzZZOE9xWVFwSlFEVFJyNGdUd2J3ME42cG0iLCJpYXQiOjE2MzQyOTQ3NDF9.y7596KqEwvt4OxDPRTfMSTaMY4Mnp2cGeSfyE2IvqLs
+
+// параметры
+{
+  "args": {
+    "data": {
+      "title": "first",
+      "image": 2
+    }
+  }
+}
