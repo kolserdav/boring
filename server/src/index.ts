@@ -21,7 +21,14 @@ const app = express();
 // Хранилище
 const storageCategory = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/category');
+    const { url } = req;
+    let dirName = 'unknown';
+    if (url.match(/\/api\/v1\/event\/imageupload/)) {
+      dirName = 'event';
+    } else if (url.match(/\/api\/v1\/category\/imageupload/)) {
+      dirName = 'category';
+    }
+    cb(null, `uploads/${dirName}`);
   },
   filename: (req, file, cb) => {
     let imageType: RegExpMatchArray | string | null = file.originalname.match(/\.\w{3,4}$/);
@@ -174,6 +181,7 @@ app.post(
   api.category.delete.middleware,
   api.category.delete.handler
 );
+// добавить изображение категории
 app.post(
   '/api/v1/category/imageupload',
   middleware.auth({
@@ -185,6 +193,51 @@ app.post(
   api.category.update.handler
 );
 
+//// API событий
+// создать событие
+app.post(
+  '/api/v1/event/create',
+  middleware.auth({
+    onlyAdmin: true,
+  }),
+  api.event.create.middleware,
+  api.event.create.handler
+);
+// изменить событие
+app.post(
+  '/api/v1/event/update',
+  middleware.auth({
+    onlyAdmin: true,
+  }),
+  api.event.update.middleware,
+  api.event.update.handler
+);
+// получить одно событие
+app.post('/api/v1/event/findfirst', api.event.findFirst.middleware, api.event.findFirst.handler);
+// получить несколько событий
+app.post('/api/v1/event/findmany', api.event.findMany.middleware, api.event.findMany.handler);
+// удалить одно событие
+app.post(
+  '/api/v1/event/delete',
+  middleware.auth({
+    onlyAdmin: true,
+  }),
+  api.event.delete.middleware,
+  api.event.delete.handler
+);
+// добавить изображение события
+app.post(
+  '/api/v1/event/imageupload',
+  middleware.auth({
+    onlyAdmin: true,
+  }),
+  uploadCategory.single('image'),
+  middleware.getLang,
+  api.event.update.middleware,
+  api.event.update.handler
+);
+
+//// API изображений
 // Удаление изображений, добавление получение и изменение через категорию или событие
 app.post(
   '/api/v1/image/delete',

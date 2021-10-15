@@ -7,7 +7,7 @@
  * Copyright: kolserdav (c), All rights reserved
  * Create date: Thu Oct 14 2021 17:09:33 GMT+0700 (Krasnoyarsk Standard Time)
  ******************************************************************************************/
-import { Prisma, PrismaClient, Category } from '@prisma/client';
+import { Prisma, PrismaClient, Event } from '@prisma/client';
 import path from 'path';
 import fs from 'fs';
 import type * as Types from '../../types';
@@ -16,12 +16,12 @@ import * as utils from '../../utils';
 const prisma = new PrismaClient();
 
 /**
- * изменение одной категории /api/v1/category/update
- * @param {{args: Prisma.CategoryUpdateArgs}}
- * @returns {Category | null}
+ * изменение одного события /api/v1/event/update
+ * @param {{args: Prisma.EventUpdateArgs}}
+ * @returns {Event | null}
  */
 interface Args extends Types.GlobalParams {
-  args: Prisma.CategoryUpdateArgs;
+  args: Prisma.EventUpdateArgs;
   login?: {
     email: string;
     password: string;
@@ -31,7 +31,7 @@ interface Args extends Types.GlobalParams {
 const middleware: Types.NextHandler<any, Args, any> = async (req, res, next) => {
   const { body, url } = req;
   const { args, lang } = body;
-  if (url.match(/\/api\/v1\/category\/imageupload/)) {
+  if (url.match(/\/api\/v1\/event\/imageupload/)) {
     const { file }: any = req;
     let _file: Types.MulterFile = file ? file : {};
     const {
@@ -49,7 +49,7 @@ const middleware: Types.NextHandler<any, Args, any> = async (req, res, next) => 
         status: utils.WARNING,
         message: lang.BAD_REQUEST,
         stdErrMessage: utils.getStdErrMessage(
-          new Error(`File object is not readable on category update ${JSON.stringify(_file)}`)
+          new Error(`File object is not readable on event update ${JSON.stringify(_file)}`)
         ),
         data: null,
       });
@@ -60,7 +60,7 @@ const middleware: Types.NextHandler<any, Args, any> = async (req, res, next) => 
       try {
         fs.unlinkSync(imagePath);
       } catch (e) {
-        utils.saveLog(e, req, 'Error delete wrong format file on category update', {
+        utils.saveLog(e, req, 'Error delete wrong format file on event update', {
           imagePath,
           mimetype,
         });
@@ -69,7 +69,7 @@ const middleware: Types.NextHandler<any, Args, any> = async (req, res, next) => 
         status: utils.WARNING,
         message: lang.BAD_REQUEST,
         stdErrMessage: utils.getStdErrMessage(
-          new Error(`File type ${mimetype} is not acceptable on category update`)
+          new Error(`File type ${mimetype} is not acceptable on event update`)
         ),
         data: null,
       });
@@ -80,7 +80,7 @@ const middleware: Types.NextHandler<any, Args, any> = async (req, res, next) => 
         data: {
           fieldname,
           filename,
-          origin: 'category',
+          origin: 'event',
           originalname,
           encoding,
           mimetype,
@@ -90,7 +90,7 @@ const middleware: Types.NextHandler<any, Args, any> = async (req, res, next) => 
         },
       });
     } catch (e) {
-      utils.saveLog(e, req, 'Error save image to database while update category', { _file });
+      utils.saveLog(e, req, 'Error save image to database while update event', { _file });
       return res.status(500).json({
         status: utils.WARNING,
         message: lang.SERVER_ERROR,
@@ -107,7 +107,7 @@ const middleware: Types.NextHandler<any, Args, any> = async (req, res, next) => 
   next();
 };
 
-const handler: Types.RequestHandler<any, Args, Category | null> = async (req, res) => {
+const handler: Types.RequestHandler<any, Args, Event | null> = async (req, res) => {
   const { body } = req;
   const { args: _args, user, lang } = body;
   const args = Object.assign({}, _args);
@@ -115,9 +115,9 @@ const handler: Types.RequestHandler<any, Args, Category | null> = async (req, re
   args.data.updated_at = new Date();
   let result;
   try {
-    result = await prisma.category.update(args);
+    result = await prisma.event.update(args);
   } catch (err) {
-    utils.saveLog(err, req, 'Error update category', { args: body.args });
+    utils.saveLog(err, req, 'Error update event', { args: body.args });
     return res.status(500).json({
       status: utils.ERROR,
       message: lang.SERVER_ERROR,
