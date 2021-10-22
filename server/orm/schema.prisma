@@ -45,6 +45,7 @@ model Category {
   title        String         @unique
   description  String?        @db.MediumText
   image        Int
+  active       Boolean        @default(true)
   adminId      Int? // Ид админа создавшего или изменившего категорию
   User         User?          @relation(fields: [adminId], references: [id])
   Image        Image          @relation(fields: [image], references: [id])
@@ -82,9 +83,9 @@ model Event {
 model Favorites {
   id         Int      @id @default(autoincrement())
   userId     Int
-  categoryId Int
+  eventId    Int
   User       User     @relation(fields: [userId], references: [id])
-  Event      Event    @relation(fields: [categoryId], references: [id])
+  Event      Event    @relation(fields: [eventId], references: [id])
   updated_at DateTime @default(now())
   created_at DateTime @default(now())
 }
