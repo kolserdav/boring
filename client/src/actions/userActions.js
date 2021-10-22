@@ -2,12 +2,12 @@ import { fetchUser, loginUser, registerUser, removeUser } from 'store/authSlice'
 import store from 'store';
 
 
-export const registration = async (email, password) => {
-    return await store.dispatch(registerUser({ email, password })).unwrap();
+export const registration = async (form) => {
+    return await store.dispatch(registerUser(form)).unwrap();
 }
 
-export const login = async (email, password) => {
-    return await store.dispatch(loginUser({ email, password })).unwrap();
+export const login = async (form) => {
+    return await store.dispatch(loginUser(form)).unwrap();
 }
 
 export const logout = () => {

@@ -4,78 +4,102 @@ import signup1 from 'images/signup1.svg'
 import signup1Mobile from 'images/signup1-mobile.svg'
 import signup2 from 'images/signup2.svg'
 import { login, registration } from 'actions/userActions'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Button from '../../Button'
 import { LOGIN_ROUTE } from 'routes/Paths'
 import { InputAdornment, TextField } from "@material-ui/core"
 import { ReactComponent as EmailIcon } from 'images/email.svg'
 import { ReactComponent as PasswordIcon } from 'images/password.svg'
+
+console.log(fetch('/test'));
+
 const SignUp = () => {
 
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [emailError, setEmailError] = useState(null)
-    const [passwordError, setPasswordError] = useState(null)
     const [requestPending, setRequestPending] = useState(false)
     const location = useLocation()
     const isLogin = location.pathname === LOGIN_ROUTE
 
+    const [form, setForm] = useState({
+        email: '',
+        password: '',
+        confirm_password: ''
+    })
+    const [validationError, setValidationError] = useState({
+        email: null,
+        password: null,
+        confirm_password: null
+    })
+
+    function validateForm(form) {
+        let newValidationError = { ...validationError }
+
+        if (form.email !== '' && !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(form.email)) {
+            console.log('test');
+            newValidationError = { ...newValidationError, email: 'Invalid email address' }
+
+        }
+        else {
+            newValidationError = { ...newValidationError, email: null }
+        }
+        if (form.password !== '' && form.password.length < 8) {
+            newValidationError = { ...newValidationError, password: 'Passwords must be at least 8 characters long' }
+        }
+        else {
+            newValidationError = { ...newValidationError, password: null }
+
+        }
+
+        if (!isLogin && form.confirm_password !== '' && form.password !== form.confirm_password) {
+            newValidationError = { ...newValidationError, confirm_password: "Password doesn't match" }
+        }
+        else {
+            newValidationError = { ...newValidationError, confirm_password: null }
+        }
+        setValidationError(newValidationError)
+
+    }
+
+    useEffect(() => {
+        validateForm(form)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isLogin])
 
     function handleChange(event) {
-        const target = event.target
-        switch (target.name) {
-            case ('email'):
-                setEmail(target.value)
-                if (emailError !== null) {
-                    setEmailError(null)
-                }
-                break;
-
-            case ('password'):
-                if (passwordError !== null) {
-                    setPasswordError(null)
-                }
-                setPassword(target.value)
-                break;
-
-            default: return;
-        }
+        const newForm = { ...form, [event.target.name]: event.target.value };
+        validateForm(newForm)
+        setForm(newForm)
     }
 
     async function handleSubmit(event) {
         event.preventDefault()
-        if (email && password) {
-            if (!isLogin && (password.length < 8)) {
-                setPasswordError('Passwords must be at least 8 characters long')
-                return
-            }
-            switch (isLogin) {
-                case true:
-                    try {
-                        setRequestPending(true);
-                        await login(email, password);
-                    } catch (error) {
-                        if (error.message === 'User not found') {
-                            console.log('User not found')
-                            setEmailError('Wrong email or password')
-                            setRequestPending(false);
-                        } else {
-                            throw error
-                        }
-                    }
-                    break;
-                case false:
-                    try {
-                        setRequestPending(true);
-                        await registration(email, password);
-                    } catch (error) {
-                        setEmailError('User already exists')
+        switch (isLogin) {
+            case true:
+                try {
+                    setRequestPending(true);
+                    await login(form);
+                } catch (error) {
+                    console.log(error);
+                    if (error.message === 'User not found') {
                         setRequestPending(false);
+                        console.log('User not found')
+                        setValidationError({ ...validationError, email: 'Wrong email or password' })
+                    } else {
+                        setRequestPending(false);
+                        throw error
                     }
-                    break;
-                default:
-                    return;
-            }
+                }
+                break;
+            case false:
+                try {
+                    setRequestPending(true);
+                    await registration(form);
+                } catch (error) {
+                    setValidationError({ ...validationError, email: 'User already exists' })
+                    setRequestPending(false);
+                }
+                break;
+            default:
+                return;
         }
     }
 
@@ -93,15 +117,15 @@ const SignUp = () => {
                         </div>
                         <TextField
                             required
-                            error={emailError !== null}
-                            helperText={emailError}
+                            error={validationError.email !== null}
+                            helperText={validationError.email || ' '}
                             type='email'
                             name='email'
-                            value={email}
+                            value={form.email}
                             placeholder='Your email adress'
                             onChange={handleChange}
                             fullWidth
-                            margin='normal'
+                            margin='dense'
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position='start'>
@@ -112,15 +136,15 @@ const SignUp = () => {
                         />
                         <TextField
                             required
-                            error={passwordError !== null}
-                            helperText={passwordError}
+                            error={validationError.password !== null}
+                            helperText={validationError.password || ' '}
                             type='password'
                             name='password'
-                            value={password}
+                            value={form.password}
                             placeholder='Password'
                             onChange={handleChange}
                             fullWidth
-                            margin='normal'
+                            margin='dense'
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position='start'>
@@ -129,15 +153,28 @@ const SignUp = () => {
                                 )
                             }}
                         />
+                        {!isLogin &&
+                            <TextField
+                                required
+                                error={validationError.confirm_password !== null}
+                                helperText={validationError.confirm_password || ' '}
+                                type='password'
+                                name='confirm_password'
+                                value={form.confirm_password}
+                                placeholder='Confirm password'
+                                onChange={handleChange}
+                                fullWidth
+                                margin='dense'
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position='start'>
+                                            <PasswordIcon style={{ width: '30px' }} />
+                                        </InputAdornment>
+                                    )
+                                }}
+                            />
 
-                        {/* <div className={styles.form__input}>
-                            <input onChange={handleChange} value={email} name='email' type='email' placeholder='Your email adress' />
-                            <EmailIcon />
-                        </div>
-                        <div className={styles.form__input}>
-                            <input onChange={handleChange} value={password} name='password' type='password' placeholder='Password' />
-                            <PasswordIcon />
-                        </div> */}
+                        }
                         {!isLogin &&
                             <div className={styles.terms}>
                                 <input required id='terms' type='checkbox' />
@@ -148,7 +185,7 @@ const SignUp = () => {
                             </div>
                         }
                         <Button
-                            disabled={emailError !== null || passwordError !== null || requestPending}
+                            disabled={validationError.email !== null || validationError.password !== null || validationError.confirm_password !== null || requestPending}
                             className='btn_auth'
                             title={isLogin ? 'login' : 'Sign up'}
                         />

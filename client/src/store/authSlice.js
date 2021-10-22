@@ -1,31 +1,38 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import jwtDecode from 'jwt-decode';
 import { fetchUserRequest, loginUserRequest, putCategoriesRequest, registerUserRequest } from '../api/user';
 
-const initialState = {
-  id: '',
+const defaultState = {
   isAuth: false,
+  id: '',
   role: 'GUEST',
   categories: []
 }
 
-const initialToken = localStorage.getItem('token')
+function defineState() {
+  const localStorageUser = localStorage.getItem('user');
 
-function userFromToken(token) {
-  try {
-    const { id, role, categories = [] } = jwtDecode(token)
-    return { id, role, isAuth: true, categories }
-  }
-  catch {
-    return
+  if (!localStorageUser) {
+    return defaultState
+  } else {
+    const { id, role } = JSON.parse(localStorageUser)
+    return {
+      isAuth: true,
+      id,
+      role,
+      categories: []
+    }
   }
 }
 
 function setUserAndToken(state, action) {
-  const newToken = action.payload
-  localStorage.setItem('token', newToken);
-
-  const { id, role, isAuth, categories } = userFromToken(newToken);
+  const { data: { id, role }, token } = action.payload;
+  const isAuth = true;
+  localStorage.setItem('user', JSON.stringify({
+    id,
+    role,
+    token
+  }));
+  const categories = [];
 
   state.id = id
   state.role = role
@@ -39,8 +46,8 @@ function setUserAndToken(state, action) {
 }
 
 function removeUserAndToken() {
-  localStorage.removeItem('token');
-  return initialState;
+  localStorage.removeItem('user');
+  return defaultState;
 }
 
 export const fetchUser = createAsyncThunk('user/fetchuser', async (token) => {
@@ -49,16 +56,16 @@ export const fetchUser = createAsyncThunk('user/fetchuser', async (token) => {
   return await fetchUserRequest(token)
 })
 
-export const loginUser = createAsyncThunk('user/loginUser', async ({ email, password }) => {
+export const loginUser = createAsyncThunk('user/loginUser', async (form) => {
   // const { data } = await axios.post(`${SERVER_URI}/api/user/login`, { email, password });
   // return data.token
-  return await loginUserRequest(email, password)
+  return await loginUserRequest(form)
 })
 
-export const registerUser = createAsyncThunk('user/registerUser', async ({ email, password }) => {
+export const registerUser = createAsyncThunk('user/registerUser', async (form) => {
   // const { data } = await axios.post(`${SERVER_URI}/api/user/registration`, { email, password });
   // return data.token
-  return await registerUserRequest(email, password)
+  return await registerUserRequest(form);
 })
 
 export const asyncUpdateCategories = createAsyncThunk('user/pushCategories', async ({ categoryIds, action }, { getState, dispatch }) => {
@@ -102,7 +109,7 @@ export const asyncUpdateCategories = createAsyncThunk('user/pushCategories', asy
 
 const authSlice = createSlice({
   name: 'user',
-  initialState: (initialToken ? userFromToken(initialToken) : initialState),
+  initialState: defineState(),
   reducers: {
     setUser: (state, action) => {
       state.id = action.payload.id;

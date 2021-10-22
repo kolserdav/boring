@@ -1,4 +1,4 @@
-import { baseUrl } from "./baseUrl";
+import API_URI from "./baseUrl";
 
 function prepareCategories(categories) {
   return categories.map(category => {
@@ -9,7 +9,7 @@ function prepareCategories(categories) {
 
 
 export async function fetchUserRequest(token) {
-  const response = await fetch(new URL(`/api/user/auth`, baseUrl), {
+  const response = await fetch(`${API_URI}/user/auth`, {
     headers: {
       "Authorization": `Bearer ${token}`
     }
@@ -19,26 +19,37 @@ export async function fetchUserRequest(token) {
   return newToken
 }
 
-export async function registerUserRequest(email, password) {
-  const response = await fetch(new URL(`/api/user/registration`, baseUrl), {
+export async function registerUserRequest({ email, password, confirm_password }) {
+  const response = await fetch(`${API_URI}/user/create`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json;charset=utf-8'
+      'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ email, password })
+    body: JSON.stringify({
+      args: {
+        data: {
+          email,
+          password
+        }
+      },
+      passwordRepeat: confirm_password
+    })
   })
-
-  const { token } = await response.json();
-  return token
+  return await response.json();
 }
 
-export async function loginUserRequest(email, password) {
-  const response = await fetch(new URL(`/api/user/login`, baseUrl), {
+export async function loginUserRequest({ email, password }) {
+  const response = await fetch(`${API_URI}/user/login`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json;charset=utf-8'
+      'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ email, password })
+    body: JSON.stringify({
+      login: {
+        email,
+        password
+      }
+    })
   })
   if (response.status === 404) {
     throw new Error('User not found')
@@ -48,12 +59,11 @@ export async function loginUserRequest(email, password) {
     throw new Error({ status: response.status, message: response.message })
   }
 
-  const { token } = await response.json();
-  return token
+  return await response.json();
 }
 
 export async function putCategoriesRequest(userId, token, categories) {
-  const response = await fetch(new URL(`/api/user/${userId}`, baseUrl), {
+  const response = await fetch(`/api/user/${userId}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',

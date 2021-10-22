@@ -1,7 +1,5 @@
-import { baseUrl } from "./baseUrl";
-
 export async function getCategoriesRequest() {
-  const response = await fetch(new URL('/api/category', baseUrl));
+  const response = await fetch('/api/category');
   if (!response.ok) {
     throw new Error(response.status)
   }

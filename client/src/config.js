@@ -1,3 +1,2 @@
-const SERVER_URI = 'http://localhost:5000';
-
+const SERVER_URI = 'https://boring-weekend.uyem.ru'
 export { SERVER_URI }
