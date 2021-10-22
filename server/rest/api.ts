@@ -40,6 +40,105 @@ async () => {
       image: 1,
     },
   });
+  /**
+   * Создание категории через модель категорий /api/v1/category/create
+   */
+  await categoryCreate({
+    data: {
+      title: 'title',
+      image: 1,
+      active: false,
+    },
+  });
+  /**
+   * Изменение категории через модель категорий /api/v1/category/update
+   */
+  await categoryUpdate({
+    where: {
+      id: 1,
+    },
+    data: {
+      title: 'new title',
+      active: true,
+    },
+  });
+  /**
+   * Создание изменение и удаление эвентов также возможно через модель эвентов
+   * как и в примере с категориями
+   * Для создания пользователя с включенными категориями
+   * /api/v1/user/create
+   */
+  await userCreate({
+    data: {
+      name: 'name',
+      email: 'email@ds.d',
+      password: '12345678', // userCreate принимает аргумент args при создании помимо args шлем passwordRepeat
+      UserCategory: {
+        create: {
+          categoryId: 1, // Сразу при создании пользователя прикрепит ему категорию 1
+        },
+      },
+    },
+  });
+  /**
+   * Для создания пользователя с включенными эвентами
+   * /api/v1/user/create
+   */
+  await userCreate({
+    data: {
+      name: 'name',
+      email: 'email@ds.d',
+      password: '12345678', // userCreate принимает аргумент args при создании помимо args шлем passwordRepeat
+      Favorites: {
+        create: [
+          // Для множественного создания просто шлем массив объектов вместо одного объекта
+          {
+            eventId: 1, // Сразу при создании пользователя прикрепит ему событие 1 в избранные
+          },
+          {
+            eventId: 2, // и событие 2
+          },
+        ],
+      },
+    },
+  });
+  /**
+   * Получить пользователя с его категориями и избранными
+   * /api/v1/user/findFirst
+   */
+  await userFindFirst({
+    where: {
+      id: 1,
+    },
+    include: {
+      // Инклуде служит для включения в результаты, данных из связанных таблиц
+      Favorites: true, // Только записи из таблицы Favorites привязанных
+      UserCategory: {
+        include: {
+          Category: true, // Включит не только запись из таблицы связей, но и сами связанные категории из таблицы Category
+        },
+      },
+    },
+  });
+  /**
+   * Пример удаления у пользователя из избранного одного евента
+   */
+  await userUpdate({
+    where: {
+      // Ид пользователя
+      id: 1,
+    },
+    data: {
+      // userUpdate ждет data
+      Favorites: {
+        // Включаем связанную таблицу Favorites
+        delete: {
+          // Запускаем функцию удаления записи о связи пользователя и Eventa
+          id: 1, // Ид записи связи (Favorites.id), котору нужно удалить, не путать с Event.id,
+        },
+      },
+    },
+  });
 };
 
 /**

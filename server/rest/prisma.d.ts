@@ -40,6 +40,7 @@ export type Category = {
   title: string
   description: string | null
   image: number
+  active: boolean
   adminId: number | null
   updated_at: Date
   created_at: Date
@@ -78,7 +79,7 @@ export type Event = {
 export type Favorites = {
   id: number
   userId: number
-  categoryId: number
+  eventId: number
   updated_at: Date
   created_at: Date
 }
@@ -2091,6 +2092,7 @@ export namespace Prisma {
     title: string | null
     description: string | null
     image: number | null
+    active: boolean | null
     adminId: number | null
     updated_at: Date | null
     created_at: Date | null
@@ -2101,6 +2103,7 @@ export namespace Prisma {
     title: string | null
     description: string | null
     image: number | null
+    active: boolean | null
     adminId: number | null
     updated_at: Date | null
     created_at: Date | null
@@ -2111,6 +2114,7 @@ export namespace Prisma {
     title: number
     description: number
     image: number
+    active: number
     adminId: number
     updated_at: number
     created_at: number
@@ -2135,6 +2139,7 @@ export namespace Prisma {
     title?: true
     description?: true
     image?: true
+    active?: true
     adminId?: true
     updated_at?: true
     created_at?: true
@@ -2145,6 +2150,7 @@ export namespace Prisma {
     title?: true
     description?: true
     image?: true
+    active?: true
     adminId?: true
     updated_at?: true
     created_at?: true
@@ -2155,6 +2161,7 @@ export namespace Prisma {
     title?: true
     description?: true
     image?: true
+    active?: true
     adminId?: true
     updated_at?: true
     created_at?: true
@@ -2258,6 +2265,7 @@ export namespace Prisma {
     title: string
     description: string | null
     image: number
+    active: boolean
     adminId: number | null
     updated_at: Date
     created_at: Date
@@ -2287,6 +2295,7 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     image?: boolean
+    active?: boolean
     adminId?: boolean
     User?: boolean | UserArgs
     Image?: boolean | ImageArgs
@@ -4840,19 +4849,19 @@ export namespace Prisma {
   export type FavoritesAvgAggregateOutputType = {
     id: number | null
     userId: number | null
-    categoryId: number | null
+    eventId: number | null
   }
 
   export type FavoritesSumAggregateOutputType = {
     id: number | null
     userId: number | null
-    categoryId: number | null
+    eventId: number | null
   }
 
   export type FavoritesMinAggregateOutputType = {
     id: number | null
     userId: number | null
-    categoryId: number | null
+    eventId: number | null
     updated_at: Date | null
     created_at: Date | null
   }
@@ -4860,7 +4869,7 @@ export namespace Prisma {
   export type FavoritesMaxAggregateOutputType = {
     id: number | null
     userId: number | null
-    categoryId: number | null
+    eventId: number | null
     updated_at: Date | null
     created_at: Date | null
   }
@@ -4868,7 +4877,7 @@ export namespace Prisma {
   export type FavoritesCountAggregateOutputType = {
     id: number
     userId: number
-    categoryId: number
+    eventId: number
     updated_at: number
     created_at: number
     _all: number
@@ -4878,19 +4887,19 @@ export namespace Prisma {
   export type FavoritesAvgAggregateInputType = {
     id?: true
     userId?: true
-    categoryId?: true
+    eventId?: true
   }
 
   export type FavoritesSumAggregateInputType = {
     id?: true
     userId?: true
-    categoryId?: true
+    eventId?: true
   }
 
   export type FavoritesMinAggregateInputType = {
     id?: true
     userId?: true
-    categoryId?: true
+    eventId?: true
     updated_at?: true
     created_at?: true
   }
@@ -4898,7 +4907,7 @@ export namespace Prisma {
   export type FavoritesMaxAggregateInputType = {
     id?: true
     userId?: true
-    categoryId?: true
+    eventId?: true
     updated_at?: true
     created_at?: true
   }
@@ -4906,7 +4915,7 @@ export namespace Prisma {
   export type FavoritesCountAggregateInputType = {
     id?: true
     userId?: true
-    categoryId?: true
+    eventId?: true
     updated_at?: true
     created_at?: true
     _all?: true
@@ -5007,7 +5016,7 @@ export namespace Prisma {
   export type FavoritesGroupByOutputType = {
     id: number
     userId: number
-    categoryId: number
+    eventId: number
     updated_at: Date
     created_at: Date
     _count: FavoritesCountAggregateOutputType | null
@@ -5034,7 +5043,7 @@ export namespace Prisma {
   export type FavoritesSelect = {
     id?: boolean
     userId?: boolean
-    categoryId?: boolean
+    eventId?: boolean
     User?: boolean | UserArgs
     Event?: boolean | EventArgs
     updated_at?: boolean
@@ -6714,6 +6723,7 @@ export namespace Prisma {
     title: 'title',
     description: 'description',
     image: 'image',
+    active: 'active',
     adminId: 'adminId',
     updated_at: 'updated_at',
     created_at: 'created_at'
@@ -6749,7 +6759,7 @@ export namespace Prisma {
   export const FavoritesScalarFieldEnum: {
     id: 'id',
     userId: 'userId',
-    categoryId: 'categoryId',
+    eventId: 'eventId',
     updated_at: 'updated_at',
     created_at: 'created_at'
   };
@@ -6880,6 +6890,7 @@ export namespace Prisma {
     title?: StringFilter | string
     description?: StringNullableFilter | string | null
     image?: IntFilter | number
+    active?: BoolFilter | boolean
     adminId?: IntNullableFilter | number | null
     User?: XOR<UserRelationFilter, UserWhereInput> | null
     Image?: XOR<ImageRelationFilter, ImageWhereInput>
@@ -6893,6 +6904,7 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     image?: SortOrder
+    active?: SortOrder
     adminId?: SortOrder
     User?: UserOrderByWithRelationInput
     Image?: ImageOrderByWithRelationInput
@@ -6911,6 +6923,7 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     image?: SortOrder
+    active?: SortOrder
     adminId?: SortOrder
     updated_at?: SortOrder
     created_at?: SortOrder
@@ -6929,6 +6942,7 @@ export namespace Prisma {
     title?: StringWithAggregatesFilter | string
     description?: StringNullableWithAggregatesFilter | string | null
     image?: IntWithAggregatesFilter | number
+    active?: BoolWithAggregatesFilter | boolean
     adminId?: IntNullableWithAggregatesFilter | number | null
     updated_at?: DateTimeWithAggregatesFilter | Date | string
     created_at?: DateTimeWithAggregatesFilter | Date | string
@@ -7053,7 +7067,7 @@ export namespace Prisma {
     NOT?: Enumerable<FavoritesWhereInput>
     id?: IntFilter | number
     userId?: IntFilter | number
-    categoryId?: IntFilter | number
+    eventId?: IntFilter | number
     User?: XOR<UserRelationFilter, UserWhereInput>
     Event?: XOR<EventRelationFilter, EventWhereInput>
     updated_at?: DateTimeFilter | Date | string
@@ -7063,7 +7077,7 @@ export namespace Prisma {
   export type FavoritesOrderByWithRelationInput = {
     id?: SortOrder
     userId?: SortOrder
-    categoryId?: SortOrder
+    eventId?: SortOrder
     User?: UserOrderByWithRelationInput
     Event?: EventOrderByWithRelationInput
     updated_at?: SortOrder
@@ -7077,7 +7091,7 @@ export namespace Prisma {
   export type FavoritesOrderByWithAggregationInput = {
     id?: SortOrder
     userId?: SortOrder
-    categoryId?: SortOrder
+    eventId?: SortOrder
     updated_at?: SortOrder
     created_at?: SortOrder
     _count?: FavoritesCountOrderByAggregateInput
@@ -7093,7 +7107,7 @@ export namespace Prisma {
     NOT?: Enumerable<FavoritesScalarWhereWithAggregatesInput>
     id?: IntWithAggregatesFilter | number
     userId?: IntWithAggregatesFilter | number
-    categoryId?: IntWithAggregatesFilter | number
+    eventId?: IntWithAggregatesFilter | number
     updated_at?: DateTimeWithAggregatesFilter | Date | string
     created_at?: DateTimeWithAggregatesFilter | Date | string
   }
@@ -7299,6 +7313,7 @@ export namespace Prisma {
   export type CategoryCreateInput = {
     title: string
     description?: string | null
+    active?: boolean
     updated_at?: Date | string
     created_at?: Date | string
     User?: UserCreateNestedOneWithoutCategoryInput
@@ -7311,6 +7326,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     image: number
+    active?: boolean
     adminId?: number | null
     updated_at?: Date | string
     created_at?: Date | string
@@ -7320,6 +7336,7 @@ export namespace Prisma {
   export type CategoryUpdateInput = {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     User?: UserUpdateOneWithoutCategoryInput
@@ -7332,6 +7349,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: IntFieldUpdateOperationsInput | number
+    active?: BoolFieldUpdateOperationsInput | boolean
     adminId?: NullableIntFieldUpdateOperationsInput | number | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7343,6 +7361,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     image: number
+    active?: boolean
     adminId?: number | null
     updated_at?: Date | string
     created_at?: Date | string
@@ -7351,6 +7370,7 @@ export namespace Prisma {
   export type CategoryUpdateManyMutationInput = {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -7360,6 +7380,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: IntFieldUpdateOperationsInput | number
+    active?: BoolFieldUpdateOperationsInput | boolean
     adminId?: NullableIntFieldUpdateOperationsInput | number | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -7495,7 +7516,7 @@ export namespace Prisma {
   export type FavoritesUncheckedCreateInput = {
     id?: number
     userId: number
-    categoryId: number
+    eventId: number
     updated_at?: Date | string
     created_at?: Date | string
   }
@@ -7510,7 +7531,7 @@ export namespace Prisma {
   export type FavoritesUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     userId?: IntFieldUpdateOperationsInput | number
-    categoryId?: IntFieldUpdateOperationsInput | number
+    eventId?: IntFieldUpdateOperationsInput | number
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -7518,7 +7539,7 @@ export namespace Prisma {
   export type FavoritesCreateManyInput = {
     id?: number
     userId: number
-    categoryId: number
+    eventId: number
     updated_at?: Date | string
     created_at?: Date | string
   }
@@ -7531,7 +7552,7 @@ export namespace Prisma {
   export type FavoritesUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     userId?: IntFieldUpdateOperationsInput | number
-    categoryId?: IntFieldUpdateOperationsInput | number
+    eventId?: IntFieldUpdateOperationsInput | number
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -7934,6 +7955,7 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     image?: SortOrder
+    active?: SortOrder
     adminId?: SortOrder
     updated_at?: SortOrder
     created_at?: SortOrder
@@ -7950,6 +7972,7 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     image?: SortOrder
+    active?: SortOrder
     adminId?: SortOrder
     updated_at?: SortOrder
     created_at?: SortOrder
@@ -7960,6 +7983,7 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     image?: SortOrder
+    active?: SortOrder
     adminId?: SortOrder
     updated_at?: SortOrder
     created_at?: SortOrder
@@ -8078,7 +8102,7 @@ export namespace Prisma {
   export type FavoritesCountOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
-    categoryId?: SortOrder
+    eventId?: SortOrder
     updated_at?: SortOrder
     created_at?: SortOrder
   }
@@ -8086,13 +8110,13 @@ export namespace Prisma {
   export type FavoritesAvgOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
-    categoryId?: SortOrder
+    eventId?: SortOrder
   }
 
   export type FavoritesMaxOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
-    categoryId?: SortOrder
+    eventId?: SortOrder
     updated_at?: SortOrder
     created_at?: SortOrder
   }
@@ -8100,7 +8124,7 @@ export namespace Prisma {
   export type FavoritesMinOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
-    categoryId?: SortOrder
+    eventId?: SortOrder
     updated_at?: SortOrder
     created_at?: SortOrder
   }
@@ -8108,7 +8132,7 @@ export namespace Prisma {
   export type FavoritesSumOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
-    categoryId?: SortOrder
+    eventId?: SortOrder
   }
 
   export type EnumImagOriginFilter = {
@@ -8917,6 +8941,7 @@ export namespace Prisma {
   export type CategoryCreateWithoutUserInput = {
     title: string
     description?: string | null
+    active?: boolean
     updated_at?: Date | string
     created_at?: Date | string
     Image: ImageCreateNestedOneWithoutCategoryInput
@@ -8928,6 +8953,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     image: number
+    active?: boolean
     updated_at?: Date | string
     created_at?: Date | string
     UserCategory?: UserCategoryUncheckedCreateNestedManyWithoutCategoryInput
@@ -9003,7 +9029,7 @@ export namespace Prisma {
 
   export type FavoritesUncheckedCreateWithoutUserInput = {
     id?: number
-    categoryId: number
+    eventId: number
     updated_at?: Date | string
     created_at?: Date | string
   }
@@ -9042,6 +9068,7 @@ export namespace Prisma {
     title?: StringFilter | string
     description?: StringNullableFilter | string | null
     image?: IntFilter | number
+    active?: BoolFilter | boolean
     adminId?: IntNullableFilter | number | null
     updated_at?: DateTimeFilter | Date | string
     created_at?: DateTimeFilter | Date | string
@@ -9125,7 +9152,7 @@ export namespace Prisma {
     NOT?: Enumerable<FavoritesScalarWhereInput>
     id?: IntFilter | number
     userId?: IntFilter | number
-    categoryId?: IntFilter | number
+    eventId?: IntFilter | number
     updated_at?: DateTimeFilter | Date | string
     created_at?: DateTimeFilter | Date | string
   }
@@ -9364,6 +9391,7 @@ export namespace Prisma {
   export type CategoryCreateWithoutUserCategoryInput = {
     title: string
     description?: string | null
+    active?: boolean
     updated_at?: Date | string
     created_at?: Date | string
     User?: UserCreateNestedOneWithoutCategoryInput
@@ -9375,6 +9403,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     image: number
+    active?: boolean
     adminId?: number | null
     updated_at?: Date | string
     created_at?: Date | string
@@ -9433,6 +9462,7 @@ export namespace Prisma {
   export type CategoryUpdateWithoutUserCategoryInput = {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     User?: UserUpdateOneWithoutCategoryInput
@@ -9444,6 +9474,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: IntFieldUpdateOperationsInput | number
+    active?: BoolFieldUpdateOperationsInput | boolean
     adminId?: NullableIntFieldUpdateOperationsInput | number | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9771,6 +9802,7 @@ export namespace Prisma {
   export type CategoryCreateWithoutImageInput = {
     title: string
     description?: string | null
+    active?: boolean
     updated_at?: Date | string
     created_at?: Date | string
     User?: UserCreateNestedOneWithoutCategoryInput
@@ -9781,6 +9813,7 @@ export namespace Prisma {
     id?: number
     title: string
     description?: string | null
+    active?: boolean
     adminId?: number | null
     updated_at?: Date | string
     created_at?: Date | string
@@ -9863,6 +9896,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     image: number
+    active?: boolean
     updated_at?: Date | string
     created_at?: Date | string
   }
@@ -9885,7 +9919,7 @@ export namespace Prisma {
 
   export type FavoritesCreateManyUserInput = {
     id?: number
-    categoryId: number
+    eventId: number
     updated_at?: Date | string
     created_at?: Date | string
   }
@@ -9893,6 +9927,7 @@ export namespace Prisma {
   export type CategoryUpdateWithoutUserInput = {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Image?: ImageUpdateOneRequiredWithoutCategoryInput
@@ -9904,6 +9939,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: IntFieldUpdateOperationsInput | number
+    active?: BoolFieldUpdateOperationsInput | boolean
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     UserCategory?: UserCategoryUncheckedUpdateManyWithoutCategoryInput
@@ -9914,6 +9950,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     image?: IntFieldUpdateOperationsInput | number
+    active?: BoolFieldUpdateOperationsInput | boolean
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9974,14 +10011,14 @@ export namespace Prisma {
 
   export type FavoritesUncheckedUpdateWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
-    categoryId?: IntFieldUpdateOperationsInput | number
+    eventId?: IntFieldUpdateOperationsInput | number
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type FavoritesUncheckedUpdateManyWithoutFavoritesInput = {
     id?: IntFieldUpdateOperationsInput | number
-    categoryId?: IntFieldUpdateOperationsInput | number
+    eventId?: IntFieldUpdateOperationsInput | number
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -10030,6 +10067,7 @@ export namespace Prisma {
     id?: number
     title: string
     description?: string | null
+    active?: boolean
     adminId?: number | null
     updated_at?: Date | string
     created_at?: Date | string
@@ -10047,6 +10085,7 @@ export namespace Prisma {
   export type CategoryUpdateWithoutImageInput = {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     User?: UserUpdateOneWithoutCategoryInput
@@ -10057,6 +10096,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
     adminId?: NullableIntFieldUpdateOperationsInput | number | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
