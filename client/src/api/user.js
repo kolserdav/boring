@@ -35,6 +35,12 @@ export async function registerUserRequest({ email, password, confirm_password })
       passwordRepeat: confirm_password
     })
   })
+
+  if (!response.ok) {
+    const answer = await response.json()
+    throw new Error(answer.message)
+  }
+
   return await response.json();
 }
 
@@ -51,12 +57,10 @@ export async function loginUserRequest({ email, password }) {
       }
     })
   })
-  if (response.status === 404) {
-    throw new Error('User not found')
-  }
 
   if (!response.ok) {
-    throw new Error({ status: response.status, message: response.message })
+    const answer = await response.json()
+    throw new Error(answer.message)
   }
 
   return await response.json();

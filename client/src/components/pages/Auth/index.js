@@ -33,7 +33,7 @@ const SignUp = () => {
     function validateForm(form) {
         let newValidationError = { ...validationError }
 
-        if (form.email !== '' && !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(form.email)) {
+        if (form.email !== '' && !/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(form.email)) {
             console.log('test');
             newValidationError = { ...newValidationError, email: 'Invalid email address' }
 
@@ -79,11 +79,11 @@ const SignUp = () => {
                     await login(form);
                 } catch (error) {
                     console.log(error);
-                    if (error.message === 'User not found') {
-                        setRequestPending(false);
-                        console.log('User not found')
+                    if (error.message === 'User not found' || error.message === 'Invalid credentials') {
                         setValidationError({ ...validationError, email: 'Wrong email or password' })
+                        setRequestPending(false);
                     } else {
+                        setValidationError({ ...validationError, email: 'Unknown error' })
                         setRequestPending(false);
                         throw error
                     }
@@ -94,8 +94,15 @@ const SignUp = () => {
                     setRequestPending(true);
                     await registration(form);
                 } catch (error) {
-                    setValidationError({ ...validationError, email: 'User already exists' })
-                    setRequestPending(false);
+                    console.log(error);
+                    if (error.message === 'This email was registered earlier') {
+                        setValidationError({ ...validationError, email: 'User already exists' })
+                        setRequestPending(false);
+                    } else {
+                        setValidationError({ ...validationError, email: 'Unknown error' })
+                        setRequestPending(false);
+                        throw error
+                    }
                 }
                 break;
             default:
@@ -122,6 +129,7 @@ const SignUp = () => {
                             type='email'
                             name='email'
                             value={form.email}
+                            autoComplete='on'
                             placeholder='Your email adress'
                             onChange={handleChange}
                             fullWidth
@@ -141,6 +149,7 @@ const SignUp = () => {
                             type='password'
                             name='password'
                             value={form.password}
+                            autoComplete='on'
                             placeholder='Password'
                             onChange={handleChange}
                             fullWidth
@@ -161,6 +170,7 @@ const SignUp = () => {
                                 type='password'
                                 name='confirm_password'
                                 value={form.confirm_password}
+                                autoComplete='on'
                                 placeholder='Confirm password'
                                 onChange={handleChange}
                                 fullWidth
