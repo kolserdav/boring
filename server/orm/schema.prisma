@@ -41,17 +41,18 @@ model User {
 
 // Таблица категорий
 model Category {
-  id           Int            @id @default(autoincrement())
-  title        String         @unique
-  description  String?        @db.MediumText
-  image        Int
-  active       Boolean        @default(true)
-  adminId      Int? // Ид админа создавшего или изменившего категорию
-  User         User?          @relation(fields: [adminId], references: [id])
-  Image        Image          @relation(fields: [image], references: [id])
-  updated_at   DateTime       @default(now())
-  created_at   DateTime       @default(now())
-  UserCategory UserCategory[] // связь с пользователями привязавшими себе эту категорию
+  id            Int             @id @default(autoincrement())
+  title         String          @unique
+  description   String?         @db.MediumText
+  image         Int
+  active        Boolean         @default(true)
+  adminId       Int? // Ид админа создавшего или изменившего категорию
+  User          User?           @relation(fields: [adminId], references: [id])
+  Image         Image           @relation(fields: [image], references: [id])
+  updated_at    DateTime        @default(now())
+  created_at    DateTime        @default(now())
+  UserCategory  UserCategory[] // связь с пользователями привязавшими себе эту категорию
+  EventCategory EventCategory[]
 }
 
 // Таблица связей пользователей и категорий, т.е. туда добавляются добавленные пользователю категории
@@ -67,16 +68,28 @@ model UserCategory {
 
 // Таблица событий
 model Event {
-  id          Int         @id @default(autoincrement())
-  title       String      @unique
-  description String?     @db.MediumText
-  image       Int
-  adminId     Int? // Ид админа создавшего или изменившего категорию
-  User        User?       @relation(fields: [adminId], references: [id])
-  Image       Image       @relation(fields: [image], references: [id])
-  updated_at  DateTime    @default(now())
-  created_at  DateTime    @default(now())
-  Favorites   Favorites[] // Связь событий с пользователями отметившими как понравившиеся
+  id            Int             @id @default(autoincrement())
+  title         String          @unique
+  description   String?         @db.MediumText
+  image         Int
+  adminId       Int? // Ид админа создавшего или изменившего категорию
+  User          User?           @relation(fields: [adminId], references: [id])
+  Image         Image           @relation(fields: [image], references: [id])
+  updated_at    DateTime        @default(now())
+  created_at    DateTime        @default(now())
+  Favorites     Favorites[] // Связь событий с пользователями отметившими как понравившиеся
+  EventCategory EventCategory[]
+}
+
+// Таблица связей событий и категорий
+model EventCategory {
+  id         Int      @id @default(autoincrement())
+  categoryId Int
+  Category   Category @relation(fields: [categoryId], references: [id])
+  eventId    Int
+  Event      Event    @relation(fields: [eventId], references: [id])
+  updated_at DateTime @default(now())
+  created_at DateTime @default(now())
 }
 
 // Таблица связей пользователей и событий, т.е. туда добаляются лайканые события
