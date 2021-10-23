@@ -63,7 +63,6 @@ async () => {
     data: {
       title: 'title',
       image: 1,
-      active: false,
     },
   });
   /**
@@ -75,7 +74,6 @@ async () => {
     },
     data: {
       title: 'new title',
-      active: true,
     },
   });
   /**
@@ -214,6 +212,28 @@ async () => {
                 },
               },
             },
+          },
+        },
+      },
+    },
+  });
+  /**
+   * Установить категорию пользователя как активную
+   * /api/v1/user/update
+   */
+  await userUpdate({
+    where: {
+      id: 1, // Обновляем данные пользователя с ид 1
+    },
+    data: {
+      UserCategory: {
+        // Вызываем связанную модель UserCategory
+        update: {
+          where: {
+            id: 1, // UserCategory.id не путать с Category.id
+          },
+          data: {
+            active: true, // Устанавливаем active true или false
           },
         },
       },
