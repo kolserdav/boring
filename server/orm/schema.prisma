@@ -45,7 +45,6 @@ model Category {
   title         String          @unique
   description   String?         @db.MediumText
   image         Int
-  active        Boolean         @default(true)
   adminId       Int? // Ид админа создавшего или изменившего категорию
   User          User?           @relation(fields: [adminId], references: [id])
   Image         Image           @relation(fields: [image], references: [id])
@@ -60,6 +59,7 @@ model UserCategory {
   id         Int      @id @default(autoincrement())
   userId     Int
   categoryId Int
+  active     Boolean  @default(false)
   User       User     @relation(fields: [userId], references: [id])
   Category   Category @relation(fields: [categoryId], references: [id])
   updated_at DateTime @default(now())
