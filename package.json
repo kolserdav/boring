@@ -1,9 +1,10 @@
 {
-  "name": "sweet-server",
+  "name": "boring",
   "version": "0.1.9",
   "main": "dist/index.js",
-  "repository": "https://github.com/blindbeat/sweet",
-  "author": "kolserdav <uyem.ru@gmail.com>",
+  "homepage": "https://boring.uyem.ru",
+  "repository": "https://github.com/kolserdav/boring",
+  "author": "kolserdav <serega12101983@gmail.com>",
   "license": "MIT",
   "prisma": {
     "schema": "orm/schema.prisma"
