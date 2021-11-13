@@ -254,7 +254,7 @@ app.get('/confirm', api.user.update.middleware, api.user.update.handler);
 // страницы при переходе по ссылке получения ключа для смены пароля
 app.get('/forgot', api.user.update.middleware, api.user.update.handler);
 
-const port = 3333;
+const port = process.env.PORT || 3333;
 app.listen(port, () => {
   utils.saveLog({}, utils.getEmptyRequest('/start'), `Listen on port ${port}`, {});
 });
