@@ -3,7 +3,7 @@
   "version": "0.1.9",
   "main": "dist/index.js",
   "homepage": "https://boring.uyem.ru",
-  "repository": "https://github.com/kolserdav/boring",
+  "repository": "git@github.com:kolserdav/boring.git",
   "author": "kolserdav <serega12101983@gmail.com>",
   "license": "MIT",
   "prisma": {
