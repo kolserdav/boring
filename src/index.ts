@@ -47,7 +47,7 @@ process.on('unhandledRejection', (reason: Error, promise) => {
 });
 
 // Глобальные посредники
-app.use(cors({ origin: process.env.APP_URL }));
+app.use(cors({ origin: process.env.APP_URL?.replace(/https?:\/\//, '') }));
 app.use(express.json({ limit: '5mb' }));
 app.use(middleware.getLang);
 app.use('/uploads', express.static(__dirname + './uploads'));
