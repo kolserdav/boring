@@ -11,6 +11,7 @@
   },
   "scripts": {
     "start": "node dist/index.js",
+    "test": "PORT=5151 node dist/index.js",
     "dev:watch": "tsc -p . -w",
     "dev:start": "NODE_ENV=development nodemon ${npm_package_main}",
     "dev:start:win": "set NODE_ENV=development && nodemon ${npm_package_main}",
