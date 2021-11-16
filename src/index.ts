@@ -55,7 +55,20 @@ app.use('/uploads', express.static(__dirname + './uploads'));
 ////// апи запросы с посредниками
 //// API пользователя
 // получить одного пользователя
-app.post('/api/v1/user/findfirst', api.user.findFirst.middleware, api.user.findFirst.handler);
+app.post(
+  '/api/v1/user/findfirst',
+  middleware.auth<'User'>({
+    selfUsage: {
+      field: 'id',
+      model: 'User',
+      andAdmin: true,
+      closedSelf: [],
+      closedAdmin: [],
+    },
+  }),
+  api.user.findFirst.middleware,
+  api.user.findFirst.handler
+);
 // войти по почте и паролю
 app.post('/api/v1/user/login', api.user.findFirst.middleware, api.user.findFirst.handler);
 // регистрация

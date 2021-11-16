@@ -102,6 +102,7 @@ const middleware: Types.NextHandler<any, Args, any> = async (req, res, next) => 
       return res.status(403).json({
         status: utils.WARNING,
         message: lang.INVALID_CREDENTIALS,
+        code: utils.CODES.credentials,
         stdErrMessage: utils.getStdErrMessage(
           new Error('Received password do not match with saved user password')
         ),

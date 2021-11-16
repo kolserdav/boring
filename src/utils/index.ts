@@ -35,6 +35,7 @@ export const CODES = {
   email: 'email',
   password: 'password',
   passwordRepeat: 'password-repeat',
+  credentials: 'credentials',
 };
 
 export const EMAIL_REGEX =
