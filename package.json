@@ -14,7 +14,7 @@
     "dev:watch": "tsc -p . -w",
     "dev:start": "NODE_ENV=development nodemon ${npm_package_main}",
     "dev:start:win": "set NODE_ENV=development && nodemon ${npm_package_main}",
-    "dev:build": "yarn headers && yarn script copy && tsc -p .",
+    "dev:build": "fhead && yarn script copy && tsc -p .",
     "build": "tsc -p .",
     "migrate:dev": "yarn format && yarn generate && prisma migrate dev --preview-feature",
     "migrate": "prisma migrate deploy --preview-feature && yarn generate",
@@ -56,5 +56,25 @@
     "jsonwebtoken": "^8.5.1",
     "multer": "^1.4.3",
     "nodemailer": "^6.7.0"
+  },
+  "fhead": {
+    "root": "src",
+    "repository": "https://github.com/blindbeat/sweet",
+    "patterns": [
+      ".js",
+      ".jsx",
+      ".ts",
+      ".tsx"
+    ],
+    "exclude": [
+      "node_modules",
+      "rest"
+    ],
+    "name": "Sergey Kolmiller",
+    "email": "uyem.ru@gmail.com",
+    "license": "Proprietary and confidential",
+    "licenseText": "Unauthorized copying of this file, via any medium is strictly prohibited",
+    "copyright": "kolserdav (c), All rights reserved",
+    "renewAll": false
   }
 }
