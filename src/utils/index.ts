@@ -167,6 +167,9 @@ export function createToken(
  * @param req
  */
 export function parseToken(token: string, req: Types.E.Request): Types.JWT | null {
+  if (!token || token === 'null' || token === 'undefined') {
+    return null;
+  }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let data: any = null;
   try {

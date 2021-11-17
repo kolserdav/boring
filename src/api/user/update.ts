@@ -304,31 +304,35 @@ const middleware: Types.NextHandler<any, Args, any> = async (req, res, next) => 
     } else {
       _user = user;
     }
-    if (!oldPassword) {
-      return res.status(400).json({
-        status: utils.WARNING,
-        message: lang.OLD_PASSWORD_IS_REQUIRED,
-        code: utils.CODES.password,
-        stdErrMessage: utils.getStdErrMessage(new Error(`Received oldPassword is ${oldPassword}`)),
-        data: null,
-      });
-    }
-    const checkPass = await utils.comparePasswords(oldPassword, _user.password, req);
-    if (checkPass.data === null) {
-      return res.status(500).json({
-        status: utils.ERROR,
-        message: lang.SERVER_ERROR,
-        stdErrMessage: checkPass.stdErrMessage,
-        data: null,
-      });
-    }
-    if (checkPass.data === false) {
-      return res.status(403).json({
-        status: utils.WARNING,
-        message: lang.FORBIDDEN,
-        stdErrMessage: utils.getStdErrMessage(new Error('Old password is wrong')),
-        data: null,
-      });
+    if (!url.match(/^\/api\/v1\/user\/changepassbykey/)) {
+      if (!oldPassword) {
+        return res.status(400).json({
+          status: utils.WARNING,
+          message: lang.OLD_PASSWORD_IS_REQUIRED,
+          code: utils.CODES.password,
+          stdErrMessage: utils.getStdErrMessage(
+            new Error(`Received oldPassword is ${oldPassword}`)
+          ),
+          data: null,
+        });
+      }
+      const checkPass = await utils.comparePasswords(oldPassword, _user.password, req);
+      if (checkPass.data === null) {
+        return res.status(500).json({
+          status: utils.ERROR,
+          message: lang.SERVER_ERROR,
+          stdErrMessage: checkPass.stdErrMessage,
+          data: null,
+        });
+      }
+      if (checkPass.data === false) {
+        return res.status(403).json({
+          status: utils.WARNING,
+          message: lang.FORBIDDEN,
+          stdErrMessage: utils.getStdErrMessage(new Error('Old password is wrong')),
+          data: null,
+        });
+      }
     }
     if (!password) {
       return res.status(400).json({
