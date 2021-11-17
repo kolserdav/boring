@@ -90,7 +90,7 @@ app.post(
 );
 // подтверждение почты по ключу
 app.post('/api/v1/user/confirm', api.user.update.middleware, api.user.update.handler);
-// смена пароля авторизщованным пользователем
+// смена пароля авторизованным пользователем
 app.post(
   '/api/v1/user/changepass',
   middleware.auth<'User'>({
@@ -117,18 +117,7 @@ app.post(
   api.user.findFirst.handler
 );
 // запрос письма на смену пароля
-app.post(
-  '/api/v1/user/sendforgot',
-  middleware.auth<'User'>({
-    selfUsage: {
-      field: 'id',
-      model: 'User',
-      andAdmin: false,
-    },
-  }),
-  api.user.findFirst.middleware,
-  api.user.findFirst.handler
-);
+app.post('/api/v1/user/sendforgot', api.user.findFirst.middleware, api.user.findFirst.handler);
 // удаление пользователя
 app.post(
   '/api/v1/user/delete',

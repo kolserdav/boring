@@ -29,6 +29,9 @@ interface Args extends Types.GlobalParams {
     email: string;
     password: string;
   };
+  forgot?: {
+    email: string;
+  };
 }
 
 const middleware: Types.NextHandler<any, Args, any> = async (req, res, next) => {
@@ -195,30 +198,65 @@ const middleware: Types.NextHandler<any, Args, any> = async (req, res, next) => 
       data: confirmUser,
     });
   } else if (url.match(/\/api\/v1\/user\/sendforgot/)) {
-    // Если идет запрос письма на смену пароля
-    if (!parsedToken || !user) {
-      utils.saveLog({}, req, 'Not implemented in user.findFirst sendforgot', {
-        parsedToken,
-        user,
-      });
-      return res.status(501).json({
-        status: utils.ERROR,
-        message: lang.SERVER_ERROR,
-        stdErrMessage: utils.getStdErrMessage(
-          new Error('This route must be after auth middleware')
-        ),
-        data: null,
-      });
-    }
     // Создание ключа для смены пароля
     const forgotKey = utils.getHash(32);
     // Записывает ключ подтвержения
     const date = new Date();
+    if (!body.forgot) {
+      return res.status(400).json({
+        status: utils.WARNING,
+        message: lang.BAD_REQUEST,
+        stdErrMessage: utils.getStdErrMessage(new Error('Object forgot is missing')),
+        data: null,
+      });
+    }
+    const { email: _email } = body.forgot;
+    if (!_email) {
+      return res.status(400).json({
+        status: utils.WARNING,
+        message: lang.EMAIL_IS_REQUIRED,
+        code: utils.CODES.email,
+        data: null,
+      });
+    }
+    if (!utils.EMAIL_REGEX.test(_email)) {
+      return res.status(400).json({
+        status: utils.WARNING,
+        message: lang.EMAIL_IS_INVALID,
+        code: utils.CODES.email,
+        data: null,
+      });
+    }
     let forgotUser;
+    try {
+      forgotUser = await prisma.user.findFirst({
+        where: {
+          email: _email,
+        },
+      });
+    } catch (err) {
+      utils.saveLog(err, req, 'Error find user by email while send forgot', {
+        _email,
+      });
+      return res.status(500).json({
+        status: utils.ERROR,
+        message: lang.SERVER_ERROR,
+        stdErrMessage: utils.getStdErrMessage(err),
+        data: user,
+      });
+    }
+    if (forgotUser === null) {
+      return res.status(404).json({
+        status: utils.WARNING,
+        message: lang.USER_NOT_FOUND,
+        code: utils.CODES.email,
+        data: null,
+      });
+    }
     try {
       forgotUser = await prisma.user.update({
         where: {
-          id: user.id,
+          id: forgotUser.id,
         },
         data: {
           forgotKey,
@@ -228,7 +266,7 @@ const middleware: Types.NextHandler<any, Args, any> = async (req, res, next) => 
       });
     } catch (err) {
       utils.saveLog(err, req, 'Error update forgot key for user', { forgotKey, date, user });
-      return res.status(502).json({
+      return res.status(500).json({
         status: utils.ERROR,
         message: lang.SERVER_ERROR,
         stdErrMessage: utils.getStdErrMessage(err),

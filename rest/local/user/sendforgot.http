@@ -7,9 +7,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTksInBhc3N3b
 
 // параметры
 {
-  "args": {
-    "where": {
-      "id": 19
-    }
+  "forgot": {
+    "email": "19_pek@mail.ru"
   }
 }
