@@ -42,8 +42,12 @@ model User {
 // Таблица категорий
 model Category {
   id            Int             @id @default(autoincrement())
-  title         String          @unique
-  description   String?         @db.MediumText
+  titleRu       String          @unique
+  titleUk       String          @unique
+  titleEn       String          @unique
+  descriptionRu String          @db.MediumText
+  descriptionUk String          @db.MediumText
+  descriptionEn String          @db.MediumText
   image         Int
   adminId       Int? // Ид админа создавшего или изменившего категорию
   User          User?           @relation(fields: [adminId], references: [id])
@@ -52,6 +56,9 @@ model Category {
   created_at    DateTime        @default(now())
   UserCategory  UserCategory[] // связь с пользователями привязавшими себе эту категорию
   EventCategory EventCategory[]
+  Children      Category[]      @relation("ChildCategories")
+  parentId      Int?
+  Parent        Category?       @relation("ChildCategories", fields: [parentId], references: [id])
 }
 
 // Таблица связей пользователей и категорий, т.е. туда добавляются добавленные пользователю категории
@@ -69,8 +76,12 @@ model UserCategory {
 // Таблица событий
 model Event {
   id            Int             @id @default(autoincrement())
-  title         String          @unique
-  description   String?         @db.MediumText
+  titleRu       String
+  titleUk       String
+  titleEn       String
+  descriptionRu String          @db.MediumText
+  descriptionUk String          @db.MediumText
+  descriptionEn String          @db.MediumText
   image         Int
   adminId       Int? // Ид админа создавшего или изменившего категорию
   User          User?           @relation(fields: [adminId], references: [id])

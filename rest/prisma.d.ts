@@ -3,7 +3,7 @@
  * Client
 **/
 
-import * as runtime from '@prisma/client/runtime';
+import * as runtime from '@prisma/client/runtime/index';
 declare const prisma: unique symbol
 export type PrismaPromise<A> = Promise<A> & {[prisma]: true}
 type UnwrapPromise<P extends any> = P extends Promise<infer R> ? R : P
@@ -14,8 +14,8 @@ type UnwrapTuple<Tuple extends readonly unknown[]> = {
 
 /**
  * Model User
+ * 
  */
-
 export type User = {
   id: number
   email: string
@@ -33,22 +33,27 @@ export type User = {
 
 /**
  * Model Category
+ * 
  */
-
 export type Category = {
   id: number
-  title: string
-  description: string | null
+  titleRu: string
+  titleUk: string
+  titleEn: string
+  descriptionRu: string
+  descriptionUk: string
+  descriptionEn: string
   image: number
   adminId: number | null
   updated_at: Date
   created_at: Date
+  parentId: number | null
 }
 
 /**
  * Model UserCategory
+ * 
  */
-
 export type UserCategory = {
   id: number
   userId: number
@@ -60,12 +65,16 @@ export type UserCategory = {
 
 /**
  * Model Event
+ * 
  */
-
 export type Event = {
   id: number
-  title: string
-  description: string | null
+  titleRu: string
+  titleUk: string
+  titleEn: string
+  descriptionRu: string
+  descriptionUk: string
+  descriptionEn: string
   image: number
   adminId: number | null
   updated_at: Date
@@ -74,8 +83,8 @@ export type Event = {
 
 /**
  * Model EventCategory
+ * 
  */
-
 export type EventCategory = {
   id: number
   categoryId: number
@@ -86,8 +95,8 @@ export type EventCategory = {
 
 /**
  * Model Favorites
+ * 
  */
-
 export type Favorites = {
   id: number
   userId: number
@@ -98,8 +107,8 @@ export type Favorites = {
 
 /**
  * Model Image
+ * 
  */
-
 export type Image = {
   id: number
   fieldname: string
@@ -378,8 +387,8 @@ export namespace Prisma {
   export import Decimal = runtime.Decimal
 
   /**
-   * Prisma Client JS version: 3.2.1
-   * Query Engine version: b71d8cb16c4ddc7e3e9821f42fd09b0f82d7934c
+   * Prisma Client JS version: 3.5.0
+   * Query Engine version: 78a5df6def6943431f4c022e1428dbc3e833cf8e
    */
   export type PrismaVersion = {
     client: string
@@ -966,11 +975,13 @@ export namespace Prisma {
   export type CategoryCountOutputType = {
     UserCategory: number
     EventCategory: number
+    Children: number
   }
 
   export type CategoryCountOutputTypeSelect = {
     UserCategory?: boolean
     EventCategory?: boolean
+    Children?: boolean
   }
 
   export type CategoryCountOutputTypeGetPayload<
@@ -1315,8 +1326,8 @@ export namespace Prisma {
   }
 
 
-    
-    
+
+
   export type UserGroupByArgs = {
     where?: UserWhereInput
     orderBy?: Enumerable<UserOrderByWithAggregationInput>
@@ -1354,15 +1365,15 @@ export namespace Prisma {
 
   type GetUserGroupByPayload<T extends UserGroupByArgs> = Promise<
     Array<
-      PickArray<UserGroupByOutputType, T['by']> & 
+      PickArray<UserGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof UserGroupByOutputType))]: P extends '_count' 
-            ? T[P] extends boolean 
-              ? number 
-              : GetScalarType<T[P], UserGroupByOutputType[P]> 
+          [P in ((keyof T) & (keyof UserGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], UserGroupByOutputType[P]>
             : GetScalarType<T[P], UserGroupByOutputType[P]>
         }
-      > 
+      >
     >
 
 
@@ -1414,7 +1425,7 @@ export namespace Prisma {
         P extends 'Favorites'
         ? Array < FavoritesGetPayload<S['include'][P]>>  :
         P extends '_count'
-        ? UserCountOutputTypeGetPayload<S['include'][P]> | null : never
+        ? UserCountOutputTypeGetPayload<S['include'][P]> : never
   } 
     : 'select' extends U
     ? {
@@ -1429,7 +1440,7 @@ export namespace Prisma {
         P extends 'Favorites'
         ? Array < FavoritesGetPayload<S['select'][P]>>  :
         P extends '_count'
-        ? UserCountOutputTypeGetPayload<S['select'][P]> | null : never
+        ? UserCountOutputTypeGetPayload<S['select'][P]> : never
   } 
     : User
   : User
@@ -1749,7 +1760,7 @@ export namespace Prisma {
   /**
    * The delegate class that acts as a "Promise-like" for User.
    * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in 
+   * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
   export class Prisma__UserClient<T> implements PrismaPromise<T> {
@@ -2106,42 +2117,59 @@ export namespace Prisma {
     id: number | null
     image: number | null
     adminId: number | null
+    parentId: number | null
   }
 
   export type CategorySumAggregateOutputType = {
     id: number | null
     image: number | null
     adminId: number | null
+    parentId: number | null
   }
 
   export type CategoryMinAggregateOutputType = {
     id: number | null
-    title: string | null
-    description: string | null
+    titleRu: string | null
+    titleUk: string | null
+    titleEn: string | null
+    descriptionRu: string | null
+    descriptionUk: string | null
+    descriptionEn: string | null
     image: number | null
     adminId: number | null
     updated_at: Date | null
     created_at: Date | null
+    parentId: number | null
   }
 
   export type CategoryMaxAggregateOutputType = {
     id: number | null
-    title: string | null
-    description: string | null
+    titleRu: string | null
+    titleUk: string | null
+    titleEn: string | null
+    descriptionRu: string | null
+    descriptionUk: string | null
+    descriptionEn: string | null
     image: number | null
     adminId: number | null
     updated_at: Date | null
     created_at: Date | null
+    parentId: number | null
   }
 
   export type CategoryCountAggregateOutputType = {
     id: number
-    title: number
-    description: number
+    titleRu: number
+    titleUk: number
+    titleEn: number
+    descriptionRu: number
+    descriptionUk: number
+    descriptionEn: number
     image: number
     adminId: number
     updated_at: number
     created_at: number
+    parentId: number
     _all: number
   }
 
@@ -2150,42 +2178,59 @@ export namespace Prisma {
     id?: true
     image?: true
     adminId?: true
+    parentId?: true
   }
 
   export type CategorySumAggregateInputType = {
     id?: true
     image?: true
     adminId?: true
+    parentId?: true
   }
 
   export type CategoryMinAggregateInputType = {
     id?: true
-    title?: true
-    description?: true
+    titleRu?: true
+    titleUk?: true
+    titleEn?: true
+    descriptionRu?: true
+    descriptionUk?: true
+    descriptionEn?: true
     image?: true
     adminId?: true
     updated_at?: true
     created_at?: true
+    parentId?: true
   }
 
   export type CategoryMaxAggregateInputType = {
     id?: true
-    title?: true
-    description?: true
+    titleRu?: true
+    titleUk?: true
+    titleEn?: true
+    descriptionRu?: true
+    descriptionUk?: true
+    descriptionEn?: true
     image?: true
     adminId?: true
     updated_at?: true
     created_at?: true
+    parentId?: true
   }
 
   export type CategoryCountAggregateInputType = {
     id?: true
-    title?: true
-    description?: true
+    titleRu?: true
+    titleUk?: true
+    titleEn?: true
+    descriptionRu?: true
+    descriptionUk?: true
+    descriptionEn?: true
     image?: true
     adminId?: true
     updated_at?: true
     created_at?: true
+    parentId?: true
     _all?: true
   }
 
@@ -2264,8 +2309,8 @@ export namespace Prisma {
   }
 
 
-    
-    
+
+
   export type CategoryGroupByArgs = {
     where?: CategoryWhereInput
     orderBy?: Enumerable<CategoryOrderByWithAggregationInput>
@@ -2283,12 +2328,17 @@ export namespace Prisma {
 
   export type CategoryGroupByOutputType = {
     id: number
-    title: string
-    description: string | null
+    titleRu: string
+    titleUk: string
+    titleEn: string
+    descriptionRu: string
+    descriptionUk: string
+    descriptionEn: string
     image: number
     adminId: number | null
     updated_at: Date
     created_at: Date
+    parentId: number | null
     _count: CategoryCountAggregateOutputType | null
     _avg: CategoryAvgAggregateOutputType | null
     _sum: CategorySumAggregateOutputType | null
@@ -2298,22 +2348,26 @@ export namespace Prisma {
 
   type GetCategoryGroupByPayload<T extends CategoryGroupByArgs> = Promise<
     Array<
-      PickArray<CategoryGroupByOutputType, T['by']> & 
+      PickArray<CategoryGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof CategoryGroupByOutputType))]: P extends '_count' 
-            ? T[P] extends boolean 
-              ? number 
-              : GetScalarType<T[P], CategoryGroupByOutputType[P]> 
+          [P in ((keyof T) & (keyof CategoryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CategoryGroupByOutputType[P]>
             : GetScalarType<T[P], CategoryGroupByOutputType[P]>
         }
-      > 
+      >
     >
 
 
   export type CategorySelect = {
     id?: boolean
-    title?: boolean
-    description?: boolean
+    titleRu?: boolean
+    titleUk?: boolean
+    titleEn?: boolean
+    descriptionRu?: boolean
+    descriptionUk?: boolean
+    descriptionEn?: boolean
     image?: boolean
     adminId?: boolean
     User?: boolean | UserArgs
@@ -2322,6 +2376,9 @@ export namespace Prisma {
     created_at?: boolean
     UserCategory?: boolean | UserCategoryFindManyArgs
     EventCategory?: boolean | EventCategoryFindManyArgs
+    Children?: boolean | CategoryFindManyArgs
+    parentId?: boolean
+    Parent?: boolean | CategoryArgs
     _count?: boolean | CategoryCountOutputTypeArgs
   }
 
@@ -2330,6 +2387,8 @@ export namespace Prisma {
     Image?: boolean | ImageArgs
     UserCategory?: boolean | UserCategoryFindManyArgs
     EventCategory?: boolean | EventCategoryFindManyArgs
+    Children?: boolean | CategoryFindManyArgs
+    Parent?: boolean | CategoryArgs
     _count?: boolean | CategoryCountOutputTypeArgs
   }
 
@@ -2352,8 +2411,12 @@ export namespace Prisma {
         ? Array < UserCategoryGetPayload<S['include'][P]>>  :
         P extends 'EventCategory'
         ? Array < EventCategoryGetPayload<S['include'][P]>>  :
+        P extends 'Children'
+        ? Array < CategoryGetPayload<S['include'][P]>>  :
+        P extends 'Parent'
+        ? CategoryGetPayload<S['include'][P]> | null :
         P extends '_count'
-        ? CategoryCountOutputTypeGetPayload<S['include'][P]> | null : never
+        ? CategoryCountOutputTypeGetPayload<S['include'][P]> : never
   } 
     : 'select' extends U
     ? {
@@ -2367,8 +2430,12 @@ export namespace Prisma {
         ? Array < UserCategoryGetPayload<S['select'][P]>>  :
         P extends 'EventCategory'
         ? Array < EventCategoryGetPayload<S['select'][P]>>  :
+        P extends 'Children'
+        ? Array < CategoryGetPayload<S['select'][P]>>  :
+        P extends 'Parent'
+        ? CategoryGetPayload<S['select'][P]> | null :
         P extends '_count'
-        ? CategoryCountOutputTypeGetPayload<S['select'][P]> | null : never
+        ? CategoryCountOutputTypeGetPayload<S['select'][P]> : never
   } 
     : Category
   : Category
@@ -2688,7 +2755,7 @@ export namespace Prisma {
   /**
    * The delegate class that acts as a "Promise-like" for Category.
    * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in 
+   * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
   export class Prisma__CategoryClient<T> implements PrismaPromise<T> {
@@ -2715,6 +2782,10 @@ export namespace Prisma {
     UserCategory<T extends UserCategoryFindManyArgs = {}>(args?: Subset<T, UserCategoryFindManyArgs>): CheckSelect<T, PrismaPromise<Array<UserCategory>>, PrismaPromise<Array<UserCategoryGetPayload<T>>>>;
 
     EventCategory<T extends EventCategoryFindManyArgs = {}>(args?: Subset<T, EventCategoryFindManyArgs>): CheckSelect<T, PrismaPromise<Array<EventCategory>>, PrismaPromise<Array<EventCategoryGetPayload<T>>>>;
+
+    Children<T extends CategoryFindManyArgs = {}>(args?: Subset<T, CategoryFindManyArgs>): CheckSelect<T, PrismaPromise<Array<Category>>, PrismaPromise<Array<CategoryGetPayload<T>>>>;
+
+    Parent<T extends CategoryArgs = {}>(args?: Subset<T, CategoryArgs>): CheckSelect<T, Prisma__CategoryClient<Category | null >, Prisma__CategoryClient<CategoryGetPayload<T> | null >>;
 
     private get _document();
     /**
@@ -3197,8 +3268,8 @@ export namespace Prisma {
   }
 
 
-    
-    
+
+
   export type UserCategoryGroupByArgs = {
     where?: UserCategoryWhereInput
     orderBy?: Enumerable<UserCategoryOrderByWithAggregationInput>
@@ -3230,15 +3301,15 @@ export namespace Prisma {
 
   type GetUserCategoryGroupByPayload<T extends UserCategoryGroupByArgs> = Promise<
     Array<
-      PickArray<UserCategoryGroupByOutputType, T['by']> & 
+      PickArray<UserCategoryGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof UserCategoryGroupByOutputType))]: P extends '_count' 
-            ? T[P] extends boolean 
-              ? number 
-              : GetScalarType<T[P], UserCategoryGroupByOutputType[P]> 
+          [P in ((keyof T) & (keyof UserCategoryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], UserCategoryGroupByOutputType[P]>
             : GetScalarType<T[P], UserCategoryGroupByOutputType[P]>
         }
-      > 
+      >
     >
 
 
@@ -3601,7 +3672,7 @@ export namespace Prisma {
   /**
    * The delegate class that acts as a "Promise-like" for UserCategory.
    * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in 
+   * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
   export class Prisma__UserCategoryClient<T> implements PrismaPromise<T> {
@@ -3964,8 +4035,12 @@ export namespace Prisma {
 
   export type EventMinAggregateOutputType = {
     id: number | null
-    title: string | null
-    description: string | null
+    titleRu: string | null
+    titleUk: string | null
+    titleEn: string | null
+    descriptionRu: string | null
+    descriptionUk: string | null
+    descriptionEn: string | null
     image: number | null
     adminId: number | null
     updated_at: Date | null
@@ -3974,8 +4049,12 @@ export namespace Prisma {
 
   export type EventMaxAggregateOutputType = {
     id: number | null
-    title: string | null
-    description: string | null
+    titleRu: string | null
+    titleUk: string | null
+    titleEn: string | null
+    descriptionRu: string | null
+    descriptionUk: string | null
+    descriptionEn: string | null
     image: number | null
     adminId: number | null
     updated_at: Date | null
@@ -3984,8 +4063,12 @@ export namespace Prisma {
 
   export type EventCountAggregateOutputType = {
     id: number
-    title: number
-    description: number
+    titleRu: number
+    titleUk: number
+    titleEn: number
+    descriptionRu: number
+    descriptionUk: number
+    descriptionEn: number
     image: number
     adminId: number
     updated_at: number
@@ -4008,8 +4091,12 @@ export namespace Prisma {
 
   export type EventMinAggregateInputType = {
     id?: true
-    title?: true
-    description?: true
+    titleRu?: true
+    titleUk?: true
+    titleEn?: true
+    descriptionRu?: true
+    descriptionUk?: true
+    descriptionEn?: true
     image?: true
     adminId?: true
     updated_at?: true
@@ -4018,8 +4105,12 @@ export namespace Prisma {
 
   export type EventMaxAggregateInputType = {
     id?: true
-    title?: true
-    description?: true
+    titleRu?: true
+    titleUk?: true
+    titleEn?: true
+    descriptionRu?: true
+    descriptionUk?: true
+    descriptionEn?: true
     image?: true
     adminId?: true
     updated_at?: true
@@ -4028,8 +4119,12 @@ export namespace Prisma {
 
   export type EventCountAggregateInputType = {
     id?: true
-    title?: true
-    description?: true
+    titleRu?: true
+    titleUk?: true
+    titleEn?: true
+    descriptionRu?: true
+    descriptionUk?: true
+    descriptionEn?: true
     image?: true
     adminId?: true
     updated_at?: true
@@ -4112,8 +4207,8 @@ export namespace Prisma {
   }
 
 
-    
-    
+
+
   export type EventGroupByArgs = {
     where?: EventWhereInput
     orderBy?: Enumerable<EventOrderByWithAggregationInput>
@@ -4131,8 +4226,12 @@ export namespace Prisma {
 
   export type EventGroupByOutputType = {
     id: number
-    title: string
-    description: string | null
+    titleRu: string
+    titleUk: string
+    titleEn: string
+    descriptionRu: string
+    descriptionUk: string
+    descriptionEn: string
     image: number
     adminId: number | null
     updated_at: Date
@@ -4146,22 +4245,26 @@ export namespace Prisma {
 
   type GetEventGroupByPayload<T extends EventGroupByArgs> = Promise<
     Array<
-      PickArray<EventGroupByOutputType, T['by']> & 
+      PickArray<EventGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof EventGroupByOutputType))]: P extends '_count' 
-            ? T[P] extends boolean 
-              ? number 
-              : GetScalarType<T[P], EventGroupByOutputType[P]> 
+          [P in ((keyof T) & (keyof EventGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EventGroupByOutputType[P]>
             : GetScalarType<T[P], EventGroupByOutputType[P]>
         }
-      > 
+      >
     >
 
 
   export type EventSelect = {
     id?: boolean
-    title?: boolean
-    description?: boolean
+    titleRu?: boolean
+    titleUk?: boolean
+    titleEn?: boolean
+    descriptionRu?: boolean
+    descriptionUk?: boolean
+    descriptionEn?: boolean
     image?: boolean
     adminId?: boolean
     User?: boolean | UserArgs
@@ -4201,7 +4304,7 @@ export namespace Prisma {
         P extends 'EventCategory'
         ? Array < EventCategoryGetPayload<S['include'][P]>>  :
         P extends '_count'
-        ? EventCountOutputTypeGetPayload<S['include'][P]> | null : never
+        ? EventCountOutputTypeGetPayload<S['include'][P]> : never
   } 
     : 'select' extends U
     ? {
@@ -4216,7 +4319,7 @@ export namespace Prisma {
         P extends 'EventCategory'
         ? Array < EventCategoryGetPayload<S['select'][P]>>  :
         P extends '_count'
-        ? EventCountOutputTypeGetPayload<S['select'][P]> | null : never
+        ? EventCountOutputTypeGetPayload<S['select'][P]> : never
   } 
     : Event
   : Event
@@ -4536,7 +4639,7 @@ export namespace Prisma {
   /**
    * The delegate class that acts as a "Promise-like" for Event.
    * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in 
+   * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
   export class Prisma__EventClient<T> implements PrismaPromise<T> {
@@ -5039,8 +5142,8 @@ export namespace Prisma {
   }
 
 
-    
-    
+
+
   export type EventCategoryGroupByArgs = {
     where?: EventCategoryWhereInput
     orderBy?: Enumerable<EventCategoryOrderByWithAggregationInput>
@@ -5071,15 +5174,15 @@ export namespace Prisma {
 
   type GetEventCategoryGroupByPayload<T extends EventCategoryGroupByArgs> = Promise<
     Array<
-      PickArray<EventCategoryGroupByOutputType, T['by']> & 
+      PickArray<EventCategoryGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof EventCategoryGroupByOutputType))]: P extends '_count' 
-            ? T[P] extends boolean 
-              ? number 
-              : GetScalarType<T[P], EventCategoryGroupByOutputType[P]> 
+          [P in ((keyof T) & (keyof EventCategoryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EventCategoryGroupByOutputType[P]>
             : GetScalarType<T[P], EventCategoryGroupByOutputType[P]>
         }
-      > 
+      >
     >
 
 
@@ -5441,7 +5544,7 @@ export namespace Prisma {
   /**
    * The delegate class that acts as a "Promise-like" for EventCategory.
    * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in 
+   * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
   export class Prisma__EventCategoryClient<T> implements PrismaPromise<T> {
@@ -5940,8 +6043,8 @@ export namespace Prisma {
   }
 
 
-    
-    
+
+
   export type FavoritesGroupByArgs = {
     where?: FavoritesWhereInput
     orderBy?: Enumerable<FavoritesOrderByWithAggregationInput>
@@ -5972,15 +6075,15 @@ export namespace Prisma {
 
   type GetFavoritesGroupByPayload<T extends FavoritesGroupByArgs> = Promise<
     Array<
-      PickArray<FavoritesGroupByOutputType, T['by']> & 
+      PickArray<FavoritesGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof FavoritesGroupByOutputType))]: P extends '_count' 
-            ? T[P] extends boolean 
-              ? number 
-              : GetScalarType<T[P], FavoritesGroupByOutputType[P]> 
+          [P in ((keyof T) & (keyof FavoritesGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FavoritesGroupByOutputType[P]>
             : GetScalarType<T[P], FavoritesGroupByOutputType[P]>
         }
-      > 
+      >
     >
 
 
@@ -6342,7 +6445,7 @@ export namespace Prisma {
   /**
    * The delegate class that acts as a "Promise-like" for Favorites.
    * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in 
+   * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
   export class Prisma__FavoritesClient<T> implements PrismaPromise<T> {
@@ -6879,8 +6982,8 @@ export namespace Prisma {
   }
 
 
-    
-    
+
+
   export type ImageGroupByArgs = {
     where?: ImageWhereInput
     orderBy?: Enumerable<ImageOrderByWithAggregationInput>
@@ -6918,15 +7021,15 @@ export namespace Prisma {
 
   type GetImageGroupByPayload<T extends ImageGroupByArgs> = Promise<
     Array<
-      PickArray<ImageGroupByOutputType, T['by']> & 
+      PickArray<ImageGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof ImageGroupByOutputType))]: P extends '_count' 
-            ? T[P] extends boolean 
-              ? number 
-              : GetScalarType<T[P], ImageGroupByOutputType[P]> 
+          [P in ((keyof T) & (keyof ImageGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ImageGroupByOutputType[P]>
             : GetScalarType<T[P], ImageGroupByOutputType[P]>
         }
-      > 
+      >
     >
 
 
@@ -6970,7 +7073,7 @@ export namespace Prisma {
         P extends 'Event'
         ? Array < EventGetPayload<S['include'][P]>>  :
         P extends '_count'
-        ? ImageCountOutputTypeGetPayload<S['include'][P]> | null : never
+        ? ImageCountOutputTypeGetPayload<S['include'][P]> : never
   } 
     : 'select' extends U
     ? {
@@ -6981,7 +7084,7 @@ export namespace Prisma {
         P extends 'Event'
         ? Array < EventGetPayload<S['select'][P]>>  :
         P extends '_count'
-        ? ImageCountOutputTypeGetPayload<S['select'][P]> | null : never
+        ? ImageCountOutputTypeGetPayload<S['select'][P]> : never
   } 
     : Image
   : Image
@@ -7301,7 +7404,7 @@ export namespace Prisma {
   /**
    * The delegate class that acts as a "Promise-like" for Image.
    * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in 
+   * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
   export class Prisma__ImageClient<T> implements PrismaPromise<T> {
@@ -7664,12 +7767,17 @@ export namespace Prisma {
 
   export const CategoryScalarFieldEnum: {
     id: 'id',
-    title: 'title',
-    description: 'description',
+    titleRu: 'titleRu',
+    titleUk: 'titleUk',
+    titleEn: 'titleEn',
+    descriptionRu: 'descriptionRu',
+    descriptionUk: 'descriptionUk',
+    descriptionEn: 'descriptionEn',
     image: 'image',
     adminId: 'adminId',
     updated_at: 'updated_at',
-    created_at: 'created_at'
+    created_at: 'created_at',
+    parentId: 'parentId'
   };
 
   export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
@@ -7689,8 +7797,12 @@ export namespace Prisma {
 
   export const EventScalarFieldEnum: {
     id: 'id',
-    title: 'title',
-    description: 'description',
+    titleRu: 'titleRu',
+    titleUk: 'titleUk',
+    titleEn: 'titleEn',
+    descriptionRu: 'descriptionRu',
+    descriptionUk: 'descriptionUk',
+    descriptionEn: 'descriptionEn',
     image: 'image',
     adminId: 'adminId',
     updated_at: 'updated_at',
@@ -7842,8 +7954,12 @@ export namespace Prisma {
     OR?: Enumerable<CategoryWhereInput>
     NOT?: Enumerable<CategoryWhereInput>
     id?: IntFilter | number
-    title?: StringFilter | string
-    description?: StringNullableFilter | string | null
+    titleRu?: StringFilter | string
+    titleUk?: StringFilter | string
+    titleEn?: StringFilter | string
+    descriptionRu?: StringFilter | string
+    descriptionUk?: StringFilter | string
+    descriptionEn?: StringFilter | string
     image?: IntFilter | number
     adminId?: IntNullableFilter | number | null
     User?: XOR<UserRelationFilter, UserWhereInput> | null
@@ -7852,12 +7968,19 @@ export namespace Prisma {
     created_at?: DateTimeFilter | Date | string
     UserCategory?: UserCategoryListRelationFilter
     EventCategory?: EventCategoryListRelationFilter
+    Children?: CategoryListRelationFilter
+    parentId?: IntNullableFilter | number | null
+    Parent?: XOR<CategoryRelationFilter, CategoryWhereInput> | null
   }
 
   export type CategoryOrderByWithRelationInput = {
     id?: SortOrder
-    title?: SortOrder
-    description?: SortOrder
+    titleRu?: SortOrder
+    titleUk?: SortOrder
+    titleEn?: SortOrder
+    descriptionRu?: SortOrder
+    descriptionUk?: SortOrder
+    descriptionEn?: SortOrder
     image?: SortOrder
     adminId?: SortOrder
     User?: UserOrderByWithRelationInput
@@ -7866,21 +7989,31 @@ export namespace Prisma {
     created_at?: SortOrder
     UserCategory?: UserCategoryOrderByRelationAggregateInput
     EventCategory?: EventCategoryOrderByRelationAggregateInput
+    Children?: CategoryOrderByRelationAggregateInput
+    parentId?: SortOrder
+    Parent?: CategoryOrderByWithRelationInput
   }
 
   export type CategoryWhereUniqueInput = {
     id?: number
-    title?: string
+    titleRu?: string
+    titleUk?: string
+    titleEn?: string
   }
 
   export type CategoryOrderByWithAggregationInput = {
     id?: SortOrder
-    title?: SortOrder
-    description?: SortOrder
+    titleRu?: SortOrder
+    titleUk?: SortOrder
+    titleEn?: SortOrder
+    descriptionRu?: SortOrder
+    descriptionUk?: SortOrder
+    descriptionEn?: SortOrder
     image?: SortOrder
     adminId?: SortOrder
     updated_at?: SortOrder
     created_at?: SortOrder
+    parentId?: SortOrder
     _count?: CategoryCountOrderByAggregateInput
     _avg?: CategoryAvgOrderByAggregateInput
     _max?: CategoryMaxOrderByAggregateInput
@@ -7893,12 +8026,17 @@ export namespace Prisma {
     OR?: Enumerable<CategoryScalarWhereWithAggregatesInput>
     NOT?: Enumerable<CategoryScalarWhereWithAggregatesInput>
     id?: IntWithAggregatesFilter | number
-    title?: StringWithAggregatesFilter | string
-    description?: StringNullableWithAggregatesFilter | string | null
+    titleRu?: StringWithAggregatesFilter | string
+    titleUk?: StringWithAggregatesFilter | string
+    titleEn?: StringWithAggregatesFilter | string
+    descriptionRu?: StringWithAggregatesFilter | string
+    descriptionUk?: StringWithAggregatesFilter | string
+    descriptionEn?: StringWithAggregatesFilter | string
     image?: IntWithAggregatesFilter | number
     adminId?: IntNullableWithAggregatesFilter | number | null
     updated_at?: DateTimeWithAggregatesFilter | Date | string
     created_at?: DateTimeWithAggregatesFilter | Date | string
+    parentId?: IntNullableWithAggregatesFilter | number | null
   }
 
   export type UserCategoryWhereInput = {
@@ -7961,8 +8099,12 @@ export namespace Prisma {
     OR?: Enumerable<EventWhereInput>
     NOT?: Enumerable<EventWhereInput>
     id?: IntFilter | number
-    title?: StringFilter | string
-    description?: StringNullableFilter | string | null
+    titleRu?: StringFilter | string
+    titleUk?: StringFilter | string
+    titleEn?: StringFilter | string
+    descriptionRu?: StringFilter | string
+    descriptionUk?: StringFilter | string
+    descriptionEn?: StringFilter | string
     image?: IntFilter | number
     adminId?: IntNullableFilter | number | null
     User?: XOR<UserRelationFilter, UserWhereInput> | null
@@ -7975,8 +8117,12 @@ export namespace Prisma {
 
   export type EventOrderByWithRelationInput = {
     id?: SortOrder
-    title?: SortOrder
-    description?: SortOrder
+    titleRu?: SortOrder
+    titleUk?: SortOrder
+    titleEn?: SortOrder
+    descriptionRu?: SortOrder
+    descriptionUk?: SortOrder
+    descriptionEn?: SortOrder
     image?: SortOrder
     adminId?: SortOrder
     User?: UserOrderByWithRelationInput
@@ -7989,13 +8135,16 @@ export namespace Prisma {
 
   export type EventWhereUniqueInput = {
     id?: number
-    title?: string
   }
 
   export type EventOrderByWithAggregationInput = {
     id?: SortOrder
-    title?: SortOrder
-    description?: SortOrder
+    titleRu?: SortOrder
+    titleUk?: SortOrder
+    titleEn?: SortOrder
+    descriptionRu?: SortOrder
+    descriptionUk?: SortOrder
+    descriptionEn?: SortOrder
     image?: SortOrder
     adminId?: SortOrder
     updated_at?: SortOrder
@@ -8012,8 +8161,12 @@ export namespace Prisma {
     OR?: Enumerable<EventScalarWhereWithAggregatesInput>
     NOT?: Enumerable<EventScalarWhereWithAggregatesInput>
     id?: IntWithAggregatesFilter | number
-    title?: StringWithAggregatesFilter | string
-    description?: StringNullableWithAggregatesFilter | string | null
+    titleRu?: StringWithAggregatesFilter | string
+    titleUk?: StringWithAggregatesFilter | string
+    titleEn?: StringWithAggregatesFilter | string
+    descriptionRu?: StringWithAggregatesFilter | string
+    descriptionUk?: StringWithAggregatesFilter | string
+    descriptionEn?: StringWithAggregatesFilter | string
     image?: IntWithAggregatesFilter | number
     adminId?: IntNullableWithAggregatesFilter | number | null
     updated_at?: DateTimeWithAggregatesFilter | Date | string
@@ -8321,76 +8474,114 @@ export namespace Prisma {
   }
 
   export type CategoryCreateInput = {
-    title: string
-    description?: string | null
+    titleRu: string
+    titleUk: string
+    titleEn: string
+    descriptionRu: string
+    descriptionUk: string
+    descriptionEn: string
     updated_at?: Date | string
     created_at?: Date | string
     User?: UserCreateNestedOneWithoutCategoryInput
     Image: ImageCreateNestedOneWithoutCategoryInput
     UserCategory?: UserCategoryCreateNestedManyWithoutCategoryInput
     EventCategory?: EventCategoryCreateNestedManyWithoutCategoryInput
+    Children?: CategoryCreateNestedManyWithoutParentInput
+    Parent?: CategoryCreateNestedOneWithoutChildrenInput
   }
 
   export type CategoryUncheckedCreateInput = {
     id?: number
-    title: string
-    description?: string | null
+    titleRu: string
+    titleUk: string
+    titleEn: string
+    descriptionRu: string
+    descriptionUk: string
+    descriptionEn: string
     image: number
     adminId?: number | null
     updated_at?: Date | string
     created_at?: Date | string
+    parentId?: number | null
     UserCategory?: UserCategoryUncheckedCreateNestedManyWithoutCategoryInput
     EventCategory?: EventCategoryUncheckedCreateNestedManyWithoutCategoryInput
+    Children?: CategoryUncheckedCreateNestedManyWithoutParentInput
   }
 
   export type CategoryUpdateInput = {
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    titleRu?: StringFieldUpdateOperationsInput | string
+    titleUk?: StringFieldUpdateOperationsInput | string
+    titleEn?: StringFieldUpdateOperationsInput | string
+    descriptionRu?: StringFieldUpdateOperationsInput | string
+    descriptionUk?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: StringFieldUpdateOperationsInput | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     User?: UserUpdateOneWithoutCategoryInput
     Image?: ImageUpdateOneRequiredWithoutCategoryInput
     UserCategory?: UserCategoryUpdateManyWithoutCategoryInput
     EventCategory?: EventCategoryUpdateManyWithoutCategoryInput
+    Children?: CategoryUpdateManyWithoutParentInput
+    Parent?: CategoryUpdateOneWithoutChildrenInput
   }
 
   export type CategoryUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    titleRu?: StringFieldUpdateOperationsInput | string
+    titleUk?: StringFieldUpdateOperationsInput | string
+    titleEn?: StringFieldUpdateOperationsInput | string
+    descriptionRu?: StringFieldUpdateOperationsInput | string
+    descriptionUk?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: StringFieldUpdateOperationsInput | string
     image?: IntFieldUpdateOperationsInput | number
     adminId?: NullableIntFieldUpdateOperationsInput | number | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    parentId?: NullableIntFieldUpdateOperationsInput | number | null
     UserCategory?: UserCategoryUncheckedUpdateManyWithoutCategoryInput
     EventCategory?: EventCategoryUncheckedUpdateManyWithoutCategoryInput
+    Children?: CategoryUncheckedUpdateManyWithoutParentInput
   }
 
   export type CategoryCreateManyInput = {
     id?: number
-    title: string
-    description?: string | null
+    titleRu: string
+    titleUk: string
+    titleEn: string
+    descriptionRu: string
+    descriptionUk: string
+    descriptionEn: string
     image: number
     adminId?: number | null
     updated_at?: Date | string
     created_at?: Date | string
+    parentId?: number | null
   }
 
   export type CategoryUpdateManyMutationInput = {
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    titleRu?: StringFieldUpdateOperationsInput | string
+    titleUk?: StringFieldUpdateOperationsInput | string
+    titleEn?: StringFieldUpdateOperationsInput | string
+    descriptionRu?: StringFieldUpdateOperationsInput | string
+    descriptionUk?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: StringFieldUpdateOperationsInput | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type CategoryUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    titleRu?: StringFieldUpdateOperationsInput | string
+    titleUk?: StringFieldUpdateOperationsInput | string
+    titleEn?: StringFieldUpdateOperationsInput | string
+    descriptionRu?: StringFieldUpdateOperationsInput | string
+    descriptionUk?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: StringFieldUpdateOperationsInput | string
     image?: IntFieldUpdateOperationsInput | number
     adminId?: NullableIntFieldUpdateOperationsInput | number | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    parentId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type UserCategoryCreateInput = {
@@ -8452,8 +8643,12 @@ export namespace Prisma {
   }
 
   export type EventCreateInput = {
-    title: string
-    description?: string | null
+    titleRu: string
+    titleUk: string
+    titleEn: string
+    descriptionRu: string
+    descriptionUk: string
+    descriptionEn: string
     updated_at?: Date | string
     created_at?: Date | string
     User?: UserCreateNestedOneWithoutEventInput
@@ -8464,8 +8659,12 @@ export namespace Prisma {
 
   export type EventUncheckedCreateInput = {
     id?: number
-    title: string
-    description?: string | null
+    titleRu: string
+    titleUk: string
+    titleEn: string
+    descriptionRu: string
+    descriptionUk: string
+    descriptionEn: string
     image: number
     adminId?: number | null
     updated_at?: Date | string
@@ -8475,8 +8674,12 @@ export namespace Prisma {
   }
 
   export type EventUpdateInput = {
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    titleRu?: StringFieldUpdateOperationsInput | string
+    titleUk?: StringFieldUpdateOperationsInput | string
+    titleEn?: StringFieldUpdateOperationsInput | string
+    descriptionRu?: StringFieldUpdateOperationsInput | string
+    descriptionUk?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: StringFieldUpdateOperationsInput | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     User?: UserUpdateOneWithoutEventInput
@@ -8487,8 +8690,12 @@ export namespace Prisma {
 
   export type EventUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    titleRu?: StringFieldUpdateOperationsInput | string
+    titleUk?: StringFieldUpdateOperationsInput | string
+    titleEn?: StringFieldUpdateOperationsInput | string
+    descriptionRu?: StringFieldUpdateOperationsInput | string
+    descriptionUk?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: StringFieldUpdateOperationsInput | string
     image?: IntFieldUpdateOperationsInput | number
     adminId?: NullableIntFieldUpdateOperationsInput | number | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -8499,8 +8706,12 @@ export namespace Prisma {
 
   export type EventCreateManyInput = {
     id?: number
-    title: string
-    description?: string | null
+    titleRu: string
+    titleUk: string
+    titleEn: string
+    descriptionRu: string
+    descriptionUk: string
+    descriptionEn: string
     image: number
     adminId?: number | null
     updated_at?: Date | string
@@ -8508,16 +8719,24 @@ export namespace Prisma {
   }
 
   export type EventUpdateManyMutationInput = {
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    titleRu?: StringFieldUpdateOperationsInput | string
+    titleUk?: StringFieldUpdateOperationsInput | string
+    titleEn?: StringFieldUpdateOperationsInput | string
+    descriptionRu?: StringFieldUpdateOperationsInput | string
+    descriptionUk?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: StringFieldUpdateOperationsInput | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type EventUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    titleRu?: StringFieldUpdateOperationsInput | string
+    titleUk?: StringFieldUpdateOperationsInput | string
+    titleEn?: StringFieldUpdateOperationsInput | string
+    descriptionRu?: StringFieldUpdateOperationsInput | string
+    descriptionUk?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: StringFieldUpdateOperationsInput | string
     image?: IntFieldUpdateOperationsInput | number
     adminId?: NullableIntFieldUpdateOperationsInput | number | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9025,50 +9244,72 @@ export namespace Prisma {
     none?: EventCategoryWhereInput
   }
 
+  export type CategoryRelationFilter = {
+    is?: CategoryWhereInput
+    isNot?: CategoryWhereInput
+  }
+
   export type EventCategoryOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
   export type CategoryCountOrderByAggregateInput = {
     id?: SortOrder
-    title?: SortOrder
-    description?: SortOrder
+    titleRu?: SortOrder
+    titleUk?: SortOrder
+    titleEn?: SortOrder
+    descriptionRu?: SortOrder
+    descriptionUk?: SortOrder
+    descriptionEn?: SortOrder
     image?: SortOrder
     adminId?: SortOrder
     updated_at?: SortOrder
     created_at?: SortOrder
+    parentId?: SortOrder
   }
 
   export type CategoryAvgOrderByAggregateInput = {
     id?: SortOrder
     image?: SortOrder
     adminId?: SortOrder
+    parentId?: SortOrder
   }
 
   export type CategoryMaxOrderByAggregateInput = {
     id?: SortOrder
-    title?: SortOrder
-    description?: SortOrder
+    titleRu?: SortOrder
+    titleUk?: SortOrder
+    titleEn?: SortOrder
+    descriptionRu?: SortOrder
+    descriptionUk?: SortOrder
+    descriptionEn?: SortOrder
     image?: SortOrder
     adminId?: SortOrder
     updated_at?: SortOrder
     created_at?: SortOrder
+    parentId?: SortOrder
   }
 
   export type CategoryMinOrderByAggregateInput = {
     id?: SortOrder
-    title?: SortOrder
-    description?: SortOrder
+    titleRu?: SortOrder
+    titleUk?: SortOrder
+    titleEn?: SortOrder
+    descriptionRu?: SortOrder
+    descriptionUk?: SortOrder
+    descriptionEn?: SortOrder
     image?: SortOrder
     adminId?: SortOrder
     updated_at?: SortOrder
     created_at?: SortOrder
+    parentId?: SortOrder
   }
 
   export type CategorySumOrderByAggregateInput = {
     id?: SortOrder
     image?: SortOrder
     adminId?: SortOrder
+    parentId?: SortOrder
   }
 
   export type IntNullableWithAggregatesFilter = {
@@ -9085,11 +9326,6 @@ export namespace Prisma {
     _sum?: NestedIntNullableFilter
     _min?: NestedIntNullableFilter
     _max?: NestedIntNullableFilter
-  }
-
-  export type CategoryRelationFilter = {
-    is?: CategoryWhereInput
-    isNot?: CategoryWhereInput
   }
 
   export type UserCategoryCountOrderByAggregateInput = {
@@ -9133,8 +9369,12 @@ export namespace Prisma {
 
   export type EventCountOrderByAggregateInput = {
     id?: SortOrder
-    title?: SortOrder
-    description?: SortOrder
+    titleRu?: SortOrder
+    titleUk?: SortOrder
+    titleEn?: SortOrder
+    descriptionRu?: SortOrder
+    descriptionUk?: SortOrder
+    descriptionEn?: SortOrder
     image?: SortOrder
     adminId?: SortOrder
     updated_at?: SortOrder
@@ -9149,8 +9389,12 @@ export namespace Prisma {
 
   export type EventMaxOrderByAggregateInput = {
     id?: SortOrder
-    title?: SortOrder
-    description?: SortOrder
+    titleRu?: SortOrder
+    titleUk?: SortOrder
+    titleEn?: SortOrder
+    descriptionRu?: SortOrder
+    descriptionUk?: SortOrder
+    descriptionEn?: SortOrder
     image?: SortOrder
     adminId?: SortOrder
     updated_at?: SortOrder
@@ -9159,8 +9403,12 @@ export namespace Prisma {
 
   export type EventMinOrderByAggregateInput = {
     id?: SortOrder
-    title?: SortOrder
-    description?: SortOrder
+    titleRu?: SortOrder
+    titleUk?: SortOrder
+    titleEn?: SortOrder
+    descriptionRu?: SortOrder
+    descriptionUk?: SortOrder
+    descriptionEn?: SortOrder
     image?: SortOrder
     adminId?: SortOrder
     updated_at?: SortOrder
@@ -9407,10 +9655,10 @@ export namespace Prisma {
     connectOrCreate?: Enumerable<CategoryCreateOrConnectWithoutUserInput>
     upsert?: Enumerable<CategoryUpsertWithWhereUniqueWithoutUserInput>
     createMany?: CategoryCreateManyUserInputEnvelope
-    connect?: Enumerable<CategoryWhereUniqueInput>
     set?: Enumerable<CategoryWhereUniqueInput>
     disconnect?: Enumerable<CategoryWhereUniqueInput>
     delete?: Enumerable<CategoryWhereUniqueInput>
+    connect?: Enumerable<CategoryWhereUniqueInput>
     update?: Enumerable<CategoryUpdateWithWhereUniqueWithoutUserInput>
     updateMany?: Enumerable<CategoryUpdateManyWithWhereWithoutUserInput>
     deleteMany?: Enumerable<CategoryScalarWhereInput>
@@ -9421,10 +9669,10 @@ export namespace Prisma {
     connectOrCreate?: Enumerable<UserCategoryCreateOrConnectWithoutUserInput>
     upsert?: Enumerable<UserCategoryUpsertWithWhereUniqueWithoutUserInput>
     createMany?: UserCategoryCreateManyUserInputEnvelope
-    connect?: Enumerable<UserCategoryWhereUniqueInput>
     set?: Enumerable<UserCategoryWhereUniqueInput>
     disconnect?: Enumerable<UserCategoryWhereUniqueInput>
     delete?: Enumerable<UserCategoryWhereUniqueInput>
+    connect?: Enumerable<UserCategoryWhereUniqueInput>
     update?: Enumerable<UserCategoryUpdateWithWhereUniqueWithoutUserInput>
     updateMany?: Enumerable<UserCategoryUpdateManyWithWhereWithoutUserInput>
     deleteMany?: Enumerable<UserCategoryScalarWhereInput>
@@ -9435,10 +9683,10 @@ export namespace Prisma {
     connectOrCreate?: Enumerable<EventCreateOrConnectWithoutUserInput>
     upsert?: Enumerable<EventUpsertWithWhereUniqueWithoutUserInput>
     createMany?: EventCreateManyUserInputEnvelope
-    connect?: Enumerable<EventWhereUniqueInput>
     set?: Enumerable<EventWhereUniqueInput>
     disconnect?: Enumerable<EventWhereUniqueInput>
     delete?: Enumerable<EventWhereUniqueInput>
+    connect?: Enumerable<EventWhereUniqueInput>
     update?: Enumerable<EventUpdateWithWhereUniqueWithoutUserInput>
     updateMany?: Enumerable<EventUpdateManyWithWhereWithoutUserInput>
     deleteMany?: Enumerable<EventScalarWhereInput>
@@ -9449,10 +9697,10 @@ export namespace Prisma {
     connectOrCreate?: Enumerable<FavoritesCreateOrConnectWithoutUserInput>
     upsert?: Enumerable<FavoritesUpsertWithWhereUniqueWithoutUserInput>
     createMany?: FavoritesCreateManyUserInputEnvelope
-    connect?: Enumerable<FavoritesWhereUniqueInput>
     set?: Enumerable<FavoritesWhereUniqueInput>
     disconnect?: Enumerable<FavoritesWhereUniqueInput>
     delete?: Enumerable<FavoritesWhereUniqueInput>
+    connect?: Enumerable<FavoritesWhereUniqueInput>
     update?: Enumerable<FavoritesUpdateWithWhereUniqueWithoutUserInput>
     updateMany?: Enumerable<FavoritesUpdateManyWithWhereWithoutUserInput>
     deleteMany?: Enumerable<FavoritesScalarWhereInput>
@@ -9471,10 +9719,10 @@ export namespace Prisma {
     connectOrCreate?: Enumerable<CategoryCreateOrConnectWithoutUserInput>
     upsert?: Enumerable<CategoryUpsertWithWhereUniqueWithoutUserInput>
     createMany?: CategoryCreateManyUserInputEnvelope
-    connect?: Enumerable<CategoryWhereUniqueInput>
     set?: Enumerable<CategoryWhereUniqueInput>
     disconnect?: Enumerable<CategoryWhereUniqueInput>
     delete?: Enumerable<CategoryWhereUniqueInput>
+    connect?: Enumerable<CategoryWhereUniqueInput>
     update?: Enumerable<CategoryUpdateWithWhereUniqueWithoutUserInput>
     updateMany?: Enumerable<CategoryUpdateManyWithWhereWithoutUserInput>
     deleteMany?: Enumerable<CategoryScalarWhereInput>
@@ -9485,10 +9733,10 @@ export namespace Prisma {
     connectOrCreate?: Enumerable<UserCategoryCreateOrConnectWithoutUserInput>
     upsert?: Enumerable<UserCategoryUpsertWithWhereUniqueWithoutUserInput>
     createMany?: UserCategoryCreateManyUserInputEnvelope
-    connect?: Enumerable<UserCategoryWhereUniqueInput>
     set?: Enumerable<UserCategoryWhereUniqueInput>
     disconnect?: Enumerable<UserCategoryWhereUniqueInput>
     delete?: Enumerable<UserCategoryWhereUniqueInput>
+    connect?: Enumerable<UserCategoryWhereUniqueInput>
     update?: Enumerable<UserCategoryUpdateWithWhereUniqueWithoutUserInput>
     updateMany?: Enumerable<UserCategoryUpdateManyWithWhereWithoutUserInput>
     deleteMany?: Enumerable<UserCategoryScalarWhereInput>
@@ -9499,10 +9747,10 @@ export namespace Prisma {
     connectOrCreate?: Enumerable<EventCreateOrConnectWithoutUserInput>
     upsert?: Enumerable<EventUpsertWithWhereUniqueWithoutUserInput>
     createMany?: EventCreateManyUserInputEnvelope
-    connect?: Enumerable<EventWhereUniqueInput>
     set?: Enumerable<EventWhereUniqueInput>
     disconnect?: Enumerable<EventWhereUniqueInput>
     delete?: Enumerable<EventWhereUniqueInput>
+    connect?: Enumerable<EventWhereUniqueInput>
     update?: Enumerable<EventUpdateWithWhereUniqueWithoutUserInput>
     updateMany?: Enumerable<EventUpdateManyWithWhereWithoutUserInput>
     deleteMany?: Enumerable<EventScalarWhereInput>
@@ -9513,10 +9761,10 @@ export namespace Prisma {
     connectOrCreate?: Enumerable<FavoritesCreateOrConnectWithoutUserInput>
     upsert?: Enumerable<FavoritesUpsertWithWhereUniqueWithoutUserInput>
     createMany?: FavoritesCreateManyUserInputEnvelope
-    connect?: Enumerable<FavoritesWhereUniqueInput>
     set?: Enumerable<FavoritesWhereUniqueInput>
     disconnect?: Enumerable<FavoritesWhereUniqueInput>
     delete?: Enumerable<FavoritesWhereUniqueInput>
+    connect?: Enumerable<FavoritesWhereUniqueInput>
     update?: Enumerable<FavoritesUpdateWithWhereUniqueWithoutUserInput>
     updateMany?: Enumerable<FavoritesUpdateManyWithWhereWithoutUserInput>
     deleteMany?: Enumerable<FavoritesScalarWhereInput>
@@ -9548,6 +9796,19 @@ export namespace Prisma {
     connect?: Enumerable<EventCategoryWhereUniqueInput>
   }
 
+  export type CategoryCreateNestedManyWithoutParentInput = {
+    create?: XOR<Enumerable<CategoryCreateWithoutParentInput>, Enumerable<CategoryUncheckedCreateWithoutParentInput>>
+    connectOrCreate?: Enumerable<CategoryCreateOrConnectWithoutParentInput>
+    createMany?: CategoryCreateManyParentInputEnvelope
+    connect?: Enumerable<CategoryWhereUniqueInput>
+  }
+
+  export type CategoryCreateNestedOneWithoutChildrenInput = {
+    create?: XOR<CategoryCreateWithoutChildrenInput, CategoryUncheckedCreateWithoutChildrenInput>
+    connectOrCreate?: CategoryCreateOrConnectWithoutChildrenInput
+    connect?: CategoryWhereUniqueInput
+  }
+
   export type UserCategoryUncheckedCreateNestedManyWithoutCategoryInput = {
     create?: XOR<Enumerable<UserCategoryCreateWithoutCategoryInput>, Enumerable<UserCategoryUncheckedCreateWithoutCategoryInput>>
     connectOrCreate?: Enumerable<UserCategoryCreateOrConnectWithoutCategoryInput>
@@ -9562,13 +9823,20 @@ export namespace Prisma {
     connect?: Enumerable<EventCategoryWhereUniqueInput>
   }
 
+  export type CategoryUncheckedCreateNestedManyWithoutParentInput = {
+    create?: XOR<Enumerable<CategoryCreateWithoutParentInput>, Enumerable<CategoryUncheckedCreateWithoutParentInput>>
+    connectOrCreate?: Enumerable<CategoryCreateOrConnectWithoutParentInput>
+    createMany?: CategoryCreateManyParentInputEnvelope
+    connect?: Enumerable<CategoryWhereUniqueInput>
+  }
+
   export type UserUpdateOneWithoutCategoryInput = {
     create?: XOR<UserCreateWithoutCategoryInput, UserUncheckedCreateWithoutCategoryInput>
     connectOrCreate?: UserCreateOrConnectWithoutCategoryInput
     upsert?: UserUpsertWithoutCategoryInput
-    connect?: UserWhereUniqueInput
     disconnect?: boolean
     delete?: boolean
+    connect?: UserWhereUniqueInput
     update?: XOR<UserUpdateWithoutCategoryInput, UserUncheckedUpdateWithoutCategoryInput>
   }
 
@@ -9585,10 +9853,10 @@ export namespace Prisma {
     connectOrCreate?: Enumerable<UserCategoryCreateOrConnectWithoutCategoryInput>
     upsert?: Enumerable<UserCategoryUpsertWithWhereUniqueWithoutCategoryInput>
     createMany?: UserCategoryCreateManyCategoryInputEnvelope
-    connect?: Enumerable<UserCategoryWhereUniqueInput>
     set?: Enumerable<UserCategoryWhereUniqueInput>
     disconnect?: Enumerable<UserCategoryWhereUniqueInput>
     delete?: Enumerable<UserCategoryWhereUniqueInput>
+    connect?: Enumerable<UserCategoryWhereUniqueInput>
     update?: Enumerable<UserCategoryUpdateWithWhereUniqueWithoutCategoryInput>
     updateMany?: Enumerable<UserCategoryUpdateManyWithWhereWithoutCategoryInput>
     deleteMany?: Enumerable<UserCategoryScalarWhereInput>
@@ -9599,13 +9867,37 @@ export namespace Prisma {
     connectOrCreate?: Enumerable<EventCategoryCreateOrConnectWithoutCategoryInput>
     upsert?: Enumerable<EventCategoryUpsertWithWhereUniqueWithoutCategoryInput>
     createMany?: EventCategoryCreateManyCategoryInputEnvelope
-    connect?: Enumerable<EventCategoryWhereUniqueInput>
     set?: Enumerable<EventCategoryWhereUniqueInput>
     disconnect?: Enumerable<EventCategoryWhereUniqueInput>
     delete?: Enumerable<EventCategoryWhereUniqueInput>
+    connect?: Enumerable<EventCategoryWhereUniqueInput>
     update?: Enumerable<EventCategoryUpdateWithWhereUniqueWithoutCategoryInput>
     updateMany?: Enumerable<EventCategoryUpdateManyWithWhereWithoutCategoryInput>
     deleteMany?: Enumerable<EventCategoryScalarWhereInput>
+  }
+
+  export type CategoryUpdateManyWithoutParentInput = {
+    create?: XOR<Enumerable<CategoryCreateWithoutParentInput>, Enumerable<CategoryUncheckedCreateWithoutParentInput>>
+    connectOrCreate?: Enumerable<CategoryCreateOrConnectWithoutParentInput>
+    upsert?: Enumerable<CategoryUpsertWithWhereUniqueWithoutParentInput>
+    createMany?: CategoryCreateManyParentInputEnvelope
+    set?: Enumerable<CategoryWhereUniqueInput>
+    disconnect?: Enumerable<CategoryWhereUniqueInput>
+    delete?: Enumerable<CategoryWhereUniqueInput>
+    connect?: Enumerable<CategoryWhereUniqueInput>
+    update?: Enumerable<CategoryUpdateWithWhereUniqueWithoutParentInput>
+    updateMany?: Enumerable<CategoryUpdateManyWithWhereWithoutParentInput>
+    deleteMany?: Enumerable<CategoryScalarWhereInput>
+  }
+
+  export type CategoryUpdateOneWithoutChildrenInput = {
+    create?: XOR<CategoryCreateWithoutChildrenInput, CategoryUncheckedCreateWithoutChildrenInput>
+    connectOrCreate?: CategoryCreateOrConnectWithoutChildrenInput
+    upsert?: CategoryUpsertWithoutChildrenInput
+    disconnect?: boolean
+    delete?: boolean
+    connect?: CategoryWhereUniqueInput
+    update?: XOR<CategoryUpdateWithoutChildrenInput, CategoryUncheckedUpdateWithoutChildrenInput>
   }
 
   export type NullableIntFieldUpdateOperationsInput = {
@@ -9621,10 +9913,10 @@ export namespace Prisma {
     connectOrCreate?: Enumerable<UserCategoryCreateOrConnectWithoutCategoryInput>
     upsert?: Enumerable<UserCategoryUpsertWithWhereUniqueWithoutCategoryInput>
     createMany?: UserCategoryCreateManyCategoryInputEnvelope
-    connect?: Enumerable<UserCategoryWhereUniqueInput>
     set?: Enumerable<UserCategoryWhereUniqueInput>
     disconnect?: Enumerable<UserCategoryWhereUniqueInput>
     delete?: Enumerable<UserCategoryWhereUniqueInput>
+    connect?: Enumerable<UserCategoryWhereUniqueInput>
     update?: Enumerable<UserCategoryUpdateWithWhereUniqueWithoutCategoryInput>
     updateMany?: Enumerable<UserCategoryUpdateManyWithWhereWithoutCategoryInput>
     deleteMany?: Enumerable<UserCategoryScalarWhereInput>
@@ -9635,13 +9927,27 @@ export namespace Prisma {
     connectOrCreate?: Enumerable<EventCategoryCreateOrConnectWithoutCategoryInput>
     upsert?: Enumerable<EventCategoryUpsertWithWhereUniqueWithoutCategoryInput>
     createMany?: EventCategoryCreateManyCategoryInputEnvelope
-    connect?: Enumerable<EventCategoryWhereUniqueInput>
     set?: Enumerable<EventCategoryWhereUniqueInput>
     disconnect?: Enumerable<EventCategoryWhereUniqueInput>
     delete?: Enumerable<EventCategoryWhereUniqueInput>
+    connect?: Enumerable<EventCategoryWhereUniqueInput>
     update?: Enumerable<EventCategoryUpdateWithWhereUniqueWithoutCategoryInput>
     updateMany?: Enumerable<EventCategoryUpdateManyWithWhereWithoutCategoryInput>
     deleteMany?: Enumerable<EventCategoryScalarWhereInput>
+  }
+
+  export type CategoryUncheckedUpdateManyWithoutParentInput = {
+    create?: XOR<Enumerable<CategoryCreateWithoutParentInput>, Enumerable<CategoryUncheckedCreateWithoutParentInput>>
+    connectOrCreate?: Enumerable<CategoryCreateOrConnectWithoutParentInput>
+    upsert?: Enumerable<CategoryUpsertWithWhereUniqueWithoutParentInput>
+    createMany?: CategoryCreateManyParentInputEnvelope
+    set?: Enumerable<CategoryWhereUniqueInput>
+    disconnect?: Enumerable<CategoryWhereUniqueInput>
+    delete?: Enumerable<CategoryWhereUniqueInput>
+    connect?: Enumerable<CategoryWhereUniqueInput>
+    update?: Enumerable<CategoryUpdateWithWhereUniqueWithoutParentInput>
+    updateMany?: Enumerable<CategoryUpdateManyWithWhereWithoutParentInput>
+    deleteMany?: Enumerable<CategoryScalarWhereInput>
   }
 
   export type UserCreateNestedOneWithoutUserCategoryInput = {
@@ -9716,9 +10022,9 @@ export namespace Prisma {
     create?: XOR<UserCreateWithoutEventInput, UserUncheckedCreateWithoutEventInput>
     connectOrCreate?: UserCreateOrConnectWithoutEventInput
     upsert?: UserUpsertWithoutEventInput
-    connect?: UserWhereUniqueInput
     disconnect?: boolean
     delete?: boolean
+    connect?: UserWhereUniqueInput
     update?: XOR<UserUpdateWithoutEventInput, UserUncheckedUpdateWithoutEventInput>
   }
 
@@ -9735,10 +10041,10 @@ export namespace Prisma {
     connectOrCreate?: Enumerable<FavoritesCreateOrConnectWithoutEventInput>
     upsert?: Enumerable<FavoritesUpsertWithWhereUniqueWithoutEventInput>
     createMany?: FavoritesCreateManyEventInputEnvelope
-    connect?: Enumerable<FavoritesWhereUniqueInput>
     set?: Enumerable<FavoritesWhereUniqueInput>
     disconnect?: Enumerable<FavoritesWhereUniqueInput>
     delete?: Enumerable<FavoritesWhereUniqueInput>
+    connect?: Enumerable<FavoritesWhereUniqueInput>
     update?: Enumerable<FavoritesUpdateWithWhereUniqueWithoutEventInput>
     updateMany?: Enumerable<FavoritesUpdateManyWithWhereWithoutEventInput>
     deleteMany?: Enumerable<FavoritesScalarWhereInput>
@@ -9749,10 +10055,10 @@ export namespace Prisma {
     connectOrCreate?: Enumerable<EventCategoryCreateOrConnectWithoutEventInput>
     upsert?: Enumerable<EventCategoryUpsertWithWhereUniqueWithoutEventInput>
     createMany?: EventCategoryCreateManyEventInputEnvelope
-    connect?: Enumerable<EventCategoryWhereUniqueInput>
     set?: Enumerable<EventCategoryWhereUniqueInput>
     disconnect?: Enumerable<EventCategoryWhereUniqueInput>
     delete?: Enumerable<EventCategoryWhereUniqueInput>
+    connect?: Enumerable<EventCategoryWhereUniqueInput>
     update?: Enumerable<EventCategoryUpdateWithWhereUniqueWithoutEventInput>
     updateMany?: Enumerable<EventCategoryUpdateManyWithWhereWithoutEventInput>
     deleteMany?: Enumerable<EventCategoryScalarWhereInput>
@@ -9763,10 +10069,10 @@ export namespace Prisma {
     connectOrCreate?: Enumerable<FavoritesCreateOrConnectWithoutEventInput>
     upsert?: Enumerable<FavoritesUpsertWithWhereUniqueWithoutEventInput>
     createMany?: FavoritesCreateManyEventInputEnvelope
-    connect?: Enumerable<FavoritesWhereUniqueInput>
     set?: Enumerable<FavoritesWhereUniqueInput>
     disconnect?: Enumerable<FavoritesWhereUniqueInput>
     delete?: Enumerable<FavoritesWhereUniqueInput>
+    connect?: Enumerable<FavoritesWhereUniqueInput>
     update?: Enumerable<FavoritesUpdateWithWhereUniqueWithoutEventInput>
     updateMany?: Enumerable<FavoritesUpdateManyWithWhereWithoutEventInput>
     deleteMany?: Enumerable<FavoritesScalarWhereInput>
@@ -9777,10 +10083,10 @@ export namespace Prisma {
     connectOrCreate?: Enumerable<EventCategoryCreateOrConnectWithoutEventInput>
     upsert?: Enumerable<EventCategoryUpsertWithWhereUniqueWithoutEventInput>
     createMany?: EventCategoryCreateManyEventInputEnvelope
-    connect?: Enumerable<EventCategoryWhereUniqueInput>
     set?: Enumerable<EventCategoryWhereUniqueInput>
     disconnect?: Enumerable<EventCategoryWhereUniqueInput>
     delete?: Enumerable<EventCategoryWhereUniqueInput>
+    connect?: Enumerable<EventCategoryWhereUniqueInput>
     update?: Enumerable<EventCategoryUpdateWithWhereUniqueWithoutEventInput>
     updateMany?: Enumerable<EventCategoryUpdateManyWithWhereWithoutEventInput>
     deleteMany?: Enumerable<EventCategoryScalarWhereInput>
@@ -9879,10 +10185,10 @@ export namespace Prisma {
     connectOrCreate?: Enumerable<CategoryCreateOrConnectWithoutImageInput>
     upsert?: Enumerable<CategoryUpsertWithWhereUniqueWithoutImageInput>
     createMany?: CategoryCreateManyImageInputEnvelope
-    connect?: Enumerable<CategoryWhereUniqueInput>
     set?: Enumerable<CategoryWhereUniqueInput>
     disconnect?: Enumerable<CategoryWhereUniqueInput>
     delete?: Enumerable<CategoryWhereUniqueInput>
+    connect?: Enumerable<CategoryWhereUniqueInput>
     update?: Enumerable<CategoryUpdateWithWhereUniqueWithoutImageInput>
     updateMany?: Enumerable<CategoryUpdateManyWithWhereWithoutImageInput>
     deleteMany?: Enumerable<CategoryScalarWhereInput>
@@ -9893,10 +10199,10 @@ export namespace Prisma {
     connectOrCreate?: Enumerable<EventCreateOrConnectWithoutImageInput>
     upsert?: Enumerable<EventUpsertWithWhereUniqueWithoutImageInput>
     createMany?: EventCreateManyImageInputEnvelope
-    connect?: Enumerable<EventWhereUniqueInput>
     set?: Enumerable<EventWhereUniqueInput>
     disconnect?: Enumerable<EventWhereUniqueInput>
     delete?: Enumerable<EventWhereUniqueInput>
+    connect?: Enumerable<EventWhereUniqueInput>
     update?: Enumerable<EventUpdateWithWhereUniqueWithoutImageInput>
     updateMany?: Enumerable<EventUpdateManyWithWhereWithoutImageInput>
     deleteMany?: Enumerable<EventScalarWhereInput>
@@ -9907,10 +10213,10 @@ export namespace Prisma {
     connectOrCreate?: Enumerable<CategoryCreateOrConnectWithoutImageInput>
     upsert?: Enumerable<CategoryUpsertWithWhereUniqueWithoutImageInput>
     createMany?: CategoryCreateManyImageInputEnvelope
-    connect?: Enumerable<CategoryWhereUniqueInput>
     set?: Enumerable<CategoryWhereUniqueInput>
     disconnect?: Enumerable<CategoryWhereUniqueInput>
     delete?: Enumerable<CategoryWhereUniqueInput>
+    connect?: Enumerable<CategoryWhereUniqueInput>
     update?: Enumerable<CategoryUpdateWithWhereUniqueWithoutImageInput>
     updateMany?: Enumerable<CategoryUpdateManyWithWhereWithoutImageInput>
     deleteMany?: Enumerable<CategoryScalarWhereInput>
@@ -9921,10 +10227,10 @@ export namespace Prisma {
     connectOrCreate?: Enumerable<EventCreateOrConnectWithoutImageInput>
     upsert?: Enumerable<EventUpsertWithWhereUniqueWithoutImageInput>
     createMany?: EventCreateManyImageInputEnvelope
-    connect?: Enumerable<EventWhereUniqueInput>
     set?: Enumerable<EventWhereUniqueInput>
     disconnect?: Enumerable<EventWhereUniqueInput>
     delete?: Enumerable<EventWhereUniqueInput>
+    connect?: Enumerable<EventWhereUniqueInput>
     update?: Enumerable<EventUpdateWithWhereUniqueWithoutImageInput>
     updateMany?: Enumerable<EventUpdateManyWithWhereWithoutImageInput>
     deleteMany?: Enumerable<EventScalarWhereInput>
@@ -10166,24 +10472,36 @@ export namespace Prisma {
   }
 
   export type CategoryCreateWithoutUserInput = {
-    title: string
-    description?: string | null
+    titleRu: string
+    titleUk: string
+    titleEn: string
+    descriptionRu: string
+    descriptionUk: string
+    descriptionEn: string
     updated_at?: Date | string
     created_at?: Date | string
     Image: ImageCreateNestedOneWithoutCategoryInput
     UserCategory?: UserCategoryCreateNestedManyWithoutCategoryInput
     EventCategory?: EventCategoryCreateNestedManyWithoutCategoryInput
+    Children?: CategoryCreateNestedManyWithoutParentInput
+    Parent?: CategoryCreateNestedOneWithoutChildrenInput
   }
 
   export type CategoryUncheckedCreateWithoutUserInput = {
     id?: number
-    title: string
-    description?: string | null
+    titleRu: string
+    titleUk: string
+    titleEn: string
+    descriptionRu: string
+    descriptionUk: string
+    descriptionEn: string
     image: number
     updated_at?: Date | string
     created_at?: Date | string
+    parentId?: number | null
     UserCategory?: UserCategoryUncheckedCreateNestedManyWithoutCategoryInput
     EventCategory?: EventCategoryUncheckedCreateNestedManyWithoutCategoryInput
+    Children?: CategoryUncheckedCreateNestedManyWithoutParentInput
   }
 
   export type CategoryCreateOrConnectWithoutUserInput = {
@@ -10222,8 +10540,12 @@ export namespace Prisma {
   }
 
   export type EventCreateWithoutUserInput = {
-    title: string
-    description?: string | null
+    titleRu: string
+    titleUk: string
+    titleEn: string
+    descriptionRu: string
+    descriptionUk: string
+    descriptionEn: string
     updated_at?: Date | string
     created_at?: Date | string
     Image: ImageCreateNestedOneWithoutEventInput
@@ -10233,8 +10555,12 @@ export namespace Prisma {
 
   export type EventUncheckedCreateWithoutUserInput = {
     id?: number
-    title: string
-    description?: string | null
+    titleRu: string
+    titleUk: string
+    titleEn: string
+    descriptionRu: string
+    descriptionUk: string
+    descriptionEn: string
     image: number
     updated_at?: Date | string
     created_at?: Date | string
@@ -10296,12 +10622,17 @@ export namespace Prisma {
     OR?: Enumerable<CategoryScalarWhereInput>
     NOT?: Enumerable<CategoryScalarWhereInput>
     id?: IntFilter | number
-    title?: StringFilter | string
-    description?: StringNullableFilter | string | null
+    titleRu?: StringFilter | string
+    titleUk?: StringFilter | string
+    titleEn?: StringFilter | string
+    descriptionRu?: StringFilter | string
+    descriptionUk?: StringFilter | string
+    descriptionEn?: StringFilter | string
     image?: IntFilter | number
     adminId?: IntNullableFilter | number | null
     updated_at?: DateTimeFilter | Date | string
     created_at?: DateTimeFilter | Date | string
+    parentId?: IntNullableFilter | number | null
   }
 
   export type UserCategoryUpsertWithWhereUniqueWithoutUserInput = {
@@ -10353,8 +10684,12 @@ export namespace Prisma {
     OR?: Enumerable<EventScalarWhereInput>
     NOT?: Enumerable<EventScalarWhereInput>
     id?: IntFilter | number
-    title?: StringFilter | string
-    description?: StringNullableFilter | string | null
+    titleRu?: StringFilter | string
+    titleUk?: StringFilter | string
+    titleEn?: StringFilter | string
+    descriptionRu?: StringFilter | string
+    descriptionUk?: StringFilter | string
+    descriptionEn?: StringFilter | string
     image?: IntFilter | number
     adminId?: IntNullableFilter | number | null
     updated_at?: DateTimeFilter | Date | string
@@ -10512,6 +10847,87 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type CategoryCreateWithoutParentInput = {
+    titleRu: string
+    titleUk: string
+    titleEn: string
+    descriptionRu: string
+    descriptionUk: string
+    descriptionEn: string
+    updated_at?: Date | string
+    created_at?: Date | string
+    User?: UserCreateNestedOneWithoutCategoryInput
+    Image: ImageCreateNestedOneWithoutCategoryInput
+    UserCategory?: UserCategoryCreateNestedManyWithoutCategoryInput
+    EventCategory?: EventCategoryCreateNestedManyWithoutCategoryInput
+    Children?: CategoryCreateNestedManyWithoutParentInput
+  }
+
+  export type CategoryUncheckedCreateWithoutParentInput = {
+    id?: number
+    titleRu: string
+    titleUk: string
+    titleEn: string
+    descriptionRu: string
+    descriptionUk: string
+    descriptionEn: string
+    image: number
+    adminId?: number | null
+    updated_at?: Date | string
+    created_at?: Date | string
+    UserCategory?: UserCategoryUncheckedCreateNestedManyWithoutCategoryInput
+    EventCategory?: EventCategoryUncheckedCreateNestedManyWithoutCategoryInput
+    Children?: CategoryUncheckedCreateNestedManyWithoutParentInput
+  }
+
+  export type CategoryCreateOrConnectWithoutParentInput = {
+    where: CategoryWhereUniqueInput
+    create: XOR<CategoryCreateWithoutParentInput, CategoryUncheckedCreateWithoutParentInput>
+  }
+
+  export type CategoryCreateManyParentInputEnvelope = {
+    data: Enumerable<CategoryCreateManyParentInput>
+    skipDuplicates?: boolean
+  }
+
+  export type CategoryCreateWithoutChildrenInput = {
+    titleRu: string
+    titleUk: string
+    titleEn: string
+    descriptionRu: string
+    descriptionUk: string
+    descriptionEn: string
+    updated_at?: Date | string
+    created_at?: Date | string
+    User?: UserCreateNestedOneWithoutCategoryInput
+    Image: ImageCreateNestedOneWithoutCategoryInput
+    UserCategory?: UserCategoryCreateNestedManyWithoutCategoryInput
+    EventCategory?: EventCategoryCreateNestedManyWithoutCategoryInput
+    Parent?: CategoryCreateNestedOneWithoutChildrenInput
+  }
+
+  export type CategoryUncheckedCreateWithoutChildrenInput = {
+    id?: number
+    titleRu: string
+    titleUk: string
+    titleEn: string
+    descriptionRu: string
+    descriptionUk: string
+    descriptionEn: string
+    image: number
+    adminId?: number | null
+    updated_at?: Date | string
+    created_at?: Date | string
+    parentId?: number | null
+    UserCategory?: UserCategoryUncheckedCreateNestedManyWithoutCategoryInput
+    EventCategory?: EventCategoryUncheckedCreateNestedManyWithoutCategoryInput
+  }
+
+  export type CategoryCreateOrConnectWithoutChildrenInput = {
+    where: CategoryWhereUniqueInput
+    create: XOR<CategoryCreateWithoutChildrenInput, CategoryUncheckedCreateWithoutChildrenInput>
+  }
+
   export type UserUpsertWithoutCategoryInput = {
     update: XOR<UserUpdateWithoutCategoryInput, UserUncheckedUpdateWithoutCategoryInput>
     create: XOR<UserCreateWithoutCategoryInput, UserUncheckedCreateWithoutCategoryInput>
@@ -10631,6 +11047,60 @@ export namespace Prisma {
     created_at?: DateTimeFilter | Date | string
   }
 
+  export type CategoryUpsertWithWhereUniqueWithoutParentInput = {
+    where: CategoryWhereUniqueInput
+    update: XOR<CategoryUpdateWithoutParentInput, CategoryUncheckedUpdateWithoutParentInput>
+    create: XOR<CategoryCreateWithoutParentInput, CategoryUncheckedCreateWithoutParentInput>
+  }
+
+  export type CategoryUpdateWithWhereUniqueWithoutParentInput = {
+    where: CategoryWhereUniqueInput
+    data: XOR<CategoryUpdateWithoutParentInput, CategoryUncheckedUpdateWithoutParentInput>
+  }
+
+  export type CategoryUpdateManyWithWhereWithoutParentInput = {
+    where: CategoryScalarWhereInput
+    data: XOR<CategoryUpdateManyMutationInput, CategoryUncheckedUpdateManyWithoutChildrenInput>
+  }
+
+  export type CategoryUpsertWithoutChildrenInput = {
+    update: XOR<CategoryUpdateWithoutChildrenInput, CategoryUncheckedUpdateWithoutChildrenInput>
+    create: XOR<CategoryCreateWithoutChildrenInput, CategoryUncheckedCreateWithoutChildrenInput>
+  }
+
+  export type CategoryUpdateWithoutChildrenInput = {
+    titleRu?: StringFieldUpdateOperationsInput | string
+    titleUk?: StringFieldUpdateOperationsInput | string
+    titleEn?: StringFieldUpdateOperationsInput | string
+    descriptionRu?: StringFieldUpdateOperationsInput | string
+    descriptionUk?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: StringFieldUpdateOperationsInput | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    User?: UserUpdateOneWithoutCategoryInput
+    Image?: ImageUpdateOneRequiredWithoutCategoryInput
+    UserCategory?: UserCategoryUpdateManyWithoutCategoryInput
+    EventCategory?: EventCategoryUpdateManyWithoutCategoryInput
+    Parent?: CategoryUpdateOneWithoutChildrenInput
+  }
+
+  export type CategoryUncheckedUpdateWithoutChildrenInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    titleRu?: StringFieldUpdateOperationsInput | string
+    titleUk?: StringFieldUpdateOperationsInput | string
+    titleEn?: StringFieldUpdateOperationsInput | string
+    descriptionRu?: StringFieldUpdateOperationsInput | string
+    descriptionUk?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: StringFieldUpdateOperationsInput | string
+    image?: IntFieldUpdateOperationsInput | number
+    adminId?: NullableIntFieldUpdateOperationsInput | number | null
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    parentId?: NullableIntFieldUpdateOperationsInput | number | null
+    UserCategory?: UserCategoryUncheckedUpdateManyWithoutCategoryInput
+    EventCategory?: EventCategoryUncheckedUpdateManyWithoutCategoryInput
+  }
+
   export type UserCreateWithoutUserCategoryInput = {
     email: string
     password: string
@@ -10672,24 +11142,36 @@ export namespace Prisma {
   }
 
   export type CategoryCreateWithoutUserCategoryInput = {
-    title: string
-    description?: string | null
+    titleRu: string
+    titleUk: string
+    titleEn: string
+    descriptionRu: string
+    descriptionUk: string
+    descriptionEn: string
     updated_at?: Date | string
     created_at?: Date | string
     User?: UserCreateNestedOneWithoutCategoryInput
     Image: ImageCreateNestedOneWithoutCategoryInput
     EventCategory?: EventCategoryCreateNestedManyWithoutCategoryInput
+    Children?: CategoryCreateNestedManyWithoutParentInput
+    Parent?: CategoryCreateNestedOneWithoutChildrenInput
   }
 
   export type CategoryUncheckedCreateWithoutUserCategoryInput = {
     id?: number
-    title: string
-    description?: string | null
+    titleRu: string
+    titleUk: string
+    titleEn: string
+    descriptionRu: string
+    descriptionUk: string
+    descriptionEn: string
     image: number
     adminId?: number | null
     updated_at?: Date | string
     created_at?: Date | string
+    parentId?: number | null
     EventCategory?: EventCategoryUncheckedCreateNestedManyWithoutCategoryInput
+    Children?: CategoryUncheckedCreateNestedManyWithoutParentInput
   }
 
   export type CategoryCreateOrConnectWithoutUserCategoryInput = {
@@ -10743,24 +11225,36 @@ export namespace Prisma {
   }
 
   export type CategoryUpdateWithoutUserCategoryInput = {
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    titleRu?: StringFieldUpdateOperationsInput | string
+    titleUk?: StringFieldUpdateOperationsInput | string
+    titleEn?: StringFieldUpdateOperationsInput | string
+    descriptionRu?: StringFieldUpdateOperationsInput | string
+    descriptionUk?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: StringFieldUpdateOperationsInput | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     User?: UserUpdateOneWithoutCategoryInput
     Image?: ImageUpdateOneRequiredWithoutCategoryInput
     EventCategory?: EventCategoryUpdateManyWithoutCategoryInput
+    Children?: CategoryUpdateManyWithoutParentInput
+    Parent?: CategoryUpdateOneWithoutChildrenInput
   }
 
   export type CategoryUncheckedUpdateWithoutUserCategoryInput = {
     id?: IntFieldUpdateOperationsInput | number
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    titleRu?: StringFieldUpdateOperationsInput | string
+    titleUk?: StringFieldUpdateOperationsInput | string
+    titleEn?: StringFieldUpdateOperationsInput | string
+    descriptionRu?: StringFieldUpdateOperationsInput | string
+    descriptionUk?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: StringFieldUpdateOperationsInput | string
     image?: IntFieldUpdateOperationsInput | number
     adminId?: NullableIntFieldUpdateOperationsInput | number | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    parentId?: NullableIntFieldUpdateOperationsInput | number | null
     EventCategory?: EventCategoryUncheckedUpdateManyWithoutCategoryInput
+    Children?: CategoryUncheckedUpdateManyWithoutParentInput
   }
 
   export type UserCreateWithoutEventInput = {
@@ -10994,24 +11488,36 @@ export namespace Prisma {
   }
 
   export type CategoryCreateWithoutEventCategoryInput = {
-    title: string
-    description?: string | null
+    titleRu: string
+    titleUk: string
+    titleEn: string
+    descriptionRu: string
+    descriptionUk: string
+    descriptionEn: string
     updated_at?: Date | string
     created_at?: Date | string
     User?: UserCreateNestedOneWithoutCategoryInput
     Image: ImageCreateNestedOneWithoutCategoryInput
     UserCategory?: UserCategoryCreateNestedManyWithoutCategoryInput
+    Children?: CategoryCreateNestedManyWithoutParentInput
+    Parent?: CategoryCreateNestedOneWithoutChildrenInput
   }
 
   export type CategoryUncheckedCreateWithoutEventCategoryInput = {
     id?: number
-    title: string
-    description?: string | null
+    titleRu: string
+    titleUk: string
+    titleEn: string
+    descriptionRu: string
+    descriptionUk: string
+    descriptionEn: string
     image: number
     adminId?: number | null
     updated_at?: Date | string
     created_at?: Date | string
+    parentId?: number | null
     UserCategory?: UserCategoryUncheckedCreateNestedManyWithoutCategoryInput
+    Children?: CategoryUncheckedCreateNestedManyWithoutParentInput
   }
 
   export type CategoryCreateOrConnectWithoutEventCategoryInput = {
@@ -11020,8 +11526,12 @@ export namespace Prisma {
   }
 
   export type EventCreateWithoutEventCategoryInput = {
-    title: string
-    description?: string | null
+    titleRu: string
+    titleUk: string
+    titleEn: string
+    descriptionRu: string
+    descriptionUk: string
+    descriptionEn: string
     updated_at?: Date | string
     created_at?: Date | string
     User?: UserCreateNestedOneWithoutEventInput
@@ -11031,8 +11541,12 @@ export namespace Prisma {
 
   export type EventUncheckedCreateWithoutEventCategoryInput = {
     id?: number
-    title: string
-    description?: string | null
+    titleRu: string
+    titleUk: string
+    titleEn: string
+    descriptionRu: string
+    descriptionUk: string
+    descriptionEn: string
     image: number
     adminId?: number | null
     updated_at?: Date | string
@@ -11051,24 +11565,36 @@ export namespace Prisma {
   }
 
   export type CategoryUpdateWithoutEventCategoryInput = {
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    titleRu?: StringFieldUpdateOperationsInput | string
+    titleUk?: StringFieldUpdateOperationsInput | string
+    titleEn?: StringFieldUpdateOperationsInput | string
+    descriptionRu?: StringFieldUpdateOperationsInput | string
+    descriptionUk?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: StringFieldUpdateOperationsInput | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     User?: UserUpdateOneWithoutCategoryInput
     Image?: ImageUpdateOneRequiredWithoutCategoryInput
     UserCategory?: UserCategoryUpdateManyWithoutCategoryInput
+    Children?: CategoryUpdateManyWithoutParentInput
+    Parent?: CategoryUpdateOneWithoutChildrenInput
   }
 
   export type CategoryUncheckedUpdateWithoutEventCategoryInput = {
     id?: IntFieldUpdateOperationsInput | number
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    titleRu?: StringFieldUpdateOperationsInput | string
+    titleUk?: StringFieldUpdateOperationsInput | string
+    titleEn?: StringFieldUpdateOperationsInput | string
+    descriptionRu?: StringFieldUpdateOperationsInput | string
+    descriptionUk?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: StringFieldUpdateOperationsInput | string
     image?: IntFieldUpdateOperationsInput | number
     adminId?: NullableIntFieldUpdateOperationsInput | number | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    parentId?: NullableIntFieldUpdateOperationsInput | number | null
     UserCategory?: UserCategoryUncheckedUpdateManyWithoutCategoryInput
+    Children?: CategoryUncheckedUpdateManyWithoutParentInput
   }
 
   export type EventUpsertWithoutEventCategoryInput = {
@@ -11077,8 +11603,12 @@ export namespace Prisma {
   }
 
   export type EventUpdateWithoutEventCategoryInput = {
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    titleRu?: StringFieldUpdateOperationsInput | string
+    titleUk?: StringFieldUpdateOperationsInput | string
+    titleEn?: StringFieldUpdateOperationsInput | string
+    descriptionRu?: StringFieldUpdateOperationsInput | string
+    descriptionUk?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: StringFieldUpdateOperationsInput | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     User?: UserUpdateOneWithoutEventInput
@@ -11088,8 +11618,12 @@ export namespace Prisma {
 
   export type EventUncheckedUpdateWithoutEventCategoryInput = {
     id?: IntFieldUpdateOperationsInput | number
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    titleRu?: StringFieldUpdateOperationsInput | string
+    titleUk?: StringFieldUpdateOperationsInput | string
+    titleEn?: StringFieldUpdateOperationsInput | string
+    descriptionRu?: StringFieldUpdateOperationsInput | string
+    descriptionUk?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: StringFieldUpdateOperationsInput | string
     image?: IntFieldUpdateOperationsInput | number
     adminId?: NullableIntFieldUpdateOperationsInput | number | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11138,8 +11672,12 @@ export namespace Prisma {
   }
 
   export type EventCreateWithoutFavoritesInput = {
-    title: string
-    description?: string | null
+    titleRu: string
+    titleUk: string
+    titleEn: string
+    descriptionRu: string
+    descriptionUk: string
+    descriptionEn: string
     updated_at?: Date | string
     created_at?: Date | string
     User?: UserCreateNestedOneWithoutEventInput
@@ -11149,8 +11687,12 @@ export namespace Prisma {
 
   export type EventUncheckedCreateWithoutFavoritesInput = {
     id?: number
-    title: string
-    description?: string | null
+    titleRu: string
+    titleUk: string
+    titleEn: string
+    descriptionRu: string
+    descriptionUk: string
+    descriptionEn: string
     image: number
     adminId?: number | null
     updated_at?: Date | string
@@ -11209,8 +11751,12 @@ export namespace Prisma {
   }
 
   export type EventUpdateWithoutFavoritesInput = {
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    titleRu?: StringFieldUpdateOperationsInput | string
+    titleUk?: StringFieldUpdateOperationsInput | string
+    titleEn?: StringFieldUpdateOperationsInput | string
+    descriptionRu?: StringFieldUpdateOperationsInput | string
+    descriptionUk?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: StringFieldUpdateOperationsInput | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     User?: UserUpdateOneWithoutEventInput
@@ -11220,8 +11766,12 @@ export namespace Prisma {
 
   export type EventUncheckedUpdateWithoutFavoritesInput = {
     id?: IntFieldUpdateOperationsInput | number
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    titleRu?: StringFieldUpdateOperationsInput | string
+    titleUk?: StringFieldUpdateOperationsInput | string
+    titleEn?: StringFieldUpdateOperationsInput | string
+    descriptionRu?: StringFieldUpdateOperationsInput | string
+    descriptionUk?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: StringFieldUpdateOperationsInput | string
     image?: IntFieldUpdateOperationsInput | number
     adminId?: NullableIntFieldUpdateOperationsInput | number | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11230,24 +11780,36 @@ export namespace Prisma {
   }
 
   export type CategoryCreateWithoutImageInput = {
-    title: string
-    description?: string | null
+    titleRu: string
+    titleUk: string
+    titleEn: string
+    descriptionRu: string
+    descriptionUk: string
+    descriptionEn: string
     updated_at?: Date | string
     created_at?: Date | string
     User?: UserCreateNestedOneWithoutCategoryInput
     UserCategory?: UserCategoryCreateNestedManyWithoutCategoryInput
     EventCategory?: EventCategoryCreateNestedManyWithoutCategoryInput
+    Children?: CategoryCreateNestedManyWithoutParentInput
+    Parent?: CategoryCreateNestedOneWithoutChildrenInput
   }
 
   export type CategoryUncheckedCreateWithoutImageInput = {
     id?: number
-    title: string
-    description?: string | null
+    titleRu: string
+    titleUk: string
+    titleEn: string
+    descriptionRu: string
+    descriptionUk: string
+    descriptionEn: string
     adminId?: number | null
     updated_at?: Date | string
     created_at?: Date | string
+    parentId?: number | null
     UserCategory?: UserCategoryUncheckedCreateNestedManyWithoutCategoryInput
     EventCategory?: EventCategoryUncheckedCreateNestedManyWithoutCategoryInput
+    Children?: CategoryUncheckedCreateNestedManyWithoutParentInput
   }
 
   export type CategoryCreateOrConnectWithoutImageInput = {
@@ -11261,8 +11823,12 @@ export namespace Prisma {
   }
 
   export type EventCreateWithoutImageInput = {
-    title: string
-    description?: string | null
+    titleRu: string
+    titleUk: string
+    titleEn: string
+    descriptionRu: string
+    descriptionUk: string
+    descriptionEn: string
     updated_at?: Date | string
     created_at?: Date | string
     User?: UserCreateNestedOneWithoutEventInput
@@ -11272,8 +11838,12 @@ export namespace Prisma {
 
   export type EventUncheckedCreateWithoutImageInput = {
     id?: number
-    title: string
-    description?: string | null
+    titleRu: string
+    titleUk: string
+    titleEn: string
+    descriptionRu: string
+    descriptionUk: string
+    descriptionEn: string
     adminId?: number | null
     updated_at?: Date | string
     created_at?: Date | string
@@ -11325,11 +11895,16 @@ export namespace Prisma {
 
   export type CategoryCreateManyUserInput = {
     id?: number
-    title: string
-    description?: string | null
+    titleRu: string
+    titleUk: string
+    titleEn: string
+    descriptionRu: string
+    descriptionUk: string
+    descriptionEn: string
     image: number
     updated_at?: Date | string
     created_at?: Date | string
+    parentId?: number | null
   }
 
   export type UserCategoryCreateManyUserInput = {
@@ -11342,8 +11917,12 @@ export namespace Prisma {
 
   export type EventCreateManyUserInput = {
     id?: number
-    title: string
-    description?: string | null
+    titleRu: string
+    titleUk: string
+    titleEn: string
+    descriptionRu: string
+    descriptionUk: string
+    descriptionEn: string
     image: number
     updated_at?: Date | string
     created_at?: Date | string
@@ -11357,33 +11936,50 @@ export namespace Prisma {
   }
 
   export type CategoryUpdateWithoutUserInput = {
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    titleRu?: StringFieldUpdateOperationsInput | string
+    titleUk?: StringFieldUpdateOperationsInput | string
+    titleEn?: StringFieldUpdateOperationsInput | string
+    descriptionRu?: StringFieldUpdateOperationsInput | string
+    descriptionUk?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: StringFieldUpdateOperationsInput | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Image?: ImageUpdateOneRequiredWithoutCategoryInput
     UserCategory?: UserCategoryUpdateManyWithoutCategoryInput
     EventCategory?: EventCategoryUpdateManyWithoutCategoryInput
+    Children?: CategoryUpdateManyWithoutParentInput
+    Parent?: CategoryUpdateOneWithoutChildrenInput
   }
 
   export type CategoryUncheckedUpdateWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    titleRu?: StringFieldUpdateOperationsInput | string
+    titleUk?: StringFieldUpdateOperationsInput | string
+    titleEn?: StringFieldUpdateOperationsInput | string
+    descriptionRu?: StringFieldUpdateOperationsInput | string
+    descriptionUk?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: StringFieldUpdateOperationsInput | string
     image?: IntFieldUpdateOperationsInput | number
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    parentId?: NullableIntFieldUpdateOperationsInput | number | null
     UserCategory?: UserCategoryUncheckedUpdateManyWithoutCategoryInput
     EventCategory?: EventCategoryUncheckedUpdateManyWithoutCategoryInput
+    Children?: CategoryUncheckedUpdateManyWithoutParentInput
   }
 
   export type CategoryUncheckedUpdateManyWithoutCategoryInput = {
     id?: IntFieldUpdateOperationsInput | number
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    titleRu?: StringFieldUpdateOperationsInput | string
+    titleUk?: StringFieldUpdateOperationsInput | string
+    titleEn?: StringFieldUpdateOperationsInput | string
+    descriptionRu?: StringFieldUpdateOperationsInput | string
+    descriptionUk?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: StringFieldUpdateOperationsInput | string
     image?: IntFieldUpdateOperationsInput | number
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    parentId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type UserCategoryUpdateWithoutUserInput = {
@@ -11410,8 +12006,12 @@ export namespace Prisma {
   }
 
   export type EventUpdateWithoutUserInput = {
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    titleRu?: StringFieldUpdateOperationsInput | string
+    titleUk?: StringFieldUpdateOperationsInput | string
+    titleEn?: StringFieldUpdateOperationsInput | string
+    descriptionRu?: StringFieldUpdateOperationsInput | string
+    descriptionUk?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: StringFieldUpdateOperationsInput | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Image?: ImageUpdateOneRequiredWithoutEventInput
@@ -11421,8 +12021,12 @@ export namespace Prisma {
 
   export type EventUncheckedUpdateWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    titleRu?: StringFieldUpdateOperationsInput | string
+    titleUk?: StringFieldUpdateOperationsInput | string
+    titleEn?: StringFieldUpdateOperationsInput | string
+    descriptionRu?: StringFieldUpdateOperationsInput | string
+    descriptionUk?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: StringFieldUpdateOperationsInput | string
     image?: IntFieldUpdateOperationsInput | number
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11432,8 +12036,12 @@ export namespace Prisma {
 
   export type EventUncheckedUpdateManyWithoutEventInput = {
     id?: IntFieldUpdateOperationsInput | number
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    titleRu?: StringFieldUpdateOperationsInput | string
+    titleUk?: StringFieldUpdateOperationsInput | string
+    titleEn?: StringFieldUpdateOperationsInput | string
+    descriptionRu?: StringFieldUpdateOperationsInput | string
+    descriptionUk?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: StringFieldUpdateOperationsInput | string
     image?: IntFieldUpdateOperationsInput | number
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11474,6 +12082,20 @@ export namespace Prisma {
     created_at?: Date | string
   }
 
+  export type CategoryCreateManyParentInput = {
+    id?: number
+    titleRu: string
+    titleUk: string
+    titleEn: string
+    descriptionRu: string
+    descriptionUk: string
+    descriptionEn: string
+    image: number
+    adminId?: number | null
+    updated_at?: Date | string
+    created_at?: Date | string
+  }
+
   export type UserCategoryUpdateWithoutCategoryInput = {
     active?: BoolFieldUpdateOperationsInput | boolean
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11505,6 +12127,53 @@ export namespace Prisma {
   export type EventCategoryUncheckedUpdateManyWithoutEventCategoryInput = {
     id?: IntFieldUpdateOperationsInput | number
     eventId?: IntFieldUpdateOperationsInput | number
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CategoryUpdateWithoutParentInput = {
+    titleRu?: StringFieldUpdateOperationsInput | string
+    titleUk?: StringFieldUpdateOperationsInput | string
+    titleEn?: StringFieldUpdateOperationsInput | string
+    descriptionRu?: StringFieldUpdateOperationsInput | string
+    descriptionUk?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: StringFieldUpdateOperationsInput | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    User?: UserUpdateOneWithoutCategoryInput
+    Image?: ImageUpdateOneRequiredWithoutCategoryInput
+    UserCategory?: UserCategoryUpdateManyWithoutCategoryInput
+    EventCategory?: EventCategoryUpdateManyWithoutCategoryInput
+    Children?: CategoryUpdateManyWithoutParentInput
+  }
+
+  export type CategoryUncheckedUpdateWithoutParentInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    titleRu?: StringFieldUpdateOperationsInput | string
+    titleUk?: StringFieldUpdateOperationsInput | string
+    titleEn?: StringFieldUpdateOperationsInput | string
+    descriptionRu?: StringFieldUpdateOperationsInput | string
+    descriptionUk?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: StringFieldUpdateOperationsInput | string
+    image?: IntFieldUpdateOperationsInput | number
+    adminId?: NullableIntFieldUpdateOperationsInput | number | null
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    UserCategory?: UserCategoryUncheckedUpdateManyWithoutCategoryInput
+    EventCategory?: EventCategoryUncheckedUpdateManyWithoutCategoryInput
+    Children?: CategoryUncheckedUpdateManyWithoutParentInput
+  }
+
+  export type CategoryUncheckedUpdateManyWithoutChildrenInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    titleRu?: StringFieldUpdateOperationsInput | string
+    titleUk?: StringFieldUpdateOperationsInput | string
+    titleEn?: StringFieldUpdateOperationsInput | string
+    descriptionRu?: StringFieldUpdateOperationsInput | string
+    descriptionUk?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: StringFieldUpdateOperationsInput | string
+    image?: IntFieldUpdateOperationsInput | number
+    adminId?: NullableIntFieldUpdateOperationsInput | number | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -11551,46 +12220,71 @@ export namespace Prisma {
 
   export type CategoryCreateManyImageInput = {
     id?: number
-    title: string
-    description?: string | null
+    titleRu: string
+    titleUk: string
+    titleEn: string
+    descriptionRu: string
+    descriptionUk: string
+    descriptionEn: string
     adminId?: number | null
     updated_at?: Date | string
     created_at?: Date | string
+    parentId?: number | null
   }
 
   export type EventCreateManyImageInput = {
     id?: number
-    title: string
-    description?: string | null
+    titleRu: string
+    titleUk: string
+    titleEn: string
+    descriptionRu: string
+    descriptionUk: string
+    descriptionEn: string
     adminId?: number | null
     updated_at?: Date | string
     created_at?: Date | string
   }
 
   export type CategoryUpdateWithoutImageInput = {
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    titleRu?: StringFieldUpdateOperationsInput | string
+    titleUk?: StringFieldUpdateOperationsInput | string
+    titleEn?: StringFieldUpdateOperationsInput | string
+    descriptionRu?: StringFieldUpdateOperationsInput | string
+    descriptionUk?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: StringFieldUpdateOperationsInput | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     User?: UserUpdateOneWithoutCategoryInput
     UserCategory?: UserCategoryUpdateManyWithoutCategoryInput
     EventCategory?: EventCategoryUpdateManyWithoutCategoryInput
+    Children?: CategoryUpdateManyWithoutParentInput
+    Parent?: CategoryUpdateOneWithoutChildrenInput
   }
 
   export type CategoryUncheckedUpdateWithoutImageInput = {
     id?: IntFieldUpdateOperationsInput | number
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    titleRu?: StringFieldUpdateOperationsInput | string
+    titleUk?: StringFieldUpdateOperationsInput | string
+    titleEn?: StringFieldUpdateOperationsInput | string
+    descriptionRu?: StringFieldUpdateOperationsInput | string
+    descriptionUk?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: StringFieldUpdateOperationsInput | string
     adminId?: NullableIntFieldUpdateOperationsInput | number | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    parentId?: NullableIntFieldUpdateOperationsInput | number | null
     UserCategory?: UserCategoryUncheckedUpdateManyWithoutCategoryInput
     EventCategory?: EventCategoryUncheckedUpdateManyWithoutCategoryInput
+    Children?: CategoryUncheckedUpdateManyWithoutParentInput
   }
 
   export type EventUpdateWithoutImageInput = {
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    titleRu?: StringFieldUpdateOperationsInput | string
+    titleUk?: StringFieldUpdateOperationsInput | string
+    titleEn?: StringFieldUpdateOperationsInput | string
+    descriptionRu?: StringFieldUpdateOperationsInput | string
+    descriptionUk?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: StringFieldUpdateOperationsInput | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     User?: UserUpdateOneWithoutEventInput
@@ -11600,8 +12294,12 @@ export namespace Prisma {
 
   export type EventUncheckedUpdateWithoutImageInput = {
     id?: IntFieldUpdateOperationsInput | number
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    titleRu?: StringFieldUpdateOperationsInput | string
+    titleUk?: StringFieldUpdateOperationsInput | string
+    titleEn?: StringFieldUpdateOperationsInput | string
+    descriptionRu?: StringFieldUpdateOperationsInput | string
+    descriptionUk?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: StringFieldUpdateOperationsInput | string
     adminId?: NullableIntFieldUpdateOperationsInput | number | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string

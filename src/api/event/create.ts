@@ -29,38 +29,6 @@ interface Args extends Types.GlobalParams {
 const middleware: Types.NextHandler<any, Args, any> = async (req, res, next) => {
   const { body } = req;
   const { args, lang } = body;
-  const _args = args || {};
-  const { data } = _args;
-  const _data = data || {};
-  const { title } = _data;
-  let oldCategory;
-  try {
-    oldCategory = await prisma.event.findFirst({
-      where: {
-        title,
-      },
-      select: {
-        id: true,
-        title: true,
-      },
-    });
-  } catch (e) {
-    utils.saveLog(e, req, 'Error get old event', { title });
-    return res.status(500).json({
-      status: utils.ERROR,
-      message: lang.SERVER_ERROR,
-      stdErrMessage: utils.getStdErrMessage(e),
-      data: null,
-    });
-  }
-  if (oldCategory !== null) {
-    return res.status(400).json({
-      status: utils.WARNING,
-      message: lang.CATEGORY_TITLE_EXISTS,
-      stdErrMessage: utils.getStdErrMessage(new Error(`${JSON.stringify(oldCategory)}`)),
-      data: null,
-    });
-  }
   next();
 };
 

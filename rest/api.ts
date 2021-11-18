@@ -8,7 +8,7 @@
  * )
  */
 // Для переноса этого файла себе на фронтенд не забываем генерированный файл типов призмы
-import { Prisma as P, User, PrismaPromise } from './prisma';
+import { Prisma as P, User, PrismaPromise, Category } from './prisma';
 
 // Втроенные типы апи
 export namespace Api {
@@ -60,7 +60,7 @@ export async function userFindFirst<T extends P.UserFindFirstArgs>(
 export async function userFindMany<T extends P.UserFindManyArgs>(
   args: P.SelectSubset<T, P.UserFindManyArgs>
 ): Promise<
-  P.CheckSelect<T, Api.Result<User | null>, PrismaPromise<Api.Result<P.UserGetPayload<T>>>>
+  P.CheckSelect<T, Api.Result<Array<User>>, PrismaPromise<Api.Result<Array<P.UserGetPayload<T>>>>>
 > {
   return getResult(args);
 }
@@ -109,7 +109,7 @@ export async function userDelete<T extends P.UserDeleteArgs>(
 export async function categoryFindFirst<T extends P.CategoryFindFirstArgs>(
   args: P.SelectSubset<T, P.CategoryFindFirstArgs>
 ): Promise<
-  P.CheckSelect<T, Api.Result<User | null>, PrismaPromise<Api.Result<P.UserGetPayload<T>>>>
+  P.CheckSelect<T, Api.Result<Category | null>, PrismaPromise<Api.Result<P.UserGetPayload<T>>>>
 > {
   return getResult(args);
 }
@@ -121,7 +121,11 @@ export async function categoryFindFirst<T extends P.CategoryFindFirstArgs>(
 export async function categoryFindMany<T extends P.CategoryFindManyArgs>(
   args: P.SelectSubset<T, P.CategoryFindManyArgs>
 ): Promise<
-  P.CheckSelect<T, Api.Result<User | null>, PrismaPromise<Api.Result<P.UserGetPayload<T>>>>
+  P.CheckSelect<
+    T,
+    Api.Result<Array<Category>>,
+    PrismaPromise<Api.Result<Array<P.CategoryGetPayload<T>>>>
+  >
 > {
   return getResult(args);
 }
@@ -133,7 +137,7 @@ export async function categoryFindMany<T extends P.CategoryFindManyArgs>(
 export async function categoryCreate<T extends P.CategoryCreateArgs>(
   args: P.SelectSubset<T, P.CategoryCreateArgs>
 ): Promise<
-  P.CheckSelect<T, Api.Result<User | null>, PrismaPromise<Api.Result<P.UserGetPayload<T>>>>
+  P.CheckSelect<T, Api.Result<Category | null>, PrismaPromise<Api.Result<P.CategoryGetPayload<T>>>>
 > {
   return getResult(args);
 }
@@ -145,7 +149,7 @@ export async function categoryCreate<T extends P.CategoryCreateArgs>(
 export async function categoryUpdate<T extends P.CategoryUpdateArgs>(
   args: P.SelectSubset<T, P.CategoryUpdateArgs>
 ): Promise<
-  P.CheckSelect<T, Api.Result<User | null>, PrismaPromise<Api.Result<P.UserGetPayload<T>>>>
+  P.CheckSelect<T, Api.Result<Category | null>, PrismaPromise<Api.Result<P.CategoryGetPayload<T>>>>
 > {
   return getResult(args);
 }
@@ -157,7 +161,7 @@ export async function categoryUpdate<T extends P.CategoryUpdateArgs>(
 export async function categoryDelete<T extends P.CategoryDeleteArgs>(
   args: P.SelectSubset<T, P.CategoryDeleteArgs>
 ): Promise<
-  P.CheckSelect<T, Api.Result<User | null>, PrismaPromise<Api.Result<P.UserGetPayload<T>>>>
+  P.CheckSelect<T, Api.Result<Category | null>, PrismaPromise<Api.Result<P.CategoryGetPayload<T>>>>
 > {
   return getResult(args);
 }
@@ -170,7 +174,7 @@ export async function categoryDelete<T extends P.CategoryDeleteArgs>(
 export async function eventFindFirst<T extends P.EventFindFirstArgs>(
   args: P.SelectSubset<T, P.EventFindFirstArgs>
 ): Promise<
-  P.CheckSelect<T, Api.Result<User | null>, PrismaPromise<Api.Result<P.UserGetPayload<T>>>>
+  P.CheckSelect<T, Api.Result<Event | null>, PrismaPromise<Api.Result<P.EventGetPayload<T>>>>
 > {
   return getResult(args);
 }
@@ -182,7 +186,7 @@ export async function eventFindFirst<T extends P.EventFindFirstArgs>(
 export async function eventFindMany<T extends P.EventFindManyArgs>(
   args: P.SelectSubset<T, P.EventFindManyArgs>
 ): Promise<
-  P.CheckSelect<T, Api.Result<User | null>, PrismaPromise<Api.Result<P.UserGetPayload<T>>>>
+  P.CheckSelect<T, Api.Result<Array<Event>>, PrismaPromise<Api.Result<Array<P.EventGetPayload<T>>>>>
 > {
   return getResult(args);
 }
@@ -194,7 +198,7 @@ export async function eventFindMany<T extends P.EventFindManyArgs>(
 export async function eventCreate<T extends P.EventCreateArgs>(
   args: P.SelectSubset<T, P.EventCreateArgs>
 ): Promise<
-  P.CheckSelect<T, Api.Result<User | null>, PrismaPromise<Api.Result<P.UserGetPayload<T>>>>
+  P.CheckSelect<T, Api.Result<Event | null>, PrismaPromise<Api.Result<P.EventGetPayload<T>>>>
 > {
   return getResult(args);
 }
@@ -206,7 +210,7 @@ export async function eventCreate<T extends P.EventCreateArgs>(
 export async function evnentUpdate<T extends P.EventUpdateArgs>(
   args: P.SelectSubset<T, P.EventUpdateArgs>
 ): Promise<
-  P.CheckSelect<T, Api.Result<User | null>, PrismaPromise<Api.Result<P.UserGetPayload<T>>>>
+  P.CheckSelect<T, Api.Result<Event | null>, PrismaPromise<Api.Result<P.EventGetPayload<T>>>>
 > {
   return getResult(args);
 }
@@ -218,7 +222,7 @@ export async function evnentUpdate<T extends P.EventUpdateArgs>(
 export async function eventDelete<T extends P.EventDeleteArgs>(
   args: P.SelectSubset<T, P.EventDeleteArgs>
 ): Promise<
-  P.CheckSelect<T, Api.Result<User | null>, PrismaPromise<Api.Result<P.UserGetPayload<T>>>>
+  P.CheckSelect<T, Api.Result<Event | null>, PrismaPromise<Api.Result<P.EventGetPayload<T>>>>
 > {
   return getResult(args);
 }

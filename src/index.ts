@@ -11,6 +11,7 @@
  * Индекный файл сервера
  */
 import express from 'express';
+import path from 'path';
 import cors from 'cors';
 import * as api from './api';
 import * as middleware from './middleware';
@@ -48,9 +49,9 @@ process.on('unhandledRejection', (reason: Error, promise) => {
 
 // Глобальные посредники
 app.use(cors({ origin: process.env.APP_URL }));
+app.use('/uploads', express.static(path.resolve(__dirname, '../uploads')));
 app.use(express.json({ limit: '5mb' }));
 app.use(middleware.getLang);
-app.use('/uploads', express.static(__dirname + './uploads'));
 
 ////// апи запросы с посредниками
 //// API пользователя
