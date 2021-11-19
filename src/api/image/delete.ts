@@ -41,7 +41,7 @@ const handler: Types.RequestHandler<any, Args, Image | null> = async (req, res) 
   try {
     result = await prisma.image.delete(args);
   } catch (err) {
-    utils.saveLog(err, req, 'Error delete image', body);
+    utils.saveLog(err, req, 'Error delete image', args);
     return res.status(500).json({
       status: utils.ERROR,
       message: lang.SERVER_ERROR,
