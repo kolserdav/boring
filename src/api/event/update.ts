@@ -17,15 +17,9 @@ const prisma = new PrismaClient();
 
 /**
  * изменение одного события /api/v1/event/update
- * @param {{args: Prisma.EventUpdateArgs}}
- * @returns {Event | null}
  */
 interface Args extends Types.GlobalParams {
   args: Prisma.EventUpdateArgs;
-  login?: {
-    email: string;
-    password: string;
-  };
 }
 
 const middleware: Types.NextHandler<any, Args, any> = async (req, res, next) => {
@@ -117,7 +111,7 @@ const handler: Types.RequestHandler<any, Args, Event | null> = async (req, res) 
   try {
     result = await prisma.event.update(args);
   } catch (err) {
-    utils.saveLog(err, req, 'Error update event', { args: body.args });
+    utils.saveLog(err, req, 'Error update event');
     return res.status(500).json({
       status: utils.ERROR,
       message: lang.SERVER_ERROR,

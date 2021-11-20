@@ -6,7 +6,7 @@
  * License Text: Unauthorized copying of this file, via any medium is strictly prohibited
  * Copyright: kolserdav (c), All rights reserved
  * Create date: Thu Oct 14 2021 17:09:33 GMT+0700 (Krasnoyarsk Standard Time)
-******************************************************************************************/
+ ******************************************************************************************/
 import { Prisma, PrismaClient, Category } from '@prisma/client';
 import type * as Types from '../../types';
 import * as utils from '../../utils';
@@ -15,15 +15,9 @@ const prisma = new PrismaClient();
 
 /**
  * получение нескольких категорий /api/v1/category/findmany
- * @param {{args: Prisma.CategoryFindManyArgs}}
- * @returns {Category[] | null}
  */
 interface Args extends Types.GlobalParams {
   args: Prisma.CategoryFindManyArgs;
-  login?: {
-    email: string;
-    password: string;
-  };
 }
 
 const middleware: Types.NextHandler<any, Args, any> = async (req, res, next) => {
@@ -56,7 +50,7 @@ const handler: Types.RequestHandler<any, Args, Category[]> = async (req, res) =>
   try {
     result = await prisma.category.findMany(args);
   } catch (err) {
-    utils.saveLog(err, req, 'Error get categories', body);
+    utils.saveLog(err, req, 'Error get categories');
     return res.status(500).json({
       status: utils.ERROR,
       message: lang.SERVER_ERROR,

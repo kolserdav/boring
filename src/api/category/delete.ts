@@ -15,15 +15,9 @@ const prisma = new PrismaClient();
 
 /**
  * удаление одной категории /api/v1/category/delete
- * @param {{args: Prisma.CategoryDeleteArgs}}
- * @returns {Category | null}
  */
 interface Args extends Types.GlobalParams {
   args: Prisma.CategoryDeleteArgs;
-  login?: {
-    email: string;
-    password: string;
-  };
 }
 
 const middleware: Types.NextHandler<any, Args, any> = async (req, res, next) => {
@@ -39,7 +33,7 @@ const handler: Types.RequestHandler<any, Args, Category | null> = async (req, re
   try {
     result = await prisma.category.delete(args);
   } catch (err) {
-    utils.saveLog(err, req, 'Error delete category', body);
+    utils.saveLog(err, req, 'Error delete category', args);
     return res.status(500).json({
       status: utils.ERROR,
       message: lang.SERVER_ERROR,

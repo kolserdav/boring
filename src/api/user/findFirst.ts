@@ -20,8 +20,6 @@ const prisma = new PrismaClient();
 /**
  * Получить одного пользователя /api/v1/user/findfirst
  * Залогиниться /api/v1/user/login
- * @param {{args: Prisma.UserFindFirstArgs}}
- * @returns {User | null}
  */
 interface Args extends Types.GlobalParams {
   args: Prisma.UserFindFirstArgs;

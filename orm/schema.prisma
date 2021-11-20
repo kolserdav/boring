@@ -17,6 +17,7 @@ enum Roles {
 enum ImagOrigin {
   category
   event
+  icon
 }
 
 // Таблица пользователей
@@ -122,7 +123,7 @@ model Image {
   encoding     String
   mimetype     String
   destination  String
-  origin       ImagOrigin // category | event
+  origin       ImagOrigin // category | event | icon
   filename     String
   path         String     @unique
   size         Int
@@ -130,4 +131,6 @@ model Image {
   created_at   DateTime   @default(now())
   Category     Category[]
   Event        Event[]
+
+  @@index([origin])
 }

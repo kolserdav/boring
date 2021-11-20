@@ -15,15 +15,9 @@ const prisma = new PrismaClient();
 
 /**
  * получение нескольких категорий /api/v1/event/findmany
- * @param {{args: Prisma.EventFindManyArgs}}
- * @returns {Event[] | null}
  */
 interface Args extends Types.GlobalParams {
   args: Prisma.EventFindManyArgs;
-  login?: {
-    email: string;
-    password: string;
-  };
 }
 
 const middleware: Types.NextHandler<any, Args, any> = async (req, res, next) => {
@@ -44,7 +38,7 @@ const handler: Types.RequestHandler<any, Args, Event[]> = async (req, res) => {
       where,
     });
   } catch (e) {
-    utils.saveLog(e, req, 'Error get count of events', { where });
+    utils.saveLog(e, req, 'Error get count of events');
     return res.status(500).json({
       status: utils.ERROR,
       message: lang.SERVER_ERROR,
@@ -56,7 +50,7 @@ const handler: Types.RequestHandler<any, Args, Event[]> = async (req, res) => {
   try {
     result = await prisma.event.findMany(args);
   } catch (err) {
-    utils.saveLog(err, req, 'Error get events', body);
+    utils.saveLog(err, req, 'Error get events');
     return res.status(500).json({
       status: utils.ERROR,
       message: lang.SERVER_ERROR,

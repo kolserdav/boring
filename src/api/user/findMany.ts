@@ -20,10 +20,6 @@ const prisma = new PrismaClient();
  */
 interface Args extends Types.GlobalParams {
   args: Prisma.UserFindManyArgs;
-  login?: {
-    email: string;
-    password: string;
-  };
 }
 
 const middleware: Types.NextHandler<any, Args, any> = async (req, res, next) => {

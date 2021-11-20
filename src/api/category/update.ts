@@ -17,15 +17,9 @@ const prisma = new PrismaClient();
 
 /**
  * изменение одной категории /api/v1/category/update
- * @param {{args: Prisma.CategoryUpdateArgs}}
- * @returns {Category | null}
  */
 interface Args extends Types.GlobalParams {
   args: Prisma.CategoryUpdateArgs;
-  login?: {
-    email: string;
-    password: string;
-  };
 }
 
 const middleware: Types.NextHandler<any, Args, any> = async (req, res, next) => {

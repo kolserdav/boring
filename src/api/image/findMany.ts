@@ -7,53 +7,71 @@
  * Copyright: kolserdav (c), All rights reserved
  * Create date: Thu Oct 14 2021 17:09:33 GMT+0700 (Krasnoyarsk Standard Time)
  ******************************************************************************************/
-import { Prisma, PrismaClient, Category } from '@prisma/client';
+import { Prisma, PrismaClient, Image } from '@prisma/client';
 import type * as Types from '../../types';
 import * as utils from '../../utils';
 
 const prisma = new PrismaClient();
 
 /**
- * создание одной категории /api/v1/category/create
+ * получение нескольких изображений /api/v1/image/findmany
  */
 interface Args extends Types.GlobalParams {
-  args: Prisma.CategoryCreateArgs;
+  args: Prisma.ImageFindManyArgs;
 }
 
 const middleware: Types.NextHandler<any, Args, any> = async (req, res, next) => {
   const { body } = req;
   const { args, lang } = body;
+  const newArgs = args !== undefined ? args : {};
+  req.body.args = newArgs;
   next();
 };
 
-const handler: Types.RequestHandler<any, Args, Category | null> = async (req, res) => {
+const handler: Types.RequestHandler<any, Args, Image[]> = async (req, res) => {
   const { body } = req;
-  const { args: _args, lang, user } = body;
-  const args = Object.assign({}, _args);
-  args.data.adminId = user?.id || null;
-  let result;
+  const { args, lang } = body;
+  const { where, skip, take } = args;
+  let count;
   try {
-    result = await prisma.category.create(args);
-  } catch (err) {
-    utils.saveLog(err, req, 'Error create category', { args: body.args });
+    count = await prisma.image.count({
+      where,
+    });
+  } catch (e) {
+    utils.saveLog(e, req, 'Error get count of images', { where });
     return res.status(500).json({
       status: utils.ERROR,
       message: lang.SERVER_ERROR,
-      data: null,
+      stdErrMessage: utils.getStdErrMessage(e),
+      data: [],
+    });
+  }
+  let result;
+  try {
+    result = await prisma.image.findMany(args);
+  } catch (err) {
+    utils.saveLog(err, req, 'Error get images');
+    return res.status(500).json({
+      status: utils.ERROR,
+      message: lang.SERVER_ERROR,
+      data: [],
       stdErrMessage: utils.getStdErrMessage(err),
     });
   }
-  if (result === null) {
+  if (result.length === 0) {
     return res.status(404).json({
       status: utils.WARNING,
       message: lang.NOT_FOUND,
-      data: null,
+      data: [],
     });
   }
-  return res.status(201).json({
+  return res.status(200).json({
     status: utils.SUCCESS,
-    message: lang.DATA_SAVED,
+    message: lang.DATA_RECEIVED,
     data: result,
+    count,
+    skip: skip || null,
+    take: take || null,
   });
 };
 

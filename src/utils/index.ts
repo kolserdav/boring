@@ -17,6 +17,9 @@ import nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
 // Переводит html в текст для приложений клиентов, которые не могут читать html
 import { htmlToText } from 'html-to-text';
+import path from 'path';
+import fs from 'fs';
+import { PrismaClient } from '@prisma/client';
 import type * as Types from '../types';
 
 export const SUCCESS = 'success';
@@ -70,7 +73,7 @@ export function saveLog(
   err: Error | null | any,
   req: express.Request,
   message: string,
-  body: any
+  body?: any
 ): void {
   if (err) {
     console.error(new Date(), message, err, {
@@ -79,7 +82,7 @@ export function saveLog(
       body,
     });
   } else {
-    console.warn(new Date(), message, body);
+    console.warn(new Date(), message, req.body.args, body);
   }
 }
 
@@ -419,4 +422,42 @@ export class Email {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function getEmptyRequest(url: string): any {
   return { url };
+}
+
+/**
+ * проверка и загрузка иконок из uploads/icons
+ */
+export async function createIcons() {
+  const prisma = new PrismaClient();
+  const iconsPath = path.resolve(__dirname, '../../files/icons');
+  const iconsDir = fs.readdirSync(iconsPath);
+  const icons = await prisma.image.findMany({
+    where: {
+      origin: 'icon',
+    },
+  });
+  const newIcons = iconsDir.map((_icon) => {
+    let check = false;
+    icons.map((_file) => {
+      if (_file.originalname === _icon) {
+        check = true;
+      }
+    });
+    if (!check)
+      return {
+        filename: _icon,
+        mimetype: 'image/png',
+        encoding: '7bit',
+        fieldname: 'image',
+        originalname: _icon,
+        destination: 'files/icons',
+        origin: 'icon',
+        path: `files/icons/${_icon}`,
+        size: 10,
+      };
+  });
+  await prisma.image.createMany({
+    // @ts-ignore
+    data: newIcons.filter((icon) => typeof icon !== undefined),
+  });
 }

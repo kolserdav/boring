@@ -20,8 +20,6 @@ const { APP_URL } = process.env;
 /**
  * /api/v1/user/create Регистрация
  * Создать одного пользователя
- * @param {{args: Prisma.UserCreateArgs}}
- * @returns {User | null}
  */
 interface Args extends Types.GlobalParams {
   args: Prisma.UserCreateArgs;
@@ -30,10 +28,6 @@ interface Args extends Types.GlobalParams {
 
 /**
  * посредник проверяет входные параметры
- * @param req
- * @param res
- * @param next
- * @returns
  */
 const middleware: Types.NextHandler<any, Args, any> = async (req, res, next) => {
   const { body } = req;

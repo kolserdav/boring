@@ -15,15 +15,9 @@ const prisma = new PrismaClient();
 
 /**
  * создание одного события /api/v1/event/create
- * @param {{args: Prisma.EventCreateArgs}}
- * @returns {Event | null}
  */
 interface Args extends Types.GlobalParams {
   args: Prisma.EventCreateArgs;
-  login?: {
-    email: string;
-    password: string;
-  };
 }
 
 const middleware: Types.NextHandler<any, Args, any> = async (req, res, next) => {

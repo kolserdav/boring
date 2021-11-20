@@ -142,7 +142,8 @@ export type Roles = (typeof Roles)[keyof typeof Roles]
 
 export const ImagOrigin: {
   category: 'category',
-  event: 'event'
+  event: 'event',
+  icon: 'icon'
 };
 
 export type ImagOrigin = (typeof ImagOrigin)[keyof typeof ImagOrigin]

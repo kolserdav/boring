@@ -15,15 +15,9 @@ const prisma = new PrismaClient();
 
 /**
  * получение одного события /api/v1/event/findFirst
- * @param {{args: Prisma.EventFindFirstArgs}}
- * @returns {Category | null}
  */
 interface Args extends Types.GlobalParams {
   args: Prisma.EventFindFirstArgs;
-  login?: {
-    email: string;
-    password: string;
-  };
 }
 
 const middleware: Types.NextHandler<any, Args, any> = async (req, res, next) => {
@@ -39,7 +33,7 @@ const handler: Types.RequestHandler<any, Args, Event | null> = async (req, res) 
   try {
     result = await prisma.event.findFirst(args);
   } catch (err) {
-    utils.saveLog(err, req, 'Error get event', body);
+    utils.saveLog(err, req, 'Error get event', args);
     return res.status(500).json({
       status: utils.ERROR,
       message: lang.SERVER_ERROR,

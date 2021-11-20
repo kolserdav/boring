@@ -20,10 +20,6 @@ const prisma = new PrismaClient();
  */
 interface Args extends Types.GlobalParams {
   args: Prisma.UserDeleteArgs;
-  login?: {
-    email: string;
-    password: string;
-  };
 }
 
 const middleware: Types.NextHandler<any, Args, any> = async (req, res, next) => {
@@ -39,7 +35,7 @@ const handler: Types.RequestHandler<any, Args, User | null> = async (req, res) =
   try {
     result = await prisma.user.delete(args);
   } catch (err) {
-    utils.saveLog(err, req, 'Error delete user', body);
+    utils.saveLog(err, req, 'Error delete user');
     return res.status(500).json({
       status: utils.ERROR,
       message: lang.SERVER_ERROR,

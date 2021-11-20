@@ -21,8 +21,6 @@ const prisma = new PrismaClient();
  * через модель категории
  * а удаление вынесено в отдельный узео, так как мы не сможем
  * через категорию удалить изображение не удалив саму категорию
- * @param {{args: Prisma.CategoryDeleteArgs}}
- * @returns {Category | null}
  */
 interface Args extends Types.GlobalParams {
   args: Prisma.ImageDeleteArgs;
@@ -41,7 +39,7 @@ const handler: Types.RequestHandler<any, Args, Image | null> = async (req, res) 
   try {
     result = await prisma.image.delete(args);
   } catch (err) {
-    utils.saveLog(err, req, 'Error delete image', args);
+    utils.saveLog(err, req, 'Error delete image');
     return res.status(500).json({
       status: utils.ERROR,
       message: lang.SERVER_ERROR,

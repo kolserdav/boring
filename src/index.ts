@@ -29,7 +29,7 @@ const storageCategory = multer.diskStorage({
     } else if (url.match(/\/api\/v1\/category\/imageupload/)) {
       dirName = 'category';
     }
-    cb(null, `uploads/${dirName}`);
+    cb(null, `files/${dirName}`);
   },
   filename: (req, file, cb) => {
     let imageType: RegExpMatchArray | string | null = file.originalname.match(/\.\w{3,4}$/);
@@ -49,7 +49,7 @@ process.on('unhandledRejection', (reason: Error, promise) => {
 
 // Глобальные посредники
 app.use(cors({ origin: process.env.APP_URL }));
-app.use('/uploads', express.static(path.resolve(__dirname, '../uploads')));
+app.use('/files', express.static(path.resolve(__dirname, '../files')));
 app.use(express.json({ limit: '5mb' }));
 app.use(middleware.getLang);
 
@@ -250,6 +250,8 @@ app.post(
   api.image.delete.middleware,
   api.image.delete.handler
 );
+// получение изображений
+app.post('/api/v1/image/findMany', api.image.findMany.middleware, api.image.findMany.handler);
 
 //// Временные апи пока нет страниц
 // страница при переходе по ссылке подтверждения почты
@@ -258,6 +260,7 @@ app.get('/confirm', api.user.update.middleware, api.user.update.handler);
 app.get('/forgot', api.user.update.middleware, api.user.update.handler);
 
 const port = process.env.PORT || 3333;
-app.listen(port, () => {
-  utils.saveLog({}, utils.getEmptyRequest('/start'), `Listen on port ${port}`, {});
+app.listen(port, async () => {
+  utils.saveLog({}, utils.getEmptyRequest('start'), `Listen on port ${port}`, {});
+  await utils.createIcons();
 });

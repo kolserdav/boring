@@ -8,7 +8,7 @@
  * )
  */
 // Для переноса этого файла себе на фронтенд не забываем генерированный файл типов призмы
-import { Prisma as P, User, PrismaPromise, Category } from './prisma';
+import { Prisma as P, User, PrismaPromise, Category, Image } from './prisma';
 
 // Втроенные типы апи
 export namespace Api {
@@ -17,7 +17,7 @@ export namespace Api {
   export interface Result<T> {
     status: Status;
     message: string;
-    data: null | T;
+    data: T;
     stdErrMessage?: string;
     code?: string;
     token?: string;
@@ -223,6 +223,18 @@ export async function eventDelete<T extends P.EventDeleteArgs>(
   args: P.SelectSubset<T, P.EventDeleteArgs>
 ): Promise<
   P.CheckSelect<T, Api.Result<Event | null>, PrismaPromise<Api.Result<P.EventGetPayload<T>>>>
+> {
+  return getResult(args);
+}
+
+/**
+ * Получить несколько изображений
+ * @param {P.ImageFindManyArgs} args
+ */
+export async function imageFindMany<T extends P.ImageFindManyArgs>(
+  args: P.SelectSubset<T, P.ImageFindManyArgs>
+): Promise<
+  P.CheckSelect<T, Api.Result<Array<Image>>, PrismaPromise<Api.Result<Array<P.ImageGetPayload<T>>>>>
 > {
   return getResult(args);
 }

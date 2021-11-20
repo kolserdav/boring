@@ -6,7 +6,7 @@
  * License Text: Unauthorized copying of this file, via any medium is strictly prohibited
  * Copyright: kolserdav (c), All rights reserved
  * Create date: Thu Oct 14 2021 17:09:33 GMT+0700 (Krasnoyarsk Standard Time)
-******************************************************************************************/
+ ******************************************************************************************/
 import { Prisma, PrismaClient, Category } from '@prisma/client';
 import type * as Types from '../../types';
 import * as utils from '../../utils';
@@ -15,15 +15,9 @@ const prisma = new PrismaClient();
 
 /**
  * получение одной категории /api/v1/category/findFirst
- * @param {{args: Prisma.CategoryFindFirstArgs}}
- * @returns {Category | null}
  */
 interface Args extends Types.GlobalParams {
   args: Prisma.CategoryFindFirstArgs;
-  login?: {
-    email: string;
-    password: string;
-  };
 }
 
 const middleware: Types.NextHandler<any, Args, any> = async (req, res, next) => {
@@ -39,7 +33,7 @@ const handler: Types.RequestHandler<any, Args, Category | null> = async (req, re
   try {
     result = await prisma.category.findFirst(args);
   } catch (err) {
-    utils.saveLog(err, req, 'Error get category', body);
+    utils.saveLog(err, req, 'Error get category');
     return res.status(500).json({
       status: utils.ERROR,
       message: lang.SERVER_ERROR,
