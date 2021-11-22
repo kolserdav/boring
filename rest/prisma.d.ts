@@ -44,6 +44,7 @@ export type Category = {
   descriptionUk: string
   descriptionEn: string
   image: number
+  icon: number
   adminId: number | null
   updated_at: Date
   created_at: Date
@@ -1081,11 +1082,13 @@ export namespace Prisma {
 
   export type ImageCountOutputType = {
     Category: number
+    CategoryIcon: number
     Event: number
   }
 
   export type ImageCountOutputTypeSelect = {
     Category?: boolean
+    CategoryIcon?: boolean
     Event?: boolean
   }
 
@@ -2117,6 +2120,7 @@ export namespace Prisma {
   export type CategoryAvgAggregateOutputType = {
     id: number | null
     image: number | null
+    icon: number | null
     adminId: number | null
     parentId: number | null
   }
@@ -2124,6 +2128,7 @@ export namespace Prisma {
   export type CategorySumAggregateOutputType = {
     id: number | null
     image: number | null
+    icon: number | null
     adminId: number | null
     parentId: number | null
   }
@@ -2137,6 +2142,7 @@ export namespace Prisma {
     descriptionUk: string | null
     descriptionEn: string | null
     image: number | null
+    icon: number | null
     adminId: number | null
     updated_at: Date | null
     created_at: Date | null
@@ -2152,6 +2158,7 @@ export namespace Prisma {
     descriptionUk: string | null
     descriptionEn: string | null
     image: number | null
+    icon: number | null
     adminId: number | null
     updated_at: Date | null
     created_at: Date | null
@@ -2167,6 +2174,7 @@ export namespace Prisma {
     descriptionUk: number
     descriptionEn: number
     image: number
+    icon: number
     adminId: number
     updated_at: number
     created_at: number
@@ -2178,6 +2186,7 @@ export namespace Prisma {
   export type CategoryAvgAggregateInputType = {
     id?: true
     image?: true
+    icon?: true
     adminId?: true
     parentId?: true
   }
@@ -2185,6 +2194,7 @@ export namespace Prisma {
   export type CategorySumAggregateInputType = {
     id?: true
     image?: true
+    icon?: true
     adminId?: true
     parentId?: true
   }
@@ -2198,6 +2208,7 @@ export namespace Prisma {
     descriptionUk?: true
     descriptionEn?: true
     image?: true
+    icon?: true
     adminId?: true
     updated_at?: true
     created_at?: true
@@ -2213,6 +2224,7 @@ export namespace Prisma {
     descriptionUk?: true
     descriptionEn?: true
     image?: true
+    icon?: true
     adminId?: true
     updated_at?: true
     created_at?: true
@@ -2228,6 +2240,7 @@ export namespace Prisma {
     descriptionUk?: true
     descriptionEn?: true
     image?: true
+    icon?: true
     adminId?: true
     updated_at?: true
     created_at?: true
@@ -2336,6 +2349,7 @@ export namespace Prisma {
     descriptionUk: string
     descriptionEn: string
     image: number
+    icon: number
     adminId: number | null
     updated_at: Date
     created_at: Date
@@ -2370,9 +2384,11 @@ export namespace Prisma {
     descriptionUk?: boolean
     descriptionEn?: boolean
     image?: boolean
+    icon?: boolean
     adminId?: boolean
     User?: boolean | UserArgs
     Image?: boolean | ImageArgs
+    Icon?: boolean | ImageArgs
     updated_at?: boolean
     created_at?: boolean
     UserCategory?: boolean | UserCategoryFindManyArgs
@@ -2386,6 +2402,7 @@ export namespace Prisma {
   export type CategoryInclude = {
     User?: boolean | UserArgs
     Image?: boolean | ImageArgs
+    Icon?: boolean | ImageArgs
     UserCategory?: boolean | UserCategoryFindManyArgs
     EventCategory?: boolean | EventCategoryFindManyArgs
     Children?: boolean | CategoryFindManyArgs
@@ -2408,6 +2425,8 @@ export namespace Prisma {
         ? UserGetPayload<S['include'][P]> | null :
         P extends 'Image'
         ? ImageGetPayload<S['include'][P]> :
+        P extends 'Icon'
+        ? ImageGetPayload<S['include'][P]> :
         P extends 'UserCategory'
         ? Array < UserCategoryGetPayload<S['include'][P]>>  :
         P extends 'EventCategory'
@@ -2426,6 +2445,8 @@ export namespace Prisma {
           P extends 'User'
         ? UserGetPayload<S['select'][P]> | null :
         P extends 'Image'
+        ? ImageGetPayload<S['select'][P]> :
+        P extends 'Icon'
         ? ImageGetPayload<S['select'][P]> :
         P extends 'UserCategory'
         ? Array < UserCategoryGetPayload<S['select'][P]>>  :
@@ -2779,6 +2800,8 @@ export namespace Prisma {
     User<T extends UserArgs = {}>(args?: Subset<T, UserArgs>): CheckSelect<T, Prisma__UserClient<User | null >, Prisma__UserClient<UserGetPayload<T> | null >>;
 
     Image<T extends ImageArgs = {}>(args?: Subset<T, ImageArgs>): CheckSelect<T, Prisma__ImageClient<Image | null >, Prisma__ImageClient<ImageGetPayload<T> | null >>;
+
+    Icon<T extends ImageArgs = {}>(args?: Subset<T, ImageArgs>): CheckSelect<T, Prisma__ImageClient<Image | null >, Prisma__ImageClient<ImageGetPayload<T> | null >>;
 
     UserCategory<T extends UserCategoryFindManyArgs = {}>(args?: Subset<T, UserCategoryFindManyArgs>): CheckSelect<T, PrismaPromise<Array<UserCategory>>, PrismaPromise<Array<UserCategoryGetPayload<T>>>>;
 
@@ -7048,12 +7071,14 @@ export namespace Prisma {
     updated_at?: boolean
     created_at?: boolean
     Category?: boolean | CategoryFindManyArgs
+    CategoryIcon?: boolean | CategoryFindManyArgs
     Event?: boolean | EventFindManyArgs
     _count?: boolean | ImageCountOutputTypeArgs
   }
 
   export type ImageInclude = {
     Category?: boolean | CategoryFindManyArgs
+    CategoryIcon?: boolean | CategoryFindManyArgs
     Event?: boolean | EventFindManyArgs
     _count?: boolean | ImageCountOutputTypeArgs
   }
@@ -7071,6 +7096,8 @@ export namespace Prisma {
     [P in TrueKeys<S['include']>]: 
           P extends 'Category'
         ? Array < CategoryGetPayload<S['include'][P]>>  :
+        P extends 'CategoryIcon'
+        ? Array < CategoryGetPayload<S['include'][P]>>  :
         P extends 'Event'
         ? Array < EventGetPayload<S['include'][P]>>  :
         P extends '_count'
@@ -7081,6 +7108,8 @@ export namespace Prisma {
     [P in TrueKeys<S['select']>]: P extends keyof Image ?Image [P]
   : 
           P extends 'Category'
+        ? Array < CategoryGetPayload<S['select'][P]>>  :
+        P extends 'CategoryIcon'
         ? Array < CategoryGetPayload<S['select'][P]>>  :
         P extends 'Event'
         ? Array < EventGetPayload<S['select'][P]>>  :
@@ -7426,6 +7455,8 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
     Category<T extends CategoryFindManyArgs = {}>(args?: Subset<T, CategoryFindManyArgs>): CheckSelect<T, PrismaPromise<Array<Category>>, PrismaPromise<Array<CategoryGetPayload<T>>>>;
+
+    CategoryIcon<T extends CategoryFindManyArgs = {}>(args?: Subset<T, CategoryFindManyArgs>): CheckSelect<T, PrismaPromise<Array<Category>>, PrismaPromise<Array<CategoryGetPayload<T>>>>;
 
     Event<T extends EventFindManyArgs = {}>(args?: Subset<T, EventFindManyArgs>): CheckSelect<T, PrismaPromise<Array<Event>>, PrismaPromise<Array<EventGetPayload<T>>>>;
 
@@ -7775,6 +7806,7 @@ export namespace Prisma {
     descriptionUk: 'descriptionUk',
     descriptionEn: 'descriptionEn',
     image: 'image',
+    icon: 'icon',
     adminId: 'adminId',
     updated_at: 'updated_at',
     created_at: 'created_at',
@@ -7962,9 +7994,11 @@ export namespace Prisma {
     descriptionUk?: StringFilter | string
     descriptionEn?: StringFilter | string
     image?: IntFilter | number
+    icon?: IntFilter | number
     adminId?: IntNullableFilter | number | null
     User?: XOR<UserRelationFilter, UserWhereInput> | null
     Image?: XOR<ImageRelationFilter, ImageWhereInput>
+    Icon?: XOR<ImageRelationFilter, ImageWhereInput>
     updated_at?: DateTimeFilter | Date | string
     created_at?: DateTimeFilter | Date | string
     UserCategory?: UserCategoryListRelationFilter
@@ -7983,9 +8017,11 @@ export namespace Prisma {
     descriptionUk?: SortOrder
     descriptionEn?: SortOrder
     image?: SortOrder
+    icon?: SortOrder
     adminId?: SortOrder
     User?: UserOrderByWithRelationInput
     Image?: ImageOrderByWithRelationInput
+    Icon?: ImageOrderByWithRelationInput
     updated_at?: SortOrder
     created_at?: SortOrder
     UserCategory?: UserCategoryOrderByRelationAggregateInput
@@ -8011,6 +8047,7 @@ export namespace Prisma {
     descriptionUk?: SortOrder
     descriptionEn?: SortOrder
     image?: SortOrder
+    icon?: SortOrder
     adminId?: SortOrder
     updated_at?: SortOrder
     created_at?: SortOrder
@@ -8034,6 +8071,7 @@ export namespace Prisma {
     descriptionUk?: StringWithAggregatesFilter | string
     descriptionEn?: StringWithAggregatesFilter | string
     image?: IntWithAggregatesFilter | number
+    icon?: IntWithAggregatesFilter | number
     adminId?: IntNullableWithAggregatesFilter | number | null
     updated_at?: DateTimeWithAggregatesFilter | Date | string
     created_at?: DateTimeWithAggregatesFilter | Date | string
@@ -8293,6 +8331,7 @@ export namespace Prisma {
     updated_at?: DateTimeFilter | Date | string
     created_at?: DateTimeFilter | Date | string
     Category?: CategoryListRelationFilter
+    CategoryIcon?: CategoryListRelationFilter
     Event?: EventListRelationFilter
   }
 
@@ -8310,6 +8349,7 @@ export namespace Prisma {
     updated_at?: SortOrder
     created_at?: SortOrder
     Category?: CategoryOrderByRelationAggregateInput
+    CategoryIcon?: CategoryOrderByRelationAggregateInput
     Event?: EventOrderByRelationAggregateInput
   }
 
@@ -8485,6 +8525,7 @@ export namespace Prisma {
     created_at?: Date | string
     User?: UserCreateNestedOneWithoutCategoryInput
     Image: ImageCreateNestedOneWithoutCategoryInput
+    Icon: ImageCreateNestedOneWithoutCategoryIconInput
     UserCategory?: UserCategoryCreateNestedManyWithoutCategoryInput
     EventCategory?: EventCategoryCreateNestedManyWithoutCategoryInput
     Children?: CategoryCreateNestedManyWithoutParentInput
@@ -8500,6 +8541,7 @@ export namespace Prisma {
     descriptionUk: string
     descriptionEn: string
     image: number
+    icon: number
     adminId?: number | null
     updated_at?: Date | string
     created_at?: Date | string
@@ -8520,6 +8562,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     User?: UserUpdateOneWithoutCategoryInput
     Image?: ImageUpdateOneRequiredWithoutCategoryInput
+    Icon?: ImageUpdateOneRequiredWithoutCategoryIconInput
     UserCategory?: UserCategoryUpdateManyWithoutCategoryInput
     EventCategory?: EventCategoryUpdateManyWithoutCategoryInput
     Children?: CategoryUpdateManyWithoutParentInput
@@ -8535,6 +8578,7 @@ export namespace Prisma {
     descriptionUk?: StringFieldUpdateOperationsInput | string
     descriptionEn?: StringFieldUpdateOperationsInput | string
     image?: IntFieldUpdateOperationsInput | number
+    icon?: IntFieldUpdateOperationsInput | number
     adminId?: NullableIntFieldUpdateOperationsInput | number | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -8553,6 +8597,7 @@ export namespace Prisma {
     descriptionUk: string
     descriptionEn: string
     image: number
+    icon: number
     adminId?: number | null
     updated_at?: Date | string
     created_at?: Date | string
@@ -8579,6 +8624,7 @@ export namespace Prisma {
     descriptionUk?: StringFieldUpdateOperationsInput | string
     descriptionEn?: StringFieldUpdateOperationsInput | string
     image?: IntFieldUpdateOperationsInput | number
+    icon?: IntFieldUpdateOperationsInput | number
     adminId?: NullableIntFieldUpdateOperationsInput | number | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -8859,6 +8905,7 @@ export namespace Prisma {
     updated_at?: Date | string
     created_at?: Date | string
     Category?: CategoryCreateNestedManyWithoutImageInput
+    CategoryIcon?: CategoryCreateNestedManyWithoutIconInput
     Event?: EventCreateNestedManyWithoutImageInput
   }
 
@@ -8876,6 +8923,7 @@ export namespace Prisma {
     updated_at?: Date | string
     created_at?: Date | string
     Category?: CategoryUncheckedCreateNestedManyWithoutImageInput
+    CategoryIcon?: CategoryUncheckedCreateNestedManyWithoutIconInput
     Event?: EventUncheckedCreateNestedManyWithoutImageInput
   }
 
@@ -8892,6 +8940,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Category?: CategoryUpdateManyWithoutImageInput
+    CategoryIcon?: CategoryUpdateManyWithoutIconInput
     Event?: EventUpdateManyWithoutImageInput
   }
 
@@ -8909,6 +8958,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Category?: CategoryUncheckedUpdateManyWithoutImageInput
+    CategoryIcon?: CategoryUncheckedUpdateManyWithoutIconInput
     Event?: EventUncheckedUpdateManyWithoutImageInput
   }
 
@@ -9263,6 +9313,7 @@ export namespace Prisma {
     descriptionUk?: SortOrder
     descriptionEn?: SortOrder
     image?: SortOrder
+    icon?: SortOrder
     adminId?: SortOrder
     updated_at?: SortOrder
     created_at?: SortOrder
@@ -9272,6 +9323,7 @@ export namespace Prisma {
   export type CategoryAvgOrderByAggregateInput = {
     id?: SortOrder
     image?: SortOrder
+    icon?: SortOrder
     adminId?: SortOrder
     parentId?: SortOrder
   }
@@ -9285,6 +9337,7 @@ export namespace Prisma {
     descriptionUk?: SortOrder
     descriptionEn?: SortOrder
     image?: SortOrder
+    icon?: SortOrder
     adminId?: SortOrder
     updated_at?: SortOrder
     created_at?: SortOrder
@@ -9300,6 +9353,7 @@ export namespace Prisma {
     descriptionUk?: SortOrder
     descriptionEn?: SortOrder
     image?: SortOrder
+    icon?: SortOrder
     adminId?: SortOrder
     updated_at?: SortOrder
     created_at?: SortOrder
@@ -9309,6 +9363,7 @@ export namespace Prisma {
   export type CategorySumOrderByAggregateInput = {
     id?: SortOrder
     image?: SortOrder
+    icon?: SortOrder
     adminId?: SortOrder
     parentId?: SortOrder
   }
@@ -9783,6 +9838,12 @@ export namespace Prisma {
     connect?: ImageWhereUniqueInput
   }
 
+  export type ImageCreateNestedOneWithoutCategoryIconInput = {
+    create?: XOR<ImageCreateWithoutCategoryIconInput, ImageUncheckedCreateWithoutCategoryIconInput>
+    connectOrCreate?: ImageCreateOrConnectWithoutCategoryIconInput
+    connect?: ImageWhereUniqueInput
+  }
+
   export type UserCategoryCreateNestedManyWithoutCategoryInput = {
     create?: XOR<Enumerable<UserCategoryCreateWithoutCategoryInput>, Enumerable<UserCategoryUncheckedCreateWithoutCategoryInput>>
     connectOrCreate?: Enumerable<UserCategoryCreateOrConnectWithoutCategoryInput>
@@ -9847,6 +9908,14 @@ export namespace Prisma {
     upsert?: ImageUpsertWithoutCategoryInput
     connect?: ImageWhereUniqueInput
     update?: XOR<ImageUpdateWithoutCategoryInput, ImageUncheckedUpdateWithoutCategoryInput>
+  }
+
+  export type ImageUpdateOneRequiredWithoutCategoryIconInput = {
+    create?: XOR<ImageCreateWithoutCategoryIconInput, ImageUncheckedCreateWithoutCategoryIconInput>
+    connectOrCreate?: ImageCreateOrConnectWithoutCategoryIconInput
+    upsert?: ImageUpsertWithoutCategoryIconInput
+    connect?: ImageWhereUniqueInput
+    update?: XOR<ImageUpdateWithoutCategoryIconInput, ImageUncheckedUpdateWithoutCategoryIconInput>
   }
 
   export type UserCategoryUpdateManyWithoutCategoryInput = {
@@ -10156,6 +10225,13 @@ export namespace Prisma {
     connect?: Enumerable<CategoryWhereUniqueInput>
   }
 
+  export type CategoryCreateNestedManyWithoutIconInput = {
+    create?: XOR<Enumerable<CategoryCreateWithoutIconInput>, Enumerable<CategoryUncheckedCreateWithoutIconInput>>
+    connectOrCreate?: Enumerable<CategoryCreateOrConnectWithoutIconInput>
+    createMany?: CategoryCreateManyIconInputEnvelope
+    connect?: Enumerable<CategoryWhereUniqueInput>
+  }
+
   export type EventCreateNestedManyWithoutImageInput = {
     create?: XOR<Enumerable<EventCreateWithoutImageInput>, Enumerable<EventUncheckedCreateWithoutImageInput>>
     connectOrCreate?: Enumerable<EventCreateOrConnectWithoutImageInput>
@@ -10167,6 +10243,13 @@ export namespace Prisma {
     create?: XOR<Enumerable<CategoryCreateWithoutImageInput>, Enumerable<CategoryUncheckedCreateWithoutImageInput>>
     connectOrCreate?: Enumerable<CategoryCreateOrConnectWithoutImageInput>
     createMany?: CategoryCreateManyImageInputEnvelope
+    connect?: Enumerable<CategoryWhereUniqueInput>
+  }
+
+  export type CategoryUncheckedCreateNestedManyWithoutIconInput = {
+    create?: XOR<Enumerable<CategoryCreateWithoutIconInput>, Enumerable<CategoryUncheckedCreateWithoutIconInput>>
+    connectOrCreate?: Enumerable<CategoryCreateOrConnectWithoutIconInput>
+    createMany?: CategoryCreateManyIconInputEnvelope
     connect?: Enumerable<CategoryWhereUniqueInput>
   }
 
@@ -10195,6 +10278,20 @@ export namespace Prisma {
     deleteMany?: Enumerable<CategoryScalarWhereInput>
   }
 
+  export type CategoryUpdateManyWithoutIconInput = {
+    create?: XOR<Enumerable<CategoryCreateWithoutIconInput>, Enumerable<CategoryUncheckedCreateWithoutIconInput>>
+    connectOrCreate?: Enumerable<CategoryCreateOrConnectWithoutIconInput>
+    upsert?: Enumerable<CategoryUpsertWithWhereUniqueWithoutIconInput>
+    createMany?: CategoryCreateManyIconInputEnvelope
+    set?: Enumerable<CategoryWhereUniqueInput>
+    disconnect?: Enumerable<CategoryWhereUniqueInput>
+    delete?: Enumerable<CategoryWhereUniqueInput>
+    connect?: Enumerable<CategoryWhereUniqueInput>
+    update?: Enumerable<CategoryUpdateWithWhereUniqueWithoutIconInput>
+    updateMany?: Enumerable<CategoryUpdateManyWithWhereWithoutIconInput>
+    deleteMany?: Enumerable<CategoryScalarWhereInput>
+  }
+
   export type EventUpdateManyWithoutImageInput = {
     create?: XOR<Enumerable<EventCreateWithoutImageInput>, Enumerable<EventUncheckedCreateWithoutImageInput>>
     connectOrCreate?: Enumerable<EventCreateOrConnectWithoutImageInput>
@@ -10220,6 +10317,20 @@ export namespace Prisma {
     connect?: Enumerable<CategoryWhereUniqueInput>
     update?: Enumerable<CategoryUpdateWithWhereUniqueWithoutImageInput>
     updateMany?: Enumerable<CategoryUpdateManyWithWhereWithoutImageInput>
+    deleteMany?: Enumerable<CategoryScalarWhereInput>
+  }
+
+  export type CategoryUncheckedUpdateManyWithoutIconInput = {
+    create?: XOR<Enumerable<CategoryCreateWithoutIconInput>, Enumerable<CategoryUncheckedCreateWithoutIconInput>>
+    connectOrCreate?: Enumerable<CategoryCreateOrConnectWithoutIconInput>
+    upsert?: Enumerable<CategoryUpsertWithWhereUniqueWithoutIconInput>
+    createMany?: CategoryCreateManyIconInputEnvelope
+    set?: Enumerable<CategoryWhereUniqueInput>
+    disconnect?: Enumerable<CategoryWhereUniqueInput>
+    delete?: Enumerable<CategoryWhereUniqueInput>
+    connect?: Enumerable<CategoryWhereUniqueInput>
+    update?: Enumerable<CategoryUpdateWithWhereUniqueWithoutIconInput>
+    updateMany?: Enumerable<CategoryUpdateManyWithWhereWithoutIconInput>
     deleteMany?: Enumerable<CategoryScalarWhereInput>
   }
 
@@ -10482,6 +10593,7 @@ export namespace Prisma {
     updated_at?: Date | string
     created_at?: Date | string
     Image: ImageCreateNestedOneWithoutCategoryInput
+    Icon: ImageCreateNestedOneWithoutCategoryIconInput
     UserCategory?: UserCategoryCreateNestedManyWithoutCategoryInput
     EventCategory?: EventCategoryCreateNestedManyWithoutCategoryInput
     Children?: CategoryCreateNestedManyWithoutParentInput
@@ -10497,6 +10609,7 @@ export namespace Prisma {
     descriptionUk: string
     descriptionEn: string
     image: number
+    icon: number
     updated_at?: Date | string
     created_at?: Date | string
     parentId?: number | null
@@ -10630,6 +10743,7 @@ export namespace Prisma {
     descriptionUk?: StringFilter | string
     descriptionEn?: StringFilter | string
     image?: IntFilter | number
+    icon?: IntFilter | number
     adminId?: IntNullableFilter | number | null
     updated_at?: DateTimeFilter | Date | string
     created_at?: DateTimeFilter | Date | string
@@ -10776,6 +10890,7 @@ export namespace Prisma {
     size: number
     updated_at?: Date | string
     created_at?: Date | string
+    CategoryIcon?: CategoryCreateNestedManyWithoutIconInput
     Event?: EventCreateNestedManyWithoutImageInput
   }
 
@@ -10792,12 +10907,51 @@ export namespace Prisma {
     size: number
     updated_at?: Date | string
     created_at?: Date | string
+    CategoryIcon?: CategoryUncheckedCreateNestedManyWithoutIconInput
     Event?: EventUncheckedCreateNestedManyWithoutImageInput
   }
 
   export type ImageCreateOrConnectWithoutCategoryInput = {
     where: ImageWhereUniqueInput
     create: XOR<ImageCreateWithoutCategoryInput, ImageUncheckedCreateWithoutCategoryInput>
+  }
+
+  export type ImageCreateWithoutCategoryIconInput = {
+    fieldname: string
+    originalname: string
+    encoding: string
+    mimetype: string
+    destination: string
+    origin: ImagOrigin
+    filename: string
+    path: string
+    size: number
+    updated_at?: Date | string
+    created_at?: Date | string
+    Category?: CategoryCreateNestedManyWithoutImageInput
+    Event?: EventCreateNestedManyWithoutImageInput
+  }
+
+  export type ImageUncheckedCreateWithoutCategoryIconInput = {
+    id?: number
+    fieldname: string
+    originalname: string
+    encoding: string
+    mimetype: string
+    destination: string
+    origin: ImagOrigin
+    filename: string
+    path: string
+    size: number
+    updated_at?: Date | string
+    created_at?: Date | string
+    Category?: CategoryUncheckedCreateNestedManyWithoutImageInput
+    Event?: EventUncheckedCreateNestedManyWithoutImageInput
+  }
+
+  export type ImageCreateOrConnectWithoutCategoryIconInput = {
+    where: ImageWhereUniqueInput
+    create: XOR<ImageCreateWithoutCategoryIconInput, ImageUncheckedCreateWithoutCategoryIconInput>
   }
 
   export type UserCategoryCreateWithoutCategoryInput = {
@@ -10859,6 +11013,7 @@ export namespace Prisma {
     created_at?: Date | string
     User?: UserCreateNestedOneWithoutCategoryInput
     Image: ImageCreateNestedOneWithoutCategoryInput
+    Icon: ImageCreateNestedOneWithoutCategoryIconInput
     UserCategory?: UserCategoryCreateNestedManyWithoutCategoryInput
     EventCategory?: EventCategoryCreateNestedManyWithoutCategoryInput
     Children?: CategoryCreateNestedManyWithoutParentInput
@@ -10873,6 +11028,7 @@ export namespace Prisma {
     descriptionUk: string
     descriptionEn: string
     image: number
+    icon: number
     adminId?: number | null
     updated_at?: Date | string
     created_at?: Date | string
@@ -10902,6 +11058,7 @@ export namespace Prisma {
     created_at?: Date | string
     User?: UserCreateNestedOneWithoutCategoryInput
     Image: ImageCreateNestedOneWithoutCategoryInput
+    Icon: ImageCreateNestedOneWithoutCategoryIconInput
     UserCategory?: UserCategoryCreateNestedManyWithoutCategoryInput
     EventCategory?: EventCategoryCreateNestedManyWithoutCategoryInput
     Parent?: CategoryCreateNestedOneWithoutChildrenInput
@@ -10916,6 +11073,7 @@ export namespace Prisma {
     descriptionUk: string
     descriptionEn: string
     image: number
+    icon: number
     adminId?: number | null
     updated_at?: Date | string
     created_at?: Date | string
@@ -10986,6 +11144,7 @@ export namespace Prisma {
     size?: IntFieldUpdateOperationsInput | number
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    CategoryIcon?: CategoryUpdateManyWithoutIconInput
     Event?: EventUpdateManyWithoutImageInput
   }
 
@@ -11002,6 +11161,45 @@ export namespace Prisma {
     size?: IntFieldUpdateOperationsInput | number
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    CategoryIcon?: CategoryUncheckedUpdateManyWithoutIconInput
+    Event?: EventUncheckedUpdateManyWithoutImageInput
+  }
+
+  export type ImageUpsertWithoutCategoryIconInput = {
+    update: XOR<ImageUpdateWithoutCategoryIconInput, ImageUncheckedUpdateWithoutCategoryIconInput>
+    create: XOR<ImageCreateWithoutCategoryIconInput, ImageUncheckedCreateWithoutCategoryIconInput>
+  }
+
+  export type ImageUpdateWithoutCategoryIconInput = {
+    fieldname?: StringFieldUpdateOperationsInput | string
+    originalname?: StringFieldUpdateOperationsInput | string
+    encoding?: StringFieldUpdateOperationsInput | string
+    mimetype?: StringFieldUpdateOperationsInput | string
+    destination?: StringFieldUpdateOperationsInput | string
+    origin?: EnumImagOriginFieldUpdateOperationsInput | ImagOrigin
+    filename?: StringFieldUpdateOperationsInput | string
+    path?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Category?: CategoryUpdateManyWithoutImageInput
+    Event?: EventUpdateManyWithoutImageInput
+  }
+
+  export type ImageUncheckedUpdateWithoutCategoryIconInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    fieldname?: StringFieldUpdateOperationsInput | string
+    originalname?: StringFieldUpdateOperationsInput | string
+    encoding?: StringFieldUpdateOperationsInput | string
+    mimetype?: StringFieldUpdateOperationsInput | string
+    destination?: StringFieldUpdateOperationsInput | string
+    origin?: EnumImagOriginFieldUpdateOperationsInput | ImagOrigin
+    filename?: StringFieldUpdateOperationsInput | string
+    path?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Category?: CategoryUncheckedUpdateManyWithoutImageInput
     Event?: EventUncheckedUpdateManyWithoutImageInput
   }
 
@@ -11080,6 +11278,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     User?: UserUpdateOneWithoutCategoryInput
     Image?: ImageUpdateOneRequiredWithoutCategoryInput
+    Icon?: ImageUpdateOneRequiredWithoutCategoryIconInput
     UserCategory?: UserCategoryUpdateManyWithoutCategoryInput
     EventCategory?: EventCategoryUpdateManyWithoutCategoryInput
     Parent?: CategoryUpdateOneWithoutChildrenInput
@@ -11094,6 +11293,7 @@ export namespace Prisma {
     descriptionUk?: StringFieldUpdateOperationsInput | string
     descriptionEn?: StringFieldUpdateOperationsInput | string
     image?: IntFieldUpdateOperationsInput | number
+    icon?: IntFieldUpdateOperationsInput | number
     adminId?: NullableIntFieldUpdateOperationsInput | number | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11153,6 +11353,7 @@ export namespace Prisma {
     created_at?: Date | string
     User?: UserCreateNestedOneWithoutCategoryInput
     Image: ImageCreateNestedOneWithoutCategoryInput
+    Icon: ImageCreateNestedOneWithoutCategoryIconInput
     EventCategory?: EventCategoryCreateNestedManyWithoutCategoryInput
     Children?: CategoryCreateNestedManyWithoutParentInput
     Parent?: CategoryCreateNestedOneWithoutChildrenInput
@@ -11167,6 +11368,7 @@ export namespace Prisma {
     descriptionUk: string
     descriptionEn: string
     image: number
+    icon: number
     adminId?: number | null
     updated_at?: Date | string
     created_at?: Date | string
@@ -11236,6 +11438,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     User?: UserUpdateOneWithoutCategoryInput
     Image?: ImageUpdateOneRequiredWithoutCategoryInput
+    Icon?: ImageUpdateOneRequiredWithoutCategoryIconInput
     EventCategory?: EventCategoryUpdateManyWithoutCategoryInput
     Children?: CategoryUpdateManyWithoutParentInput
     Parent?: CategoryUpdateOneWithoutChildrenInput
@@ -11250,6 +11453,7 @@ export namespace Prisma {
     descriptionUk?: StringFieldUpdateOperationsInput | string
     descriptionEn?: StringFieldUpdateOperationsInput | string
     image?: IntFieldUpdateOperationsInput | number
+    icon?: IntFieldUpdateOperationsInput | number
     adminId?: NullableIntFieldUpdateOperationsInput | number | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11311,6 +11515,7 @@ export namespace Prisma {
     updated_at?: Date | string
     created_at?: Date | string
     Category?: CategoryCreateNestedManyWithoutImageInput
+    CategoryIcon?: CategoryCreateNestedManyWithoutIconInput
   }
 
   export type ImageUncheckedCreateWithoutEventInput = {
@@ -11327,6 +11532,7 @@ export namespace Prisma {
     updated_at?: Date | string
     created_at?: Date | string
     Category?: CategoryUncheckedCreateNestedManyWithoutImageInput
+    CategoryIcon?: CategoryUncheckedCreateNestedManyWithoutIconInput
   }
 
   export type ImageCreateOrConnectWithoutEventInput = {
@@ -11438,6 +11644,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Category?: CategoryUpdateManyWithoutImageInput
+    CategoryIcon?: CategoryUpdateManyWithoutIconInput
   }
 
   export type ImageUncheckedUpdateWithoutEventInput = {
@@ -11454,6 +11661,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Category?: CategoryUncheckedUpdateManyWithoutImageInput
+    CategoryIcon?: CategoryUncheckedUpdateManyWithoutIconInput
   }
 
   export type FavoritesUpsertWithWhereUniqueWithoutEventInput = {
@@ -11499,6 +11707,7 @@ export namespace Prisma {
     created_at?: Date | string
     User?: UserCreateNestedOneWithoutCategoryInput
     Image: ImageCreateNestedOneWithoutCategoryInput
+    Icon: ImageCreateNestedOneWithoutCategoryIconInput
     UserCategory?: UserCategoryCreateNestedManyWithoutCategoryInput
     Children?: CategoryCreateNestedManyWithoutParentInput
     Parent?: CategoryCreateNestedOneWithoutChildrenInput
@@ -11513,6 +11722,7 @@ export namespace Prisma {
     descriptionUk: string
     descriptionEn: string
     image: number
+    icon: number
     adminId?: number | null
     updated_at?: Date | string
     created_at?: Date | string
@@ -11576,6 +11786,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     User?: UserUpdateOneWithoutCategoryInput
     Image?: ImageUpdateOneRequiredWithoutCategoryInput
+    Icon?: ImageUpdateOneRequiredWithoutCategoryIconInput
     UserCategory?: UserCategoryUpdateManyWithoutCategoryInput
     Children?: CategoryUpdateManyWithoutParentInput
     Parent?: CategoryUpdateOneWithoutChildrenInput
@@ -11590,6 +11801,7 @@ export namespace Prisma {
     descriptionUk?: StringFieldUpdateOperationsInput | string
     descriptionEn?: StringFieldUpdateOperationsInput | string
     image?: IntFieldUpdateOperationsInput | number
+    icon?: IntFieldUpdateOperationsInput | number
     adminId?: NullableIntFieldUpdateOperationsInput | number | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -11790,6 +12002,7 @@ export namespace Prisma {
     updated_at?: Date | string
     created_at?: Date | string
     User?: UserCreateNestedOneWithoutCategoryInput
+    Icon: ImageCreateNestedOneWithoutCategoryIconInput
     UserCategory?: UserCategoryCreateNestedManyWithoutCategoryInput
     EventCategory?: EventCategoryCreateNestedManyWithoutCategoryInput
     Children?: CategoryCreateNestedManyWithoutParentInput
@@ -11804,6 +12017,7 @@ export namespace Prisma {
     descriptionRu: string
     descriptionUk: string
     descriptionEn: string
+    icon: number
     adminId?: number | null
     updated_at?: Date | string
     created_at?: Date | string
@@ -11820,6 +12034,51 @@ export namespace Prisma {
 
   export type CategoryCreateManyImageInputEnvelope = {
     data: Enumerable<CategoryCreateManyImageInput>
+    skipDuplicates?: boolean
+  }
+
+  export type CategoryCreateWithoutIconInput = {
+    titleRu: string
+    titleUk: string
+    titleEn: string
+    descriptionRu: string
+    descriptionUk: string
+    descriptionEn: string
+    updated_at?: Date | string
+    created_at?: Date | string
+    User?: UserCreateNestedOneWithoutCategoryInput
+    Image: ImageCreateNestedOneWithoutCategoryInput
+    UserCategory?: UserCategoryCreateNestedManyWithoutCategoryInput
+    EventCategory?: EventCategoryCreateNestedManyWithoutCategoryInput
+    Children?: CategoryCreateNestedManyWithoutParentInput
+    Parent?: CategoryCreateNestedOneWithoutChildrenInput
+  }
+
+  export type CategoryUncheckedCreateWithoutIconInput = {
+    id?: number
+    titleRu: string
+    titleUk: string
+    titleEn: string
+    descriptionRu: string
+    descriptionUk: string
+    descriptionEn: string
+    image: number
+    adminId?: number | null
+    updated_at?: Date | string
+    created_at?: Date | string
+    parentId?: number | null
+    UserCategory?: UserCategoryUncheckedCreateNestedManyWithoutCategoryInput
+    EventCategory?: EventCategoryUncheckedCreateNestedManyWithoutCategoryInput
+    Children?: CategoryUncheckedCreateNestedManyWithoutParentInput
+  }
+
+  export type CategoryCreateOrConnectWithoutIconInput = {
+    where: CategoryWhereUniqueInput
+    create: XOR<CategoryCreateWithoutIconInput, CategoryUncheckedCreateWithoutIconInput>
+  }
+
+  export type CategoryCreateManyIconInputEnvelope = {
+    data: Enumerable<CategoryCreateManyIconInput>
     skipDuplicates?: boolean
   }
 
@@ -11878,6 +12137,22 @@ export namespace Prisma {
     data: XOR<CategoryUpdateManyMutationInput, CategoryUncheckedUpdateManyWithoutCategoryInput>
   }
 
+  export type CategoryUpsertWithWhereUniqueWithoutIconInput = {
+    where: CategoryWhereUniqueInput
+    update: XOR<CategoryUpdateWithoutIconInput, CategoryUncheckedUpdateWithoutIconInput>
+    create: XOR<CategoryCreateWithoutIconInput, CategoryUncheckedCreateWithoutIconInput>
+  }
+
+  export type CategoryUpdateWithWhereUniqueWithoutIconInput = {
+    where: CategoryWhereUniqueInput
+    data: XOR<CategoryUpdateWithoutIconInput, CategoryUncheckedUpdateWithoutIconInput>
+  }
+
+  export type CategoryUpdateManyWithWhereWithoutIconInput = {
+    where: CategoryScalarWhereInput
+    data: XOR<CategoryUpdateManyMutationInput, CategoryUncheckedUpdateManyWithoutCategoryIconInput>
+  }
+
   export type EventUpsertWithWhereUniqueWithoutImageInput = {
     where: EventWhereUniqueInput
     update: XOR<EventUpdateWithoutImageInput, EventUncheckedUpdateWithoutImageInput>
@@ -11903,6 +12178,7 @@ export namespace Prisma {
     descriptionUk: string
     descriptionEn: string
     image: number
+    icon: number
     updated_at?: Date | string
     created_at?: Date | string
     parentId?: number | null
@@ -11946,6 +12222,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Image?: ImageUpdateOneRequiredWithoutCategoryInput
+    Icon?: ImageUpdateOneRequiredWithoutCategoryIconInput
     UserCategory?: UserCategoryUpdateManyWithoutCategoryInput
     EventCategory?: EventCategoryUpdateManyWithoutCategoryInput
     Children?: CategoryUpdateManyWithoutParentInput
@@ -11961,6 +12238,7 @@ export namespace Prisma {
     descriptionUk?: StringFieldUpdateOperationsInput | string
     descriptionEn?: StringFieldUpdateOperationsInput | string
     image?: IntFieldUpdateOperationsInput | number
+    icon?: IntFieldUpdateOperationsInput | number
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     parentId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -11978,6 +12256,7 @@ export namespace Prisma {
     descriptionUk?: StringFieldUpdateOperationsInput | string
     descriptionEn?: StringFieldUpdateOperationsInput | string
     image?: IntFieldUpdateOperationsInput | number
+    icon?: IntFieldUpdateOperationsInput | number
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     parentId?: NullableIntFieldUpdateOperationsInput | number | null
@@ -12092,6 +12371,7 @@ export namespace Prisma {
     descriptionUk: string
     descriptionEn: string
     image: number
+    icon: number
     adminId?: number | null
     updated_at?: Date | string
     created_at?: Date | string
@@ -12143,6 +12423,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     User?: UserUpdateOneWithoutCategoryInput
     Image?: ImageUpdateOneRequiredWithoutCategoryInput
+    Icon?: ImageUpdateOneRequiredWithoutCategoryIconInput
     UserCategory?: UserCategoryUpdateManyWithoutCategoryInput
     EventCategory?: EventCategoryUpdateManyWithoutCategoryInput
     Children?: CategoryUpdateManyWithoutParentInput
@@ -12157,6 +12438,7 @@ export namespace Prisma {
     descriptionUk?: StringFieldUpdateOperationsInput | string
     descriptionEn?: StringFieldUpdateOperationsInput | string
     image?: IntFieldUpdateOperationsInput | number
+    icon?: IntFieldUpdateOperationsInput | number
     adminId?: NullableIntFieldUpdateOperationsInput | number | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12174,6 +12456,7 @@ export namespace Prisma {
     descriptionUk?: StringFieldUpdateOperationsInput | string
     descriptionEn?: StringFieldUpdateOperationsInput | string
     image?: IntFieldUpdateOperationsInput | number
+    icon?: IntFieldUpdateOperationsInput | number
     adminId?: NullableIntFieldUpdateOperationsInput | number | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12227,6 +12510,22 @@ export namespace Prisma {
     descriptionRu: string
     descriptionUk: string
     descriptionEn: string
+    icon: number
+    adminId?: number | null
+    updated_at?: Date | string
+    created_at?: Date | string
+    parentId?: number | null
+  }
+
+  export type CategoryCreateManyIconInput = {
+    id?: number
+    titleRu: string
+    titleUk: string
+    titleEn: string
+    descriptionRu: string
+    descriptionUk: string
+    descriptionEn: string
+    image: number
     adminId?: number | null
     updated_at?: Date | string
     created_at?: Date | string
@@ -12256,6 +12555,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     User?: UserUpdateOneWithoutCategoryInput
+    Icon?: ImageUpdateOneRequiredWithoutCategoryIconInput
     UserCategory?: UserCategoryUpdateManyWithoutCategoryInput
     EventCategory?: EventCategoryUpdateManyWithoutCategoryInput
     Children?: CategoryUpdateManyWithoutParentInput
@@ -12270,6 +12570,7 @@ export namespace Prisma {
     descriptionRu?: StringFieldUpdateOperationsInput | string
     descriptionUk?: StringFieldUpdateOperationsInput | string
     descriptionEn?: StringFieldUpdateOperationsInput | string
+    icon?: IntFieldUpdateOperationsInput | number
     adminId?: NullableIntFieldUpdateOperationsInput | number | null
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12277,6 +12578,56 @@ export namespace Prisma {
     UserCategory?: UserCategoryUncheckedUpdateManyWithoutCategoryInput
     EventCategory?: EventCategoryUncheckedUpdateManyWithoutCategoryInput
     Children?: CategoryUncheckedUpdateManyWithoutParentInput
+  }
+
+  export type CategoryUpdateWithoutIconInput = {
+    titleRu?: StringFieldUpdateOperationsInput | string
+    titleUk?: StringFieldUpdateOperationsInput | string
+    titleEn?: StringFieldUpdateOperationsInput | string
+    descriptionRu?: StringFieldUpdateOperationsInput | string
+    descriptionUk?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: StringFieldUpdateOperationsInput | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    User?: UserUpdateOneWithoutCategoryInput
+    Image?: ImageUpdateOneRequiredWithoutCategoryInput
+    UserCategory?: UserCategoryUpdateManyWithoutCategoryInput
+    EventCategory?: EventCategoryUpdateManyWithoutCategoryInput
+    Children?: CategoryUpdateManyWithoutParentInput
+    Parent?: CategoryUpdateOneWithoutChildrenInput
+  }
+
+  export type CategoryUncheckedUpdateWithoutIconInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    titleRu?: StringFieldUpdateOperationsInput | string
+    titleUk?: StringFieldUpdateOperationsInput | string
+    titleEn?: StringFieldUpdateOperationsInput | string
+    descriptionRu?: StringFieldUpdateOperationsInput | string
+    descriptionUk?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: StringFieldUpdateOperationsInput | string
+    image?: IntFieldUpdateOperationsInput | number
+    adminId?: NullableIntFieldUpdateOperationsInput | number | null
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    parentId?: NullableIntFieldUpdateOperationsInput | number | null
+    UserCategory?: UserCategoryUncheckedUpdateManyWithoutCategoryInput
+    EventCategory?: EventCategoryUncheckedUpdateManyWithoutCategoryInput
+    Children?: CategoryUncheckedUpdateManyWithoutParentInput
+  }
+
+  export type CategoryUncheckedUpdateManyWithoutCategoryIconInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    titleRu?: StringFieldUpdateOperationsInput | string
+    titleUk?: StringFieldUpdateOperationsInput | string
+    titleEn?: StringFieldUpdateOperationsInput | string
+    descriptionRu?: StringFieldUpdateOperationsInput | string
+    descriptionUk?: StringFieldUpdateOperationsInput | string
+    descriptionEn?: StringFieldUpdateOperationsInput | string
+    image?: IntFieldUpdateOperationsInput | number
+    adminId?: NullableIntFieldUpdateOperationsInput | number | null
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    parentId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type EventUpdateWithoutImageInput = {

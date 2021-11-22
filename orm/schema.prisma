@@ -50,9 +50,11 @@ model Category {
   descriptionUk String          @db.MediumText
   descriptionEn String          @db.MediumText
   image         Int
+  icon          Int
   adminId       Int? // Ид админа создавшего или изменившего категорию
   User          User?           @relation(fields: [adminId], references: [id])
-  Image         Image           @relation(fields: [image], references: [id])
+  Image         Image           @relation("Image", fields: [image], references: [id])
+  Icon          Image           @relation("Icon", fields: [icon], references: [id])
   updated_at    DateTime        @default(now())
   created_at    DateTime        @default(now())
   UserCategory  UserCategory[] // связь с пользователями привязавшими себе эту категорию
@@ -129,7 +131,8 @@ model Image {
   size         Int
   updated_at   DateTime   @default(now())
   created_at   DateTime   @default(now())
-  Category     Category[]
+  Category     Category[] @relation("Image")
+  CategoryIcon Category[] @relation("Icon")
   Event        Event[]
 
   @@index([origin])
