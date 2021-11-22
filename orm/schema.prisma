@@ -129,6 +129,8 @@ model Image {
   filename     String
   path         String     @unique
   size         Int
+  width        Int
+  height       Int
   updated_at   DateTime   @default(now())
   created_at   DateTime   @default(now())
   Category     Category[] @relation("Image")

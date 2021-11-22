@@ -25,6 +25,8 @@ interface Args extends Types.GlobalParams {
 const middleware: Types.NextHandler<any, Args, any> = async (req, res, next) => {
   const { body, url } = req;
   const { args, lang } = body;
+  const { headers } = req;
+  const { width, height } = headers;
   if (url.match(/\/api\/v1\/category\/imageupload/)) {
     const { file }: any = req;
     let _file: Types.MulterFile = file ? file : {};
@@ -68,6 +70,14 @@ const middleware: Types.NextHandler<any, Args, any> = async (req, res, next) => 
         data: null,
       });
     }
+    if (!width || !height || typeof width !== 'string' || typeof height !== 'string') {
+      return res.status(400).json({
+        status: utils.WARNING,
+        message: lang.BAD_REQUEST,
+        stdErrMessage: utils.getStdErrMessage(new Error('Headers width and height is required')),
+        data: null,
+      });
+    }
     let image;
     try {
       image = await prisma.image.create({
@@ -80,6 +90,8 @@ const middleware: Types.NextHandler<any, Args, any> = async (req, res, next) => 
           mimetype,
           destination,
           path: pathname,
+          width: parseInt(width, 10),
+          height: parseInt(height, 10),
           size,
         },
       });

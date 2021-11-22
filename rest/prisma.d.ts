@@ -121,6 +121,8 @@ export type Image = {
   filename: string
   path: string
   size: number
+  width: number
+  height: number
   updated_at: Date
   created_at: Date
 }
@@ -6821,11 +6823,15 @@ export namespace Prisma {
   export type ImageAvgAggregateOutputType = {
     id: number | null
     size: number | null
+    width: number | null
+    height: number | null
   }
 
   export type ImageSumAggregateOutputType = {
     id: number | null
     size: number | null
+    width: number | null
+    height: number | null
   }
 
   export type ImageMinAggregateOutputType = {
@@ -6839,6 +6845,8 @@ export namespace Prisma {
     filename: string | null
     path: string | null
     size: number | null
+    width: number | null
+    height: number | null
     updated_at: Date | null
     created_at: Date | null
   }
@@ -6854,6 +6862,8 @@ export namespace Prisma {
     filename: string | null
     path: string | null
     size: number | null
+    width: number | null
+    height: number | null
     updated_at: Date | null
     created_at: Date | null
   }
@@ -6869,6 +6879,8 @@ export namespace Prisma {
     filename: number
     path: number
     size: number
+    width: number
+    height: number
     updated_at: number
     created_at: number
     _all: number
@@ -6878,11 +6890,15 @@ export namespace Prisma {
   export type ImageAvgAggregateInputType = {
     id?: true
     size?: true
+    width?: true
+    height?: true
   }
 
   export type ImageSumAggregateInputType = {
     id?: true
     size?: true
+    width?: true
+    height?: true
   }
 
   export type ImageMinAggregateInputType = {
@@ -6896,6 +6912,8 @@ export namespace Prisma {
     filename?: true
     path?: true
     size?: true
+    width?: true
+    height?: true
     updated_at?: true
     created_at?: true
   }
@@ -6911,6 +6929,8 @@ export namespace Prisma {
     filename?: true
     path?: true
     size?: true
+    width?: true
+    height?: true
     updated_at?: true
     created_at?: true
   }
@@ -6926,6 +6946,8 @@ export namespace Prisma {
     filename?: true
     path?: true
     size?: true
+    width?: true
+    height?: true
     updated_at?: true
     created_at?: true
     _all?: true
@@ -7034,6 +7056,8 @@ export namespace Prisma {
     filename: string
     path: string
     size: number
+    width: number
+    height: number
     updated_at: Date
     created_at: Date
     _count: ImageCountAggregateOutputType | null
@@ -7068,6 +7092,8 @@ export namespace Prisma {
     filename?: boolean
     path?: boolean
     size?: boolean
+    width?: boolean
+    height?: boolean
     updated_at?: boolean
     created_at?: boolean
     Category?: boolean | CategoryFindManyArgs
@@ -7878,6 +7904,8 @@ export namespace Prisma {
     filename: 'filename',
     path: 'path',
     size: 'size',
+    width: 'width',
+    height: 'height',
     updated_at: 'updated_at',
     created_at: 'created_at'
   };
@@ -8328,6 +8356,8 @@ export namespace Prisma {
     filename?: StringFilter | string
     path?: StringFilter | string
     size?: IntFilter | number
+    width?: IntFilter | number
+    height?: IntFilter | number
     updated_at?: DateTimeFilter | Date | string
     created_at?: DateTimeFilter | Date | string
     Category?: CategoryListRelationFilter
@@ -8346,6 +8376,8 @@ export namespace Prisma {
     filename?: SortOrder
     path?: SortOrder
     size?: SortOrder
+    width?: SortOrder
+    height?: SortOrder
     updated_at?: SortOrder
     created_at?: SortOrder
     Category?: CategoryOrderByRelationAggregateInput
@@ -8369,6 +8401,8 @@ export namespace Prisma {
     filename?: SortOrder
     path?: SortOrder
     size?: SortOrder
+    width?: SortOrder
+    height?: SortOrder
     updated_at?: SortOrder
     created_at?: SortOrder
     _count?: ImageCountOrderByAggregateInput
@@ -8392,6 +8426,8 @@ export namespace Prisma {
     filename?: StringWithAggregatesFilter | string
     path?: StringWithAggregatesFilter | string
     size?: IntWithAggregatesFilter | number
+    width?: IntWithAggregatesFilter | number
+    height?: IntWithAggregatesFilter | number
     updated_at?: DateTimeWithAggregatesFilter | Date | string
     created_at?: DateTimeWithAggregatesFilter | Date | string
   }
@@ -8902,6 +8938,8 @@ export namespace Prisma {
     filename: string
     path: string
     size: number
+    width: number
+    height: number
     updated_at?: Date | string
     created_at?: Date | string
     Category?: CategoryCreateNestedManyWithoutImageInput
@@ -8920,6 +8958,8 @@ export namespace Prisma {
     filename: string
     path: string
     size: number
+    width: number
+    height: number
     updated_at?: Date | string
     created_at?: Date | string
     Category?: CategoryUncheckedCreateNestedManyWithoutImageInput
@@ -8937,6 +8977,8 @@ export namespace Prisma {
     filename?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
+    width?: IntFieldUpdateOperationsInput | number
+    height?: IntFieldUpdateOperationsInput | number
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Category?: CategoryUpdateManyWithoutImageInput
@@ -8955,6 +8997,8 @@ export namespace Prisma {
     filename?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
+    width?: IntFieldUpdateOperationsInput | number
+    height?: IntFieldUpdateOperationsInput | number
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Category?: CategoryUncheckedUpdateManyWithoutImageInput
@@ -8973,6 +9017,8 @@ export namespace Prisma {
     filename: string
     path: string
     size: number
+    width: number
+    height: number
     updated_at?: Date | string
     created_at?: Date | string
   }
@@ -8987,6 +9033,8 @@ export namespace Prisma {
     filename?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
+    width?: IntFieldUpdateOperationsInput | number
+    height?: IntFieldUpdateOperationsInput | number
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9002,6 +9050,8 @@ export namespace Prisma {
     filename?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
+    width?: IntFieldUpdateOperationsInput | number
+    height?: IntFieldUpdateOperationsInput | number
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9572,6 +9622,8 @@ export namespace Prisma {
     filename?: SortOrder
     path?: SortOrder
     size?: SortOrder
+    width?: SortOrder
+    height?: SortOrder
     updated_at?: SortOrder
     created_at?: SortOrder
   }
@@ -9579,6 +9631,8 @@ export namespace Prisma {
   export type ImageAvgOrderByAggregateInput = {
     id?: SortOrder
     size?: SortOrder
+    width?: SortOrder
+    height?: SortOrder
   }
 
   export type ImageMaxOrderByAggregateInput = {
@@ -9592,6 +9646,8 @@ export namespace Prisma {
     filename?: SortOrder
     path?: SortOrder
     size?: SortOrder
+    width?: SortOrder
+    height?: SortOrder
     updated_at?: SortOrder
     created_at?: SortOrder
   }
@@ -9607,6 +9663,8 @@ export namespace Prisma {
     filename?: SortOrder
     path?: SortOrder
     size?: SortOrder
+    width?: SortOrder
+    height?: SortOrder
     updated_at?: SortOrder
     created_at?: SortOrder
   }
@@ -9614,6 +9672,8 @@ export namespace Prisma {
   export type ImageSumOrderByAggregateInput = {
     id?: SortOrder
     size?: SortOrder
+    width?: SortOrder
+    height?: SortOrder
   }
 
   export type EnumImagOriginWithAggregatesFilter = {
@@ -10888,6 +10948,8 @@ export namespace Prisma {
     filename: string
     path: string
     size: number
+    width: number
+    height: number
     updated_at?: Date | string
     created_at?: Date | string
     CategoryIcon?: CategoryCreateNestedManyWithoutIconInput
@@ -10905,6 +10967,8 @@ export namespace Prisma {
     filename: string
     path: string
     size: number
+    width: number
+    height: number
     updated_at?: Date | string
     created_at?: Date | string
     CategoryIcon?: CategoryUncheckedCreateNestedManyWithoutIconInput
@@ -10926,6 +10990,8 @@ export namespace Prisma {
     filename: string
     path: string
     size: number
+    width: number
+    height: number
     updated_at?: Date | string
     created_at?: Date | string
     Category?: CategoryCreateNestedManyWithoutImageInput
@@ -10943,6 +11009,8 @@ export namespace Prisma {
     filename: string
     path: string
     size: number
+    width: number
+    height: number
     updated_at?: Date | string
     created_at?: Date | string
     Category?: CategoryUncheckedCreateNestedManyWithoutImageInput
@@ -11142,6 +11210,8 @@ export namespace Prisma {
     filename?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
+    width?: IntFieldUpdateOperationsInput | number
+    height?: IntFieldUpdateOperationsInput | number
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     CategoryIcon?: CategoryUpdateManyWithoutIconInput
@@ -11159,6 +11229,8 @@ export namespace Prisma {
     filename?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
+    width?: IntFieldUpdateOperationsInput | number
+    height?: IntFieldUpdateOperationsInput | number
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     CategoryIcon?: CategoryUncheckedUpdateManyWithoutIconInput
@@ -11180,6 +11252,8 @@ export namespace Prisma {
     filename?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
+    width?: IntFieldUpdateOperationsInput | number
+    height?: IntFieldUpdateOperationsInput | number
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Category?: CategoryUpdateManyWithoutImageInput
@@ -11197,6 +11271,8 @@ export namespace Prisma {
     filename?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
+    width?: IntFieldUpdateOperationsInput | number
+    height?: IntFieldUpdateOperationsInput | number
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Category?: CategoryUncheckedUpdateManyWithoutImageInput
@@ -11512,6 +11588,8 @@ export namespace Prisma {
     filename: string
     path: string
     size: number
+    width: number
+    height: number
     updated_at?: Date | string
     created_at?: Date | string
     Category?: CategoryCreateNestedManyWithoutImageInput
@@ -11529,6 +11607,8 @@ export namespace Prisma {
     filename: string
     path: string
     size: number
+    width: number
+    height: number
     updated_at?: Date | string
     created_at?: Date | string
     Category?: CategoryUncheckedCreateNestedManyWithoutImageInput
@@ -11641,6 +11721,8 @@ export namespace Prisma {
     filename?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
+    width?: IntFieldUpdateOperationsInput | number
+    height?: IntFieldUpdateOperationsInput | number
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Category?: CategoryUpdateManyWithoutImageInput
@@ -11658,6 +11740,8 @@ export namespace Prisma {
     filename?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
+    width?: IntFieldUpdateOperationsInput | number
+    height?: IntFieldUpdateOperationsInput | number
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Category?: CategoryUncheckedUpdateManyWithoutImageInput

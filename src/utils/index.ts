@@ -454,6 +454,8 @@ export async function createIcons() {
         origin: 'icon',
         path: `files/icons/${_icon}`,
         size: 10,
+        width: 61,
+        height: 61,
       };
   });
   await prisma.image.createMany({
