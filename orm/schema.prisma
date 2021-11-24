@@ -74,6 +74,8 @@ model UserCategory {
   Category   Category @relation(fields: [categoryId], references: [id])
   updated_at DateTime @default(now())
   created_at DateTime @default(now())
+
+  @@unique([userId, categoryId])
 }
 
 // Таблица событий
@@ -104,6 +106,8 @@ model EventCategory {
   Event      Event    @relation(fields: [eventId], references: [id])
   updated_at DateTime @default(now())
   created_at DateTime @default(now())
+
+  @@unique([eventId, categoryId])
 }
 
 // Таблица связей пользователей и событий, т.е. туда добаляются лайканые события
@@ -115,6 +119,8 @@ model Favorites {
   Event      Event    @relation(fields: [eventId], references: [id])
   updated_at DateTime @default(now())
   created_at DateTime @default(now())
+
+  @@unique([eventId, userId])
 }
 
 // Таблица изображений

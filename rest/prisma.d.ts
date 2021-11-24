@@ -8133,6 +8133,7 @@ export namespace Prisma {
 
   export type UserCategoryWhereUniqueInput = {
     id?: number
+    userId_categoryId?: UserCategoryUserIdCategoryIdCompoundUniqueInput
   }
 
   export type UserCategoryOrderByWithAggregationInput = {
@@ -8265,6 +8266,7 @@ export namespace Prisma {
 
   export type EventCategoryWhereUniqueInput = {
     id?: number
+    eventId_categoryId?: EventCategoryEventIdCategoryIdCompoundUniqueInput
   }
 
   export type EventCategoryOrderByWithAggregationInput = {
@@ -8316,6 +8318,7 @@ export namespace Prisma {
 
   export type FavoritesWhereUniqueInput = {
     id?: number
+    eventId_userId?: FavoritesEventIdUserIdCompoundUniqueInput
   }
 
   export type FavoritesOrderByWithAggregationInput = {
@@ -9434,6 +9437,11 @@ export namespace Prisma {
     _max?: NestedIntNullableFilter
   }
 
+  export type UserCategoryUserIdCategoryIdCompoundUniqueInput = {
+    userId: number
+    categoryId: number
+  }
+
   export type UserCategoryCountOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
@@ -9532,6 +9540,11 @@ export namespace Prisma {
     isNot?: EventWhereInput
   }
 
+  export type EventCategoryEventIdCategoryIdCompoundUniqueInput = {
+    eventId: number
+    categoryId: number
+  }
+
   export type EventCategoryCountOrderByAggregateInput = {
     id?: SortOrder
     categoryId?: SortOrder
@@ -9566,6 +9579,11 @@ export namespace Prisma {
     id?: SortOrder
     categoryId?: SortOrder
     eventId?: SortOrder
+  }
+
+  export type FavoritesEventIdUserIdCompoundUniqueInput = {
+    eventId: number
+    userId: number
   }
 
   export type FavoritesCountOrderByAggregateInput = {
