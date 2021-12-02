@@ -19,7 +19,7 @@ import Mail from 'nodemailer/lib/mailer';
 import { htmlToText } from 'html-to-text';
 import path from 'path';
 import fs from 'fs';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 import type * as Types from '../types';
 
 export const SUCCESS = 'success';
@@ -438,7 +438,7 @@ export async function createIcons() {
   });
   const newIcons = iconsDir.map((_icon) => {
     let check = false;
-    icons.map((_file) => {
+    const deleted = icons.map((_file) => {
       if (_file.originalname === _icon) {
         check = true;
       }
@@ -462,4 +462,67 @@ export async function createIcons() {
     // @ts-ignore
     data: newIcons.filter((icon) => typeof icon !== undefined),
   });
+  const names: string[] = [];
+  const deleted: any = icons.map((_file) => {
+    const matches = iconsDir.filter((item) => item === _file.originalname)[0];
+    if (!matches) {
+      names.push(_file.originalname);
+      return _file.id;
+    }
+  });
+  try {
+    await prisma.image.deleteMany({
+      where: {
+        id: {
+          in: deleted,
+        },
+      },
+    });
+  } catch (e) {
+    console.error(
+      'Error delete icon',
+      names,
+      'Add this file names or clear database relation to parent icon'
+    );
+    return 1;
+  }
+
+  try {
+    const resIcons = await prisma.image.findMany({
+      where: {
+        origin: 'icon',
+      },
+    });
+    const rels: any[] = resIcons.map((item) => {
+      const matches = resIcons.filter(
+        (_item) => _item.originalname === `short-${item.originalname}`
+      )[0];
+      if (matches) {
+        return {
+          id: matches.id,
+          parentId: item.id,
+        };
+      }
+    });
+    const _rels: {
+      id: number;
+      parentId: number;
+    }[] = rels.filter((item) => item !== undefined);
+    const updateProms = _rels.map((item) => {
+      const args: Prisma.ImageUpdateArgs = {
+        where: {
+          id: item.id,
+        },
+        data: {
+          parentId: item.parentId,
+        },
+      };
+      return prisma.image.update(args);
+    });
+    await Promise.all(updateProms);
+  } catch (e) {
+    console.error('Error set icon relations', e);
+    return 1;
+  }
+  return 0;
 }
