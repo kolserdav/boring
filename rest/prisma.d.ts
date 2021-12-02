@@ -125,6 +125,7 @@ export type Image = {
   height: number
   updated_at: Date
   created_at: Date
+  parentId: number | null
 }
 
 
@@ -224,7 +225,7 @@ export class PrismaClient<
   /**
    * Disconnect from the database
    */
-  $disconnect(): Promise<any>;
+  $disconnect(): Promise<void>;
 
   /**
    * Add a middleware
@@ -391,8 +392,8 @@ export namespace Prisma {
   export import Decimal = runtime.Decimal
 
   /**
-   * Prisma Client JS version: 3.5.0
-   * Query Engine version: 78a5df6def6943431f4c022e1428dbc3e833cf8e
+   * Prisma Client JS version: 3.6.0
+   * Query Engine version: dc520b92b1ebb2d28dc3161f9f82e875bd35d727
    */
   export type PrismaVersion = {
     client: string
@@ -410,13 +411,13 @@ export namespace Prisma {
    * This type can be useful to enforce some input to be JSON-compatible or as a super-type to be extended from. 
    */
   export type JsonObject = {[Key in string]?: JsonValue}
- 
+
   /**
    * From https://github.com/sindresorhus/type-fest/
    * Matches a JSON array.
    */
   export interface JsonArray extends Array<JsonValue> {}
- 
+
   /**
    * From https://github.com/sindresorhus/type-fest/
    * Matches any valid JSON value.
@@ -424,12 +425,30 @@ export namespace Prisma {
   export type JsonValue = string | number | boolean | JsonObject | JsonArray | null
 
   /**
-   * Same as JsonObject, but allows undefined
+   * Matches a JSON object.
+   * Unlike `JsonObject`, this type allows undefined and read-only properties.
    */
-  export type InputJsonObject = {[Key in string]?: JsonValue}
- 
-  export interface InputJsonArray extends Array<JsonValue> {}
- 
+  export type InputJsonObject = {readonly [Key in string]?: InputJsonValue | null}
+
+  /**
+   * Matches a JSON array.
+   * Unlike `JsonArray`, readonly arrays are assignable to this type.
+   */
+  export interface InputJsonArray extends ReadonlyArray<InputJsonValue | null> {}
+
+  /**
+   * Matches any valid value that can be used as an input for operations like
+   * create and update as the value of a JSON field. Unlike `JsonValue`, this
+   * type allows read-only arrays and read-only object properties and disallows
+   * `null` at the top level.
+   *
+   * `null` cannot be used as the value of a JSON field because its meaning
+   * would be ambiguous. Use `Prisma.JsonNull` to store the JSON null value or
+   * `Prisma.DbNull` to clear the JSON value and set the field to the database
+   * NULL value instead.
+   *
+   * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-by-null-values
+   */
   export type InputJsonValue = string | number | boolean | InputJsonObject | InputJsonArray
 
   /**
@@ -1086,12 +1105,14 @@ export namespace Prisma {
     Category: number
     CategoryIcon: number
     Event: number
+    Children: number
   }
 
   export type ImageCountOutputTypeSelect = {
     Category?: boolean
     CategoryIcon?: boolean
     Event?: boolean
+    Children?: boolean
   }
 
   export type ImageCountOutputTypeGetPayload<
@@ -6825,6 +6846,7 @@ export namespace Prisma {
     size: number | null
     width: number | null
     height: number | null
+    parentId: number | null
   }
 
   export type ImageSumAggregateOutputType = {
@@ -6832,6 +6854,7 @@ export namespace Prisma {
     size: number | null
     width: number | null
     height: number | null
+    parentId: number | null
   }
 
   export type ImageMinAggregateOutputType = {
@@ -6849,6 +6872,7 @@ export namespace Prisma {
     height: number | null
     updated_at: Date | null
     created_at: Date | null
+    parentId: number | null
   }
 
   export type ImageMaxAggregateOutputType = {
@@ -6866,6 +6890,7 @@ export namespace Prisma {
     height: number | null
     updated_at: Date | null
     created_at: Date | null
+    parentId: number | null
   }
 
   export type ImageCountAggregateOutputType = {
@@ -6883,6 +6908,7 @@ export namespace Prisma {
     height: number
     updated_at: number
     created_at: number
+    parentId: number
     _all: number
   }
 
@@ -6892,6 +6918,7 @@ export namespace Prisma {
     size?: true
     width?: true
     height?: true
+    parentId?: true
   }
 
   export type ImageSumAggregateInputType = {
@@ -6899,6 +6926,7 @@ export namespace Prisma {
     size?: true
     width?: true
     height?: true
+    parentId?: true
   }
 
   export type ImageMinAggregateInputType = {
@@ -6916,6 +6944,7 @@ export namespace Prisma {
     height?: true
     updated_at?: true
     created_at?: true
+    parentId?: true
   }
 
   export type ImageMaxAggregateInputType = {
@@ -6933,6 +6962,7 @@ export namespace Prisma {
     height?: true
     updated_at?: true
     created_at?: true
+    parentId?: true
   }
 
   export type ImageCountAggregateInputType = {
@@ -6950,6 +6980,7 @@ export namespace Prisma {
     height?: true
     updated_at?: true
     created_at?: true
+    parentId?: true
     _all?: true
   }
 
@@ -7060,6 +7091,7 @@ export namespace Prisma {
     height: number
     updated_at: Date
     created_at: Date
+    parentId: number | null
     _count: ImageCountAggregateOutputType | null
     _avg: ImageAvgAggregateOutputType | null
     _sum: ImageSumAggregateOutputType | null
@@ -7099,6 +7131,9 @@ export namespace Prisma {
     Category?: boolean | CategoryFindManyArgs
     CategoryIcon?: boolean | CategoryFindManyArgs
     Event?: boolean | EventFindManyArgs
+    Children?: boolean | ImageFindManyArgs
+    parentId?: boolean
+    Parent?: boolean | ImageArgs
     _count?: boolean | ImageCountOutputTypeArgs
   }
 
@@ -7106,6 +7141,8 @@ export namespace Prisma {
     Category?: boolean | CategoryFindManyArgs
     CategoryIcon?: boolean | CategoryFindManyArgs
     Event?: boolean | EventFindManyArgs
+    Children?: boolean | ImageFindManyArgs
+    Parent?: boolean | ImageArgs
     _count?: boolean | ImageCountOutputTypeArgs
   }
 
@@ -7126,6 +7163,10 @@ export namespace Prisma {
         ? Array < CategoryGetPayload<S['include'][P]>>  :
         P extends 'Event'
         ? Array < EventGetPayload<S['include'][P]>>  :
+        P extends 'Children'
+        ? Array < ImageGetPayload<S['include'][P]>>  :
+        P extends 'Parent'
+        ? ImageGetPayload<S['include'][P]> | null :
         P extends '_count'
         ? ImageCountOutputTypeGetPayload<S['include'][P]> : never
   } 
@@ -7139,6 +7180,10 @@ export namespace Prisma {
         ? Array < CategoryGetPayload<S['select'][P]>>  :
         P extends 'Event'
         ? Array < EventGetPayload<S['select'][P]>>  :
+        P extends 'Children'
+        ? Array < ImageGetPayload<S['select'][P]>>  :
+        P extends 'Parent'
+        ? ImageGetPayload<S['select'][P]> | null :
         P extends '_count'
         ? ImageCountOutputTypeGetPayload<S['select'][P]> : never
   } 
@@ -7485,6 +7530,10 @@ export namespace Prisma {
     CategoryIcon<T extends CategoryFindManyArgs = {}>(args?: Subset<T, CategoryFindManyArgs>): CheckSelect<T, PrismaPromise<Array<Category>>, PrismaPromise<Array<CategoryGetPayload<T>>>>;
 
     Event<T extends EventFindManyArgs = {}>(args?: Subset<T, EventFindManyArgs>): CheckSelect<T, PrismaPromise<Array<Event>>, PrismaPromise<Array<EventGetPayload<T>>>>;
+
+    Children<T extends ImageFindManyArgs = {}>(args?: Subset<T, ImageFindManyArgs>): CheckSelect<T, PrismaPromise<Array<Image>>, PrismaPromise<Array<ImageGetPayload<T>>>>;
+
+    Parent<T extends ImageArgs = {}>(args?: Subset<T, ImageArgs>): CheckSelect<T, Prisma__ImageClient<Image | null >, Prisma__ImageClient<ImageGetPayload<T> | null >>;
 
     private get _document();
     /**
@@ -7907,7 +7956,8 @@ export namespace Prisma {
     width: 'width',
     height: 'height',
     updated_at: 'updated_at',
-    created_at: 'created_at'
+    created_at: 'created_at',
+    parentId: 'parentId'
   };
 
   export type ImageScalarFieldEnum = (typeof ImageScalarFieldEnum)[keyof typeof ImageScalarFieldEnum]
@@ -8366,6 +8416,9 @@ export namespace Prisma {
     Category?: CategoryListRelationFilter
     CategoryIcon?: CategoryListRelationFilter
     Event?: EventListRelationFilter
+    Children?: ImageListRelationFilter
+    parentId?: IntNullableFilter | number | null
+    Parent?: XOR<ImageRelationFilter, ImageWhereInput> | null
   }
 
   export type ImageOrderByWithRelationInput = {
@@ -8386,6 +8439,9 @@ export namespace Prisma {
     Category?: CategoryOrderByRelationAggregateInput
     CategoryIcon?: CategoryOrderByRelationAggregateInput
     Event?: EventOrderByRelationAggregateInput
+    Children?: ImageOrderByRelationAggregateInput
+    parentId?: SortOrder
+    Parent?: ImageOrderByWithRelationInput
   }
 
   export type ImageWhereUniqueInput = {
@@ -8408,6 +8464,7 @@ export namespace Prisma {
     height?: SortOrder
     updated_at?: SortOrder
     created_at?: SortOrder
+    parentId?: SortOrder
     _count?: ImageCountOrderByAggregateInput
     _avg?: ImageAvgOrderByAggregateInput
     _max?: ImageMaxOrderByAggregateInput
@@ -8433,6 +8490,7 @@ export namespace Prisma {
     height?: IntWithAggregatesFilter | number
     updated_at?: DateTimeWithAggregatesFilter | Date | string
     created_at?: DateTimeWithAggregatesFilter | Date | string
+    parentId?: IntNullableWithAggregatesFilter | number | null
   }
 
   export type UserCreateInput = {
@@ -8948,6 +9006,8 @@ export namespace Prisma {
     Category?: CategoryCreateNestedManyWithoutImageInput
     CategoryIcon?: CategoryCreateNestedManyWithoutIconInput
     Event?: EventCreateNestedManyWithoutImageInput
+    Children?: ImageCreateNestedManyWithoutParentInput
+    Parent?: ImageCreateNestedOneWithoutChildrenInput
   }
 
   export type ImageUncheckedCreateInput = {
@@ -8965,9 +9025,11 @@ export namespace Prisma {
     height: number
     updated_at?: Date | string
     created_at?: Date | string
+    parentId?: number | null
     Category?: CategoryUncheckedCreateNestedManyWithoutImageInput
     CategoryIcon?: CategoryUncheckedCreateNestedManyWithoutIconInput
     Event?: EventUncheckedCreateNestedManyWithoutImageInput
+    Children?: ImageUncheckedCreateNestedManyWithoutParentInput
   }
 
   export type ImageUpdateInput = {
@@ -8987,6 +9049,8 @@ export namespace Prisma {
     Category?: CategoryUpdateManyWithoutImageInput
     CategoryIcon?: CategoryUpdateManyWithoutIconInput
     Event?: EventUpdateManyWithoutImageInput
+    Children?: ImageUpdateManyWithoutParentInput
+    Parent?: ImageUpdateOneWithoutChildrenInput
   }
 
   export type ImageUncheckedUpdateInput = {
@@ -9004,9 +9068,11 @@ export namespace Prisma {
     height?: IntFieldUpdateOperationsInput | number
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    parentId?: NullableIntFieldUpdateOperationsInput | number | null
     Category?: CategoryUncheckedUpdateManyWithoutImageInput
     CategoryIcon?: CategoryUncheckedUpdateManyWithoutIconInput
     Event?: EventUncheckedUpdateManyWithoutImageInput
+    Children?: ImageUncheckedUpdateManyWithoutParentInput
   }
 
   export type ImageCreateManyInput = {
@@ -9024,6 +9090,7 @@ export namespace Prisma {
     height: number
     updated_at?: Date | string
     created_at?: Date | string
+    parentId?: number | null
   }
 
   export type ImageUpdateManyMutationInput = {
@@ -9057,6 +9124,7 @@ export namespace Prisma {
     height?: IntFieldUpdateOperationsInput | number
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    parentId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type IntFilter = {
@@ -9338,8 +9406,8 @@ export namespace Prisma {
   }
 
   export type ImageRelationFilter = {
-    is?: ImageWhereInput
-    isNot?: ImageWhereInput
+    is?: ImageWhereInput | null
+    isNot?: ImageWhereInput | null
   }
 
   export type EventCategoryListRelationFilter = {
@@ -9629,6 +9697,16 @@ export namespace Prisma {
     not?: NestedEnumImagOriginFilter | ImagOrigin
   }
 
+  export type ImageListRelationFilter = {
+    every?: ImageWhereInput
+    some?: ImageWhereInput
+    none?: ImageWhereInput
+  }
+
+  export type ImageOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type ImageCountOrderByAggregateInput = {
     id?: SortOrder
     fieldname?: SortOrder
@@ -9644,6 +9722,7 @@ export namespace Prisma {
     height?: SortOrder
     updated_at?: SortOrder
     created_at?: SortOrder
+    parentId?: SortOrder
   }
 
   export type ImageAvgOrderByAggregateInput = {
@@ -9651,6 +9730,7 @@ export namespace Prisma {
     size?: SortOrder
     width?: SortOrder
     height?: SortOrder
+    parentId?: SortOrder
   }
 
   export type ImageMaxOrderByAggregateInput = {
@@ -9668,6 +9748,7 @@ export namespace Prisma {
     height?: SortOrder
     updated_at?: SortOrder
     created_at?: SortOrder
+    parentId?: SortOrder
   }
 
   export type ImageMinOrderByAggregateInput = {
@@ -9685,6 +9766,7 @@ export namespace Prisma {
     height?: SortOrder
     updated_at?: SortOrder
     created_at?: SortOrder
+    parentId?: SortOrder
   }
 
   export type ImageSumOrderByAggregateInput = {
@@ -9692,6 +9774,7 @@ export namespace Prisma {
     size?: SortOrder
     width?: SortOrder
     height?: SortOrder
+    parentId?: SortOrder
   }
 
   export type EnumImagOriginWithAggregatesFilter = {
@@ -10317,6 +10400,19 @@ export namespace Prisma {
     connect?: Enumerable<EventWhereUniqueInput>
   }
 
+  export type ImageCreateNestedManyWithoutParentInput = {
+    create?: XOR<Enumerable<ImageCreateWithoutParentInput>, Enumerable<ImageUncheckedCreateWithoutParentInput>>
+    connectOrCreate?: Enumerable<ImageCreateOrConnectWithoutParentInput>
+    createMany?: ImageCreateManyParentInputEnvelope
+    connect?: Enumerable<ImageWhereUniqueInput>
+  }
+
+  export type ImageCreateNestedOneWithoutChildrenInput = {
+    create?: XOR<ImageCreateWithoutChildrenInput, ImageUncheckedCreateWithoutChildrenInput>
+    connectOrCreate?: ImageCreateOrConnectWithoutChildrenInput
+    connect?: ImageWhereUniqueInput
+  }
+
   export type CategoryUncheckedCreateNestedManyWithoutImageInput = {
     create?: XOR<Enumerable<CategoryCreateWithoutImageInput>, Enumerable<CategoryUncheckedCreateWithoutImageInput>>
     connectOrCreate?: Enumerable<CategoryCreateOrConnectWithoutImageInput>
@@ -10336,6 +10432,13 @@ export namespace Prisma {
     connectOrCreate?: Enumerable<EventCreateOrConnectWithoutImageInput>
     createMany?: EventCreateManyImageInputEnvelope
     connect?: Enumerable<EventWhereUniqueInput>
+  }
+
+  export type ImageUncheckedCreateNestedManyWithoutParentInput = {
+    create?: XOR<Enumerable<ImageCreateWithoutParentInput>, Enumerable<ImageUncheckedCreateWithoutParentInput>>
+    connectOrCreate?: Enumerable<ImageCreateOrConnectWithoutParentInput>
+    createMany?: ImageCreateManyParentInputEnvelope
+    connect?: Enumerable<ImageWhereUniqueInput>
   }
 
   export type EnumImagOriginFieldUpdateOperationsInput = {
@@ -10384,6 +10487,30 @@ export namespace Prisma {
     deleteMany?: Enumerable<EventScalarWhereInput>
   }
 
+  export type ImageUpdateManyWithoutParentInput = {
+    create?: XOR<Enumerable<ImageCreateWithoutParentInput>, Enumerable<ImageUncheckedCreateWithoutParentInput>>
+    connectOrCreate?: Enumerable<ImageCreateOrConnectWithoutParentInput>
+    upsert?: Enumerable<ImageUpsertWithWhereUniqueWithoutParentInput>
+    createMany?: ImageCreateManyParentInputEnvelope
+    set?: Enumerable<ImageWhereUniqueInput>
+    disconnect?: Enumerable<ImageWhereUniqueInput>
+    delete?: Enumerable<ImageWhereUniqueInput>
+    connect?: Enumerable<ImageWhereUniqueInput>
+    update?: Enumerable<ImageUpdateWithWhereUniqueWithoutParentInput>
+    updateMany?: Enumerable<ImageUpdateManyWithWhereWithoutParentInput>
+    deleteMany?: Enumerable<ImageScalarWhereInput>
+  }
+
+  export type ImageUpdateOneWithoutChildrenInput = {
+    create?: XOR<ImageCreateWithoutChildrenInput, ImageUncheckedCreateWithoutChildrenInput>
+    connectOrCreate?: ImageCreateOrConnectWithoutChildrenInput
+    upsert?: ImageUpsertWithoutChildrenInput
+    disconnect?: boolean
+    delete?: boolean
+    connect?: ImageWhereUniqueInput
+    update?: XOR<ImageUpdateWithoutChildrenInput, ImageUncheckedUpdateWithoutChildrenInput>
+  }
+
   export type CategoryUncheckedUpdateManyWithoutImageInput = {
     create?: XOR<Enumerable<CategoryCreateWithoutImageInput>, Enumerable<CategoryUncheckedCreateWithoutImageInput>>
     connectOrCreate?: Enumerable<CategoryCreateOrConnectWithoutImageInput>
@@ -10424,6 +10551,20 @@ export namespace Prisma {
     update?: Enumerable<EventUpdateWithWhereUniqueWithoutImageInput>
     updateMany?: Enumerable<EventUpdateManyWithWhereWithoutImageInput>
     deleteMany?: Enumerable<EventScalarWhereInput>
+  }
+
+  export type ImageUncheckedUpdateManyWithoutParentInput = {
+    create?: XOR<Enumerable<ImageCreateWithoutParentInput>, Enumerable<ImageUncheckedCreateWithoutParentInput>>
+    connectOrCreate?: Enumerable<ImageCreateOrConnectWithoutParentInput>
+    upsert?: Enumerable<ImageUpsertWithWhereUniqueWithoutParentInput>
+    createMany?: ImageCreateManyParentInputEnvelope
+    set?: Enumerable<ImageWhereUniqueInput>
+    disconnect?: Enumerable<ImageWhereUniqueInput>
+    delete?: Enumerable<ImageWhereUniqueInput>
+    connect?: Enumerable<ImageWhereUniqueInput>
+    update?: Enumerable<ImageUpdateWithWhereUniqueWithoutParentInput>
+    updateMany?: Enumerable<ImageUpdateManyWithWhereWithoutParentInput>
+    deleteMany?: Enumerable<ImageScalarWhereInput>
   }
 
   export type NestedIntFilter = {
@@ -10972,6 +11113,8 @@ export namespace Prisma {
     created_at?: Date | string
     CategoryIcon?: CategoryCreateNestedManyWithoutIconInput
     Event?: EventCreateNestedManyWithoutImageInput
+    Children?: ImageCreateNestedManyWithoutParentInput
+    Parent?: ImageCreateNestedOneWithoutChildrenInput
   }
 
   export type ImageUncheckedCreateWithoutCategoryInput = {
@@ -10989,8 +11132,10 @@ export namespace Prisma {
     height: number
     updated_at?: Date | string
     created_at?: Date | string
+    parentId?: number | null
     CategoryIcon?: CategoryUncheckedCreateNestedManyWithoutIconInput
     Event?: EventUncheckedCreateNestedManyWithoutImageInput
+    Children?: ImageUncheckedCreateNestedManyWithoutParentInput
   }
 
   export type ImageCreateOrConnectWithoutCategoryInput = {
@@ -11014,6 +11159,8 @@ export namespace Prisma {
     created_at?: Date | string
     Category?: CategoryCreateNestedManyWithoutImageInput
     Event?: EventCreateNestedManyWithoutImageInput
+    Children?: ImageCreateNestedManyWithoutParentInput
+    Parent?: ImageCreateNestedOneWithoutChildrenInput
   }
 
   export type ImageUncheckedCreateWithoutCategoryIconInput = {
@@ -11031,8 +11178,10 @@ export namespace Prisma {
     height: number
     updated_at?: Date | string
     created_at?: Date | string
+    parentId?: number | null
     Category?: CategoryUncheckedCreateNestedManyWithoutImageInput
     Event?: EventUncheckedCreateNestedManyWithoutImageInput
+    Children?: ImageUncheckedCreateNestedManyWithoutParentInput
   }
 
   export type ImageCreateOrConnectWithoutCategoryIconInput = {
@@ -11234,6 +11383,8 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     CategoryIcon?: CategoryUpdateManyWithoutIconInput
     Event?: EventUpdateManyWithoutImageInput
+    Children?: ImageUpdateManyWithoutParentInput
+    Parent?: ImageUpdateOneWithoutChildrenInput
   }
 
   export type ImageUncheckedUpdateWithoutCategoryInput = {
@@ -11251,8 +11402,10 @@ export namespace Prisma {
     height?: IntFieldUpdateOperationsInput | number
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    parentId?: NullableIntFieldUpdateOperationsInput | number | null
     CategoryIcon?: CategoryUncheckedUpdateManyWithoutIconInput
     Event?: EventUncheckedUpdateManyWithoutImageInput
+    Children?: ImageUncheckedUpdateManyWithoutParentInput
   }
 
   export type ImageUpsertWithoutCategoryIconInput = {
@@ -11276,6 +11429,8 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Category?: CategoryUpdateManyWithoutImageInput
     Event?: EventUpdateManyWithoutImageInput
+    Children?: ImageUpdateManyWithoutParentInput
+    Parent?: ImageUpdateOneWithoutChildrenInput
   }
 
   export type ImageUncheckedUpdateWithoutCategoryIconInput = {
@@ -11293,8 +11448,10 @@ export namespace Prisma {
     height?: IntFieldUpdateOperationsInput | number
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    parentId?: NullableIntFieldUpdateOperationsInput | number | null
     Category?: CategoryUncheckedUpdateManyWithoutImageInput
     Event?: EventUncheckedUpdateManyWithoutImageInput
+    Children?: ImageUncheckedUpdateManyWithoutParentInput
   }
 
   export type UserCategoryUpsertWithWhereUniqueWithoutCategoryInput = {
@@ -11612,6 +11769,8 @@ export namespace Prisma {
     created_at?: Date | string
     Category?: CategoryCreateNestedManyWithoutImageInput
     CategoryIcon?: CategoryCreateNestedManyWithoutIconInput
+    Children?: ImageCreateNestedManyWithoutParentInput
+    Parent?: ImageCreateNestedOneWithoutChildrenInput
   }
 
   export type ImageUncheckedCreateWithoutEventInput = {
@@ -11629,8 +11788,10 @@ export namespace Prisma {
     height: number
     updated_at?: Date | string
     created_at?: Date | string
+    parentId?: number | null
     Category?: CategoryUncheckedCreateNestedManyWithoutImageInput
     CategoryIcon?: CategoryUncheckedCreateNestedManyWithoutIconInput
+    Children?: ImageUncheckedCreateNestedManyWithoutParentInput
   }
 
   export type ImageCreateOrConnectWithoutEventInput = {
@@ -11745,6 +11906,8 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Category?: CategoryUpdateManyWithoutImageInput
     CategoryIcon?: CategoryUpdateManyWithoutIconInput
+    Children?: ImageUpdateManyWithoutParentInput
+    Parent?: ImageUpdateOneWithoutChildrenInput
   }
 
   export type ImageUncheckedUpdateWithoutEventInput = {
@@ -11762,8 +11925,10 @@ export namespace Prisma {
     height?: IntFieldUpdateOperationsInput | number
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    parentId?: NullableIntFieldUpdateOperationsInput | number | null
     Category?: CategoryUncheckedUpdateManyWithoutImageInput
     CategoryIcon?: CategoryUncheckedUpdateManyWithoutIconInput
+    Children?: ImageUncheckedUpdateManyWithoutParentInput
   }
 
   export type FavoritesUpsertWithWhereUniqueWithoutEventInput = {
@@ -12223,6 +12388,103 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ImageCreateWithoutParentInput = {
+    fieldname: string
+    originalname: string
+    encoding: string
+    mimetype: string
+    destination: string
+    origin: ImagOrigin
+    filename: string
+    path: string
+    size: number
+    width: number
+    height: number
+    updated_at?: Date | string
+    created_at?: Date | string
+    Category?: CategoryCreateNestedManyWithoutImageInput
+    CategoryIcon?: CategoryCreateNestedManyWithoutIconInput
+    Event?: EventCreateNestedManyWithoutImageInput
+    Children?: ImageCreateNestedManyWithoutParentInput
+  }
+
+  export type ImageUncheckedCreateWithoutParentInput = {
+    id?: number
+    fieldname: string
+    originalname: string
+    encoding: string
+    mimetype: string
+    destination: string
+    origin: ImagOrigin
+    filename: string
+    path: string
+    size: number
+    width: number
+    height: number
+    updated_at?: Date | string
+    created_at?: Date | string
+    Category?: CategoryUncheckedCreateNestedManyWithoutImageInput
+    CategoryIcon?: CategoryUncheckedCreateNestedManyWithoutIconInput
+    Event?: EventUncheckedCreateNestedManyWithoutImageInput
+    Children?: ImageUncheckedCreateNestedManyWithoutParentInput
+  }
+
+  export type ImageCreateOrConnectWithoutParentInput = {
+    where: ImageWhereUniqueInput
+    create: XOR<ImageCreateWithoutParentInput, ImageUncheckedCreateWithoutParentInput>
+  }
+
+  export type ImageCreateManyParentInputEnvelope = {
+    data: Enumerable<ImageCreateManyParentInput>
+    skipDuplicates?: boolean
+  }
+
+  export type ImageCreateWithoutChildrenInput = {
+    fieldname: string
+    originalname: string
+    encoding: string
+    mimetype: string
+    destination: string
+    origin: ImagOrigin
+    filename: string
+    path: string
+    size: number
+    width: number
+    height: number
+    updated_at?: Date | string
+    created_at?: Date | string
+    Category?: CategoryCreateNestedManyWithoutImageInput
+    CategoryIcon?: CategoryCreateNestedManyWithoutIconInput
+    Event?: EventCreateNestedManyWithoutImageInput
+    Parent?: ImageCreateNestedOneWithoutChildrenInput
+  }
+
+  export type ImageUncheckedCreateWithoutChildrenInput = {
+    id?: number
+    fieldname: string
+    originalname: string
+    encoding: string
+    mimetype: string
+    destination: string
+    origin: ImagOrigin
+    filename: string
+    path: string
+    size: number
+    width: number
+    height: number
+    updated_at?: Date | string
+    created_at?: Date | string
+    parentId?: number | null
+    Category?: CategoryUncheckedCreateNestedManyWithoutImageInput
+    CategoryIcon?: CategoryUncheckedCreateNestedManyWithoutIconInput
+    Event?: EventUncheckedCreateNestedManyWithoutImageInput
+  }
+
+  export type ImageCreateOrConnectWithoutChildrenInput = {
+    where: ImageWhereUniqueInput
+    create: XOR<ImageCreateWithoutChildrenInput, ImageUncheckedCreateWithoutChildrenInput>
+  }
+
   export type CategoryUpsertWithWhereUniqueWithoutImageInput = {
     where: CategoryWhereUniqueInput
     update: XOR<CategoryUpdateWithoutImageInput, CategoryUncheckedUpdateWithoutImageInput>
@@ -12269,6 +12531,89 @@ export namespace Prisma {
   export type EventUpdateManyWithWhereWithoutImageInput = {
     where: EventScalarWhereInput
     data: XOR<EventUpdateManyMutationInput, EventUncheckedUpdateManyWithoutEventInput>
+  }
+
+  export type ImageUpsertWithWhereUniqueWithoutParentInput = {
+    where: ImageWhereUniqueInput
+    update: XOR<ImageUpdateWithoutParentInput, ImageUncheckedUpdateWithoutParentInput>
+    create: XOR<ImageCreateWithoutParentInput, ImageUncheckedCreateWithoutParentInput>
+  }
+
+  export type ImageUpdateWithWhereUniqueWithoutParentInput = {
+    where: ImageWhereUniqueInput
+    data: XOR<ImageUpdateWithoutParentInput, ImageUncheckedUpdateWithoutParentInput>
+  }
+
+  export type ImageUpdateManyWithWhereWithoutParentInput = {
+    where: ImageScalarWhereInput
+    data: XOR<ImageUpdateManyMutationInput, ImageUncheckedUpdateManyWithoutChildrenInput>
+  }
+
+  export type ImageScalarWhereInput = {
+    AND?: Enumerable<ImageScalarWhereInput>
+    OR?: Enumerable<ImageScalarWhereInput>
+    NOT?: Enumerable<ImageScalarWhereInput>
+    id?: IntFilter | number
+    fieldname?: StringFilter | string
+    originalname?: StringFilter | string
+    encoding?: StringFilter | string
+    mimetype?: StringFilter | string
+    destination?: StringFilter | string
+    origin?: EnumImagOriginFilter | ImagOrigin
+    filename?: StringFilter | string
+    path?: StringFilter | string
+    size?: IntFilter | number
+    width?: IntFilter | number
+    height?: IntFilter | number
+    updated_at?: DateTimeFilter | Date | string
+    created_at?: DateTimeFilter | Date | string
+    parentId?: IntNullableFilter | number | null
+  }
+
+  export type ImageUpsertWithoutChildrenInput = {
+    update: XOR<ImageUpdateWithoutChildrenInput, ImageUncheckedUpdateWithoutChildrenInput>
+    create: XOR<ImageCreateWithoutChildrenInput, ImageUncheckedCreateWithoutChildrenInput>
+  }
+
+  export type ImageUpdateWithoutChildrenInput = {
+    fieldname?: StringFieldUpdateOperationsInput | string
+    originalname?: StringFieldUpdateOperationsInput | string
+    encoding?: StringFieldUpdateOperationsInput | string
+    mimetype?: StringFieldUpdateOperationsInput | string
+    destination?: StringFieldUpdateOperationsInput | string
+    origin?: EnumImagOriginFieldUpdateOperationsInput | ImagOrigin
+    filename?: StringFieldUpdateOperationsInput | string
+    path?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    width?: IntFieldUpdateOperationsInput | number
+    height?: IntFieldUpdateOperationsInput | number
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Category?: CategoryUpdateManyWithoutImageInput
+    CategoryIcon?: CategoryUpdateManyWithoutIconInput
+    Event?: EventUpdateManyWithoutImageInput
+    Parent?: ImageUpdateOneWithoutChildrenInput
+  }
+
+  export type ImageUncheckedUpdateWithoutChildrenInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    fieldname?: StringFieldUpdateOperationsInput | string
+    originalname?: StringFieldUpdateOperationsInput | string
+    encoding?: StringFieldUpdateOperationsInput | string
+    mimetype?: StringFieldUpdateOperationsInput | string
+    destination?: StringFieldUpdateOperationsInput | string
+    origin?: EnumImagOriginFieldUpdateOperationsInput | ImagOrigin
+    filename?: StringFieldUpdateOperationsInput | string
+    path?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    width?: IntFieldUpdateOperationsInput | number
+    height?: IntFieldUpdateOperationsInput | number
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    parentId?: NullableIntFieldUpdateOperationsInput | number | null
+    Category?: CategoryUncheckedUpdateManyWithoutImageInput
+    CategoryIcon?: CategoryUncheckedUpdateManyWithoutIconInput
+    Event?: EventUncheckedUpdateManyWithoutImageInput
   }
 
   export type CategoryCreateManyUserInput = {
@@ -12647,6 +12992,23 @@ export namespace Prisma {
     created_at?: Date | string
   }
 
+  export type ImageCreateManyParentInput = {
+    id?: number
+    fieldname: string
+    originalname: string
+    encoding: string
+    mimetype: string
+    destination: string
+    origin: ImagOrigin
+    filename: string
+    path: string
+    size: number
+    width: number
+    height: number
+    updated_at?: Date | string
+    created_at?: Date | string
+  }
+
   export type CategoryUpdateWithoutImageInput = {
     titleRu?: StringFieldUpdateOperationsInput | string
     titleUk?: StringFieldUpdateOperationsInput | string
@@ -12759,6 +13121,64 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     Favorites?: FavoritesUncheckedUpdateManyWithoutEventInput
     EventCategory?: EventCategoryUncheckedUpdateManyWithoutEventInput
+  }
+
+  export type ImageUpdateWithoutParentInput = {
+    fieldname?: StringFieldUpdateOperationsInput | string
+    originalname?: StringFieldUpdateOperationsInput | string
+    encoding?: StringFieldUpdateOperationsInput | string
+    mimetype?: StringFieldUpdateOperationsInput | string
+    destination?: StringFieldUpdateOperationsInput | string
+    origin?: EnumImagOriginFieldUpdateOperationsInput | ImagOrigin
+    filename?: StringFieldUpdateOperationsInput | string
+    path?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    width?: IntFieldUpdateOperationsInput | number
+    height?: IntFieldUpdateOperationsInput | number
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Category?: CategoryUpdateManyWithoutImageInput
+    CategoryIcon?: CategoryUpdateManyWithoutIconInput
+    Event?: EventUpdateManyWithoutImageInput
+    Children?: ImageUpdateManyWithoutParentInput
+  }
+
+  export type ImageUncheckedUpdateWithoutParentInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    fieldname?: StringFieldUpdateOperationsInput | string
+    originalname?: StringFieldUpdateOperationsInput | string
+    encoding?: StringFieldUpdateOperationsInput | string
+    mimetype?: StringFieldUpdateOperationsInput | string
+    destination?: StringFieldUpdateOperationsInput | string
+    origin?: EnumImagOriginFieldUpdateOperationsInput | ImagOrigin
+    filename?: StringFieldUpdateOperationsInput | string
+    path?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    width?: IntFieldUpdateOperationsInput | number
+    height?: IntFieldUpdateOperationsInput | number
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    Category?: CategoryUncheckedUpdateManyWithoutImageInput
+    CategoryIcon?: CategoryUncheckedUpdateManyWithoutIconInput
+    Event?: EventUncheckedUpdateManyWithoutImageInput
+    Children?: ImageUncheckedUpdateManyWithoutParentInput
+  }
+
+  export type ImageUncheckedUpdateManyWithoutChildrenInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    fieldname?: StringFieldUpdateOperationsInput | string
+    originalname?: StringFieldUpdateOperationsInput | string
+    encoding?: StringFieldUpdateOperationsInput | string
+    mimetype?: StringFieldUpdateOperationsInput | string
+    destination?: StringFieldUpdateOperationsInput | string
+    origin?: EnumImagOriginFieldUpdateOperationsInput | ImagOrigin
+    filename?: StringFieldUpdateOperationsInput | string
+    path?: StringFieldUpdateOperationsInput | string
+    size?: IntFieldUpdateOperationsInput | number
+    width?: IntFieldUpdateOperationsInput | number
+    height?: IntFieldUpdateOperationsInput | number
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

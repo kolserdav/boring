@@ -142,6 +142,9 @@ model Image {
   Category     Category[] @relation("Image")
   CategoryIcon Category[] @relation("Icon")
   Event        Event[]
+  Children     Image[]    @relation("ChildImages")
+  parentId     Int?
+  Parent       Image?     @relation("ChildImages", fields: [parentId], references: [id])
 
   @@index([origin])
 }
