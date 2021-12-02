@@ -427,22 +427,25 @@ export function getEmptyRequest(url: string): any {
 /**
  * проверка и загрузка иконок из uploads/icons
  */
-export async function createIcons() {
+export async function createIcons(iconsChildren?: boolean) {
   const prisma = new PrismaClient();
-  const iconsPath = path.resolve(__dirname, '../../files/icons');
+  const dest = iconsChildren ? 'icons-children' : 'icons';
+  const origin = iconsChildren ? 'icon_sub' : 'icon';
+  const iconsPath = path.resolve(__dirname, '../../static', dest);
   const iconsDir = fs.readdirSync(iconsPath);
   const icons = await prisma.image.findMany({
     where: {
-      origin: 'icon',
+      origin,
     },
   });
   const newIcons = iconsDir.map((_icon) => {
     let check = false;
-    const deleted = icons.map((_file) => {
+    icons.map((_file) => {
       if (_file.originalname === _icon) {
         check = true;
       }
     });
+    const size = iconsChildren ? 571 : 61;
     if (!check)
       return {
         filename: _icon,
@@ -450,12 +453,12 @@ export async function createIcons() {
         encoding: '7bit',
         fieldname: 'image',
         originalname: _icon,
-        destination: 'files/icons',
-        origin: 'icon',
-        path: `files/icons/${_icon}`,
+        destination: `static/${dest}`,
+        origin,
+        path: `static/${dest}/${_icon}`,
         size: 10,
-        width: 61,
-        height: 61,
+        width: size,
+        height: size,
       };
   });
   await prisma.image.createMany({

@@ -14,10 +14,11 @@ enum Roles {
 }
 
 // перечисление ролей
-enum ImagOrigin {
+enum ImageOrigin {
   category
   event
   icon
+  icon_sub
 }
 
 // Таблица пользователей
@@ -125,26 +126,26 @@ model Favorites {
 
 // Таблица изображений
 model Image {
-  id           Int        @id @default(autoincrement())
+  id           Int         @id @default(autoincrement())
   fieldname    String
   originalname String
   encoding     String
   mimetype     String
   destination  String
-  origin       ImagOrigin // category | event | icon
+  origin       ImageOrigin // category | event | icon
   filename     String
-  path         String     @unique
+  path         String      @unique
   size         Int
   width        Int
   height       Int
-  updated_at   DateTime   @default(now())
-  created_at   DateTime   @default(now())
-  Category     Category[] @relation("Image")
-  CategoryIcon Category[] @relation("Icon")
+  updated_at   DateTime    @default(now())
+  created_at   DateTime    @default(now())
+  Category     Category[]  @relation("Image")
+  CategoryIcon Category[]  @relation("Icon")
   Event        Event[]
-  Children     Image[]    @relation("ChildImages")
+  Children     Image[]     @relation("ChildImages")
   parentId     Int?
-  Parent       Image?     @relation("ChildImages", fields: [parentId], references: [id])
+  Parent       Image?      @relation("ChildImages", fields: [parentId], references: [id])
 
   @@index([origin])
 }

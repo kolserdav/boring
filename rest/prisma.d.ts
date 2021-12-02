@@ -117,7 +117,7 @@ export type Image = {
   encoding: string
   mimetype: string
   destination: string
-  origin: ImagOrigin
+  origin: ImageOrigin
   filename: string
   path: string
   size: number
@@ -144,13 +144,14 @@ export const Roles: {
 export type Roles = (typeof Roles)[keyof typeof Roles]
 
 
-export const ImagOrigin: {
+export const ImageOrigin: {
   category: 'category',
   event: 'event',
-  icon: 'icon'
+  icon: 'icon',
+  icon_sub: 'icon_sub'
 };
 
-export type ImagOrigin = (typeof ImagOrigin)[keyof typeof ImagOrigin]
+export type ImageOrigin = (typeof ImageOrigin)[keyof typeof ImageOrigin]
 
 
 /**
@@ -6864,7 +6865,7 @@ export namespace Prisma {
     encoding: string | null
     mimetype: string | null
     destination: string | null
-    origin: ImagOrigin | null
+    origin: ImageOrigin | null
     filename: string | null
     path: string | null
     size: number | null
@@ -6882,7 +6883,7 @@ export namespace Prisma {
     encoding: string | null
     mimetype: string | null
     destination: string | null
-    origin: ImagOrigin | null
+    origin: ImageOrigin | null
     filename: string | null
     path: string | null
     size: number | null
@@ -7083,7 +7084,7 @@ export namespace Prisma {
     encoding: string
     mimetype: string
     destination: string
-    origin: ImagOrigin
+    origin: ImageOrigin
     filename: string
     path: string
     size: number
@@ -8405,7 +8406,7 @@ export namespace Prisma {
     encoding?: StringFilter | string
     mimetype?: StringFilter | string
     destination?: StringFilter | string
-    origin?: EnumImagOriginFilter | ImagOrigin
+    origin?: EnumImageOriginFilter | ImageOrigin
     filename?: StringFilter | string
     path?: StringFilter | string
     size?: IntFilter | number
@@ -8482,7 +8483,7 @@ export namespace Prisma {
     encoding?: StringWithAggregatesFilter | string
     mimetype?: StringWithAggregatesFilter | string
     destination?: StringWithAggregatesFilter | string
-    origin?: EnumImagOriginWithAggregatesFilter | ImagOrigin
+    origin?: EnumImageOriginWithAggregatesFilter | ImageOrigin
     filename?: StringWithAggregatesFilter | string
     path?: StringWithAggregatesFilter | string
     size?: IntWithAggregatesFilter | number
@@ -8995,7 +8996,7 @@ export namespace Prisma {
     encoding: string
     mimetype: string
     destination: string
-    origin: ImagOrigin
+    origin: ImageOrigin
     filename: string
     path: string
     size: number
@@ -9017,7 +9018,7 @@ export namespace Prisma {
     encoding: string
     mimetype: string
     destination: string
-    origin: ImagOrigin
+    origin: ImageOrigin
     filename: string
     path: string
     size: number
@@ -9038,7 +9039,7 @@ export namespace Prisma {
     encoding?: StringFieldUpdateOperationsInput | string
     mimetype?: StringFieldUpdateOperationsInput | string
     destination?: StringFieldUpdateOperationsInput | string
-    origin?: EnumImagOriginFieldUpdateOperationsInput | ImagOrigin
+    origin?: EnumImageOriginFieldUpdateOperationsInput | ImageOrigin
     filename?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
@@ -9060,7 +9061,7 @@ export namespace Prisma {
     encoding?: StringFieldUpdateOperationsInput | string
     mimetype?: StringFieldUpdateOperationsInput | string
     destination?: StringFieldUpdateOperationsInput | string
-    origin?: EnumImagOriginFieldUpdateOperationsInput | ImagOrigin
+    origin?: EnumImageOriginFieldUpdateOperationsInput | ImageOrigin
     filename?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
@@ -9082,7 +9083,7 @@ export namespace Prisma {
     encoding: string
     mimetype: string
     destination: string
-    origin: ImagOrigin
+    origin: ImageOrigin
     filename: string
     path: string
     size: number
@@ -9099,7 +9100,7 @@ export namespace Prisma {
     encoding?: StringFieldUpdateOperationsInput | string
     mimetype?: StringFieldUpdateOperationsInput | string
     destination?: StringFieldUpdateOperationsInput | string
-    origin?: EnumImagOriginFieldUpdateOperationsInput | ImagOrigin
+    origin?: EnumImageOriginFieldUpdateOperationsInput | ImageOrigin
     filename?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
@@ -9116,7 +9117,7 @@ export namespace Prisma {
     encoding?: StringFieldUpdateOperationsInput | string
     mimetype?: StringFieldUpdateOperationsInput | string
     destination?: StringFieldUpdateOperationsInput | string
-    origin?: EnumImagOriginFieldUpdateOperationsInput | ImagOrigin
+    origin?: EnumImageOriginFieldUpdateOperationsInput | ImageOrigin
     filename?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
@@ -9690,11 +9691,11 @@ export namespace Prisma {
     eventId?: SortOrder
   }
 
-  export type EnumImagOriginFilter = {
-    equals?: ImagOrigin
-    in?: Enumerable<ImagOrigin>
-    notIn?: Enumerable<ImagOrigin>
-    not?: NestedEnumImagOriginFilter | ImagOrigin
+  export type EnumImageOriginFilter = {
+    equals?: ImageOrigin
+    in?: Enumerable<ImageOrigin>
+    notIn?: Enumerable<ImageOrigin>
+    not?: NestedEnumImageOriginFilter | ImageOrigin
   }
 
   export type ImageListRelationFilter = {
@@ -9777,14 +9778,14 @@ export namespace Prisma {
     parentId?: SortOrder
   }
 
-  export type EnumImagOriginWithAggregatesFilter = {
-    equals?: ImagOrigin
-    in?: Enumerable<ImagOrigin>
-    notIn?: Enumerable<ImagOrigin>
-    not?: NestedEnumImagOriginWithAggregatesFilter | ImagOrigin
+  export type EnumImageOriginWithAggregatesFilter = {
+    equals?: ImageOrigin
+    in?: Enumerable<ImageOrigin>
+    notIn?: Enumerable<ImageOrigin>
+    not?: NestedEnumImageOriginWithAggregatesFilter | ImageOrigin
     _count?: NestedIntFilter
-    _min?: NestedEnumImagOriginFilter
-    _max?: NestedEnumImagOriginFilter
+    _min?: NestedEnumImageOriginFilter
+    _max?: NestedEnumImageOriginFilter
   }
 
   export type CategoryCreateNestedManyWithoutUserInput = {
@@ -10441,8 +10442,8 @@ export namespace Prisma {
     connect?: Enumerable<ImageWhereUniqueInput>
   }
 
-  export type EnumImagOriginFieldUpdateOperationsInput = {
-    set?: ImagOrigin
+  export type EnumImageOriginFieldUpdateOperationsInput = {
+    set?: ImageOrigin
   }
 
   export type CategoryUpdateManyWithoutImageInput = {
@@ -10785,21 +10786,21 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter | number | null
   }
 
-  export type NestedEnumImagOriginFilter = {
-    equals?: ImagOrigin
-    in?: Enumerable<ImagOrigin>
-    notIn?: Enumerable<ImagOrigin>
-    not?: NestedEnumImagOriginFilter | ImagOrigin
+  export type NestedEnumImageOriginFilter = {
+    equals?: ImageOrigin
+    in?: Enumerable<ImageOrigin>
+    notIn?: Enumerable<ImageOrigin>
+    not?: NestedEnumImageOriginFilter | ImageOrigin
   }
 
-  export type NestedEnumImagOriginWithAggregatesFilter = {
-    equals?: ImagOrigin
-    in?: Enumerable<ImagOrigin>
-    notIn?: Enumerable<ImagOrigin>
-    not?: NestedEnumImagOriginWithAggregatesFilter | ImagOrigin
+  export type NestedEnumImageOriginWithAggregatesFilter = {
+    equals?: ImageOrigin
+    in?: Enumerable<ImageOrigin>
+    notIn?: Enumerable<ImageOrigin>
+    not?: NestedEnumImageOriginWithAggregatesFilter | ImageOrigin
     _count?: NestedIntFilter
-    _min?: NestedEnumImagOriginFilter
-    _max?: NestedEnumImagOriginFilter
+    _min?: NestedEnumImageOriginFilter
+    _max?: NestedEnumImageOriginFilter
   }
 
   export type CategoryCreateWithoutUserInput = {
@@ -11103,7 +11104,7 @@ export namespace Prisma {
     encoding: string
     mimetype: string
     destination: string
-    origin: ImagOrigin
+    origin: ImageOrigin
     filename: string
     path: string
     size: number
@@ -11124,7 +11125,7 @@ export namespace Prisma {
     encoding: string
     mimetype: string
     destination: string
-    origin: ImagOrigin
+    origin: ImageOrigin
     filename: string
     path: string
     size: number
@@ -11149,7 +11150,7 @@ export namespace Prisma {
     encoding: string
     mimetype: string
     destination: string
-    origin: ImagOrigin
+    origin: ImageOrigin
     filename: string
     path: string
     size: number
@@ -11170,7 +11171,7 @@ export namespace Prisma {
     encoding: string
     mimetype: string
     destination: string
-    origin: ImagOrigin
+    origin: ImageOrigin
     filename: string
     path: string
     size: number
@@ -11373,7 +11374,7 @@ export namespace Prisma {
     encoding?: StringFieldUpdateOperationsInput | string
     mimetype?: StringFieldUpdateOperationsInput | string
     destination?: StringFieldUpdateOperationsInput | string
-    origin?: EnumImagOriginFieldUpdateOperationsInput | ImagOrigin
+    origin?: EnumImageOriginFieldUpdateOperationsInput | ImageOrigin
     filename?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
@@ -11394,7 +11395,7 @@ export namespace Prisma {
     encoding?: StringFieldUpdateOperationsInput | string
     mimetype?: StringFieldUpdateOperationsInput | string
     destination?: StringFieldUpdateOperationsInput | string
-    origin?: EnumImagOriginFieldUpdateOperationsInput | ImagOrigin
+    origin?: EnumImageOriginFieldUpdateOperationsInput | ImageOrigin
     filename?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
@@ -11419,7 +11420,7 @@ export namespace Prisma {
     encoding?: StringFieldUpdateOperationsInput | string
     mimetype?: StringFieldUpdateOperationsInput | string
     destination?: StringFieldUpdateOperationsInput | string
-    origin?: EnumImagOriginFieldUpdateOperationsInput | ImagOrigin
+    origin?: EnumImageOriginFieldUpdateOperationsInput | ImageOrigin
     filename?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
@@ -11440,7 +11441,7 @@ export namespace Prisma {
     encoding?: StringFieldUpdateOperationsInput | string
     mimetype?: StringFieldUpdateOperationsInput | string
     destination?: StringFieldUpdateOperationsInput | string
-    origin?: EnumImagOriginFieldUpdateOperationsInput | ImagOrigin
+    origin?: EnumImageOriginFieldUpdateOperationsInput | ImageOrigin
     filename?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
@@ -11759,7 +11760,7 @@ export namespace Prisma {
     encoding: string
     mimetype: string
     destination: string
-    origin: ImagOrigin
+    origin: ImageOrigin
     filename: string
     path: string
     size: number
@@ -11780,7 +11781,7 @@ export namespace Prisma {
     encoding: string
     mimetype: string
     destination: string
-    origin: ImagOrigin
+    origin: ImageOrigin
     filename: string
     path: string
     size: number
@@ -11896,7 +11897,7 @@ export namespace Prisma {
     encoding?: StringFieldUpdateOperationsInput | string
     mimetype?: StringFieldUpdateOperationsInput | string
     destination?: StringFieldUpdateOperationsInput | string
-    origin?: EnumImagOriginFieldUpdateOperationsInput | ImagOrigin
+    origin?: EnumImageOriginFieldUpdateOperationsInput | ImageOrigin
     filename?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
@@ -11917,7 +11918,7 @@ export namespace Prisma {
     encoding?: StringFieldUpdateOperationsInput | string
     mimetype?: StringFieldUpdateOperationsInput | string
     destination?: StringFieldUpdateOperationsInput | string
-    origin?: EnumImagOriginFieldUpdateOperationsInput | ImagOrigin
+    origin?: EnumImageOriginFieldUpdateOperationsInput | ImageOrigin
     filename?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
@@ -12394,7 +12395,7 @@ export namespace Prisma {
     encoding: string
     mimetype: string
     destination: string
-    origin: ImagOrigin
+    origin: ImageOrigin
     filename: string
     path: string
     size: number
@@ -12415,7 +12416,7 @@ export namespace Prisma {
     encoding: string
     mimetype: string
     destination: string
-    origin: ImagOrigin
+    origin: ImageOrigin
     filename: string
     path: string
     size: number
@@ -12445,7 +12446,7 @@ export namespace Prisma {
     encoding: string
     mimetype: string
     destination: string
-    origin: ImagOrigin
+    origin: ImageOrigin
     filename: string
     path: string
     size: number
@@ -12466,7 +12467,7 @@ export namespace Prisma {
     encoding: string
     mimetype: string
     destination: string
-    origin: ImagOrigin
+    origin: ImageOrigin
     filename: string
     path: string
     size: number
@@ -12559,7 +12560,7 @@ export namespace Prisma {
     encoding?: StringFilter | string
     mimetype?: StringFilter | string
     destination?: StringFilter | string
-    origin?: EnumImagOriginFilter | ImagOrigin
+    origin?: EnumImageOriginFilter | ImageOrigin
     filename?: StringFilter | string
     path?: StringFilter | string
     size?: IntFilter | number
@@ -12581,7 +12582,7 @@ export namespace Prisma {
     encoding?: StringFieldUpdateOperationsInput | string
     mimetype?: StringFieldUpdateOperationsInput | string
     destination?: StringFieldUpdateOperationsInput | string
-    origin?: EnumImagOriginFieldUpdateOperationsInput | ImagOrigin
+    origin?: EnumImageOriginFieldUpdateOperationsInput | ImageOrigin
     filename?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
@@ -12602,7 +12603,7 @@ export namespace Prisma {
     encoding?: StringFieldUpdateOperationsInput | string
     mimetype?: StringFieldUpdateOperationsInput | string
     destination?: StringFieldUpdateOperationsInput | string
-    origin?: EnumImagOriginFieldUpdateOperationsInput | ImagOrigin
+    origin?: EnumImageOriginFieldUpdateOperationsInput | ImageOrigin
     filename?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
@@ -12999,7 +13000,7 @@ export namespace Prisma {
     encoding: string
     mimetype: string
     destination: string
-    origin: ImagOrigin
+    origin: ImageOrigin
     filename: string
     path: string
     size: number
@@ -13129,7 +13130,7 @@ export namespace Prisma {
     encoding?: StringFieldUpdateOperationsInput | string
     mimetype?: StringFieldUpdateOperationsInput | string
     destination?: StringFieldUpdateOperationsInput | string
-    origin?: EnumImagOriginFieldUpdateOperationsInput | ImagOrigin
+    origin?: EnumImageOriginFieldUpdateOperationsInput | ImageOrigin
     filename?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
@@ -13150,7 +13151,7 @@ export namespace Prisma {
     encoding?: StringFieldUpdateOperationsInput | string
     mimetype?: StringFieldUpdateOperationsInput | string
     destination?: StringFieldUpdateOperationsInput | string
-    origin?: EnumImagOriginFieldUpdateOperationsInput | ImagOrigin
+    origin?: EnumImageOriginFieldUpdateOperationsInput | ImageOrigin
     filename?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
@@ -13171,7 +13172,7 @@ export namespace Prisma {
     encoding?: StringFieldUpdateOperationsInput | string
     mimetype?: StringFieldUpdateOperationsInput | string
     destination?: StringFieldUpdateOperationsInput | string
-    origin?: EnumImagOriginFieldUpdateOperationsInput | ImagOrigin
+    origin?: EnumImageOriginFieldUpdateOperationsInput | ImageOrigin
     filename?: StringFieldUpdateOperationsInput | string
     path?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number

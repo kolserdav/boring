@@ -29,7 +29,7 @@ const storageCategory = multer.diskStorage({
     } else if (url.match(/\/api\/v1\/category\/imageupload/)) {
       dirName = 'category';
     }
-    cb(null, `files/${dirName}`);
+    cb(null, `static/${dirName}`);
   },
   filename: (req, file, cb) => {
     let imageType: RegExpMatchArray | string | null = file.originalname.match(/\.\w{3,4}$/);
@@ -49,7 +49,7 @@ process.on('unhandledRejection', (reason: Error, promise) => {
 
 // Глобальные посредники
 app.use(cors({ origin: process.env.APP_URL }));
-app.use('/files', express.static(path.resolve(__dirname, '../files')));
+app.use('/static', express.static(path.resolve(__dirname, '../static')));
 app.use(express.json({ limit: '5mb' }));
 app.use(middleware.getLang);
 
@@ -263,4 +263,5 @@ const port = process.env.PORT || 3333;
 app.listen(port, async () => {
   utils.saveLog({}, utils.getEmptyRequest('start'), `Listen on port ${port}`, {});
   await utils.createIcons();
+  await utils.createIcons(true);
 });
