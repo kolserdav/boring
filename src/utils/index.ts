@@ -431,7 +431,7 @@ export async function createIcons(iconsChildren?: boolean) {
   const prisma = new PrismaClient();
   const dest = iconsChildren ? 'icons-children' : 'icons';
   const origin = iconsChildren ? 'icon_sub' : 'icon';
-  const iconsPath = path.resolve(__dirname, '../../static', dest);
+  const iconsPath = path.resolve(__dirname, '../../cloud', dest);
   const iconsDir = fs.readdirSync(iconsPath);
   const icons = await prisma.image.findMany({
     where: {
@@ -453,9 +453,9 @@ export async function createIcons(iconsChildren?: boolean) {
         encoding: '7bit',
         fieldname: 'image',
         originalname: _icon,
-        destination: `static/${dest}`,
+        destination: `cloud/${dest}`,
         origin,
-        path: `static/${dest}/${_icon}`,
+        path: `cloud/${dest}/${_icon}`,
         size: 10,
         width: size,
         height: size,
