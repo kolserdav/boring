@@ -54,12 +54,30 @@ const handler: Types.RequestHandler<any, Args, Image | null> = async (req, res) 
       data: null,
     });
   }
-  const { path: pathname, mimetype } = result;
-  const imagePath = path.resolve(__dirname, '../../..', pathname);
+  const { path: pathname, mimetype, destination, filename } = result;
+  const imageFullPath = path.resolve(__dirname, '../../..', pathname);
   try {
-    fs.unlinkSync(imagePath);
+    fs.unlinkSync(imageFullPath);
+
+    fs.unlinkSync(
+      path.resolve(__dirname, '../../..', destination, filename.replace('full', 'desktop'))
+    );
+
+    fs.unlinkSync(
+      path.resolve(__dirname, '../../..', destination, filename.replace('full', 'tablet'))
+    );
+
+    fs.unlinkSync(
+      path.resolve(__dirname, '../../..', destination, filename.replace('full', 'mobile'))
+    );
+
+    fs.unlinkSync(
+      path.resolve(__dirname, '../../..', destination, filename.replace('full', 'small'))
+    );
+
+    fs.rmdirSync(path.resolve(__dirname, '../../..', destination));
   } catch (e) {
-    utils.saveLog(e, req, 'Error delete image', { imagePath, mimetype });
+    utils.saveLog(e, req, 'Error delete image', { imageFullPath, mimetype });
   }
   return res.status(201).json({
     status: utils.SUCCESS,

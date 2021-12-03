@@ -7,7 +7,7 @@
  * Copyright: kolserdav (c), All rights reserved
  * Create date: Thu Oct 14 2021 17:09:33 GMT+0700 (Krasnoyarsk Standard Time)
  ******************************************************************************************/
-import { Prisma, PrismaClient, Category } from '@prisma/client';
+import { Prisma, PrismaClient, Category, Image } from '@prisma/client';
 import path from 'path';
 import fs from 'fs';
 import type * as Types from '../../types';
@@ -23,93 +23,6 @@ interface Args extends Types.GlobalParams {
 }
 
 const middleware: Types.NextHandler<any, Args, any> = async (req, res, next) => {
-  const { body, url } = req;
-  const { args, lang } = body;
-  const { headers } = req;
-  const { width, height } = headers;
-  if (url.match(/\/api\/v1\/category\/imageupload/)) {
-    const { file }: any = req;
-    let _file: Types.MulterFile = file ? file : {};
-    const {
-      fieldname,
-      originalname,
-      encoding,
-      mimetype,
-      destination,
-      filename,
-      path: pathname,
-      size,
-    } = _file;
-    if (!_file.size || !_file) {
-      return res.status(400).json({
-        status: utils.WARNING,
-        message: lang.BAD_REQUEST,
-        stdErrMessage: utils.getStdErrMessage(
-          new Error(`File object is not readable on category update ${JSON.stringify(_file)}`)
-        ),
-        data: null,
-      });
-    }
-    // если передали не изображение, то удаляет и пишет лог в случае ошибки
-    if (!mimetype?.match(/image/)) {
-      const imagePath = path.resolve(__dirname, '../../..', pathname);
-      try {
-        fs.unlinkSync(imagePath);
-      } catch (e) {
-        utils.saveLog(e, req, 'Error delete wrong format file on category update', {
-          imagePath,
-          mimetype,
-        });
-      }
-      return res.status(400).json({
-        status: utils.WARNING,
-        message: lang.BAD_REQUEST,
-        stdErrMessage: utils.getStdErrMessage(
-          new Error(`File type ${mimetype} is not acceptable on category update`)
-        ),
-        data: null,
-      });
-    }
-    if (!width || !height || typeof width !== 'string' || typeof height !== 'string') {
-      return res.status(400).json({
-        status: utils.WARNING,
-        message: lang.BAD_REQUEST,
-        stdErrMessage: utils.getStdErrMessage(new Error('Headers width and height is required')),
-        data: null,
-      });
-    }
-    let image;
-    try {
-      image = await prisma.image.create({
-        data: {
-          fieldname,
-          filename,
-          origin: 'category',
-          originalname,
-          encoding,
-          mimetype,
-          destination,
-          path: pathname,
-          width: parseInt(width, 10),
-          height: parseInt(height, 10),
-          size,
-        },
-      });
-    } catch (e) {
-      utils.saveLog(e, req, 'Error save image to database while update category', { _file });
-      return res.status(500).json({
-        status: utils.WARNING,
-        message: lang.SERVER_ERROR,
-        stdErrMessage: utils.getStdErrMessage(e),
-        data: null,
-      });
-    }
-    return res.status(201).json({
-      status: utils.SUCCESS,
-      message: lang.IMAGE_SAVED,
-      data: image,
-    });
-  }
   next();
 };
 

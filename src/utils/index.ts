@@ -14,12 +14,13 @@ import type express from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
+import sharp from 'sharp';
 import Mail from 'nodemailer/lib/mailer';
 // Переводит html в текст для приложений клиентов, которые не могут читать html
 import { htmlToText } from 'html-to-text';
 import path from 'path';
 import fs from 'fs';
-import { PrismaClient, Prisma } from '@prisma/client';
+import { PrismaClient, Prisma, Image } from '@prisma/client';
 import type * as Types from '../types';
 
 export const SUCCESS = 'success';
@@ -32,6 +33,30 @@ const DEV = NODE_ENV === 'development';
 export const MINIMAL_PASSWORD_LENGTH = 8;
 export const FORGOT_PASSWORD_KEY_LIVE_DAYS = 3;
 export const PASSWORD_SALT_ROUNDS = 10;
+
+/**
+ * Определяет ключи для названия части файла
+ */
+interface ImagePreview {
+  full: number;
+  desktop: number;
+  tablet: number;
+  mobile: number;
+  small: number;
+}
+
+/**
+ * Определяет константы размеров изображения
+ */
+const IMAGE_PREVIEW: ImagePreview = {
+  full: Infinity,
+  desktop: 1920,
+  tablet: 1024,
+  mobile: 760,
+  small: 320,
+};
+
+const ROOT_PATH = path.resolve(__dirname, '../..');
 
 export const CODES = {
   data: 'data',
@@ -449,7 +474,7 @@ export async function createIcons(iconsChildren?: boolean) {
     if (!check)
       return {
         filename: _icon,
-        mimetype: 'image/png',
+        mimetype: 'image/svg',
         encoding: '7bit',
         fieldname: 'image',
         originalname: _icon,
@@ -529,3 +554,74 @@ export async function createIcons(iconsChildren?: boolean) {
   }
   return 0;
 }
+
+interface CreateImagePreview {
+  (req: express.Request, args: { path: string; width: number; dest: string }): Promise<1 | 0>;
+}
+
+const createImagePreview: CreateImagePreview = async (req, { path, width, dest }) => {
+  return new Promise((resolve) => {
+    sharp(path)
+      .resize(width)
+      .toFile(dest)
+      .then(() => {
+        resolve(0);
+      })
+      .catch((e) => {
+        saveLog(e, req, 'Error resize image', path);
+        resolve(1);
+      });
+  });
+};
+
+/**
+ * Вычисляет размеры превьюшек
+ */
+const getImagePreview = (width: number): ImagePreview => {
+  const keys: any = Object.keys(IMAGE_PREVIEW);
+  const _keys: Array<keyof ImagePreview> = keys;
+  const imagePreview = { ...IMAGE_PREVIEW };
+  _keys.map((item) => {
+    if (item && item !== 'full') {
+      if (IMAGE_PREVIEW[item] < width) {
+        imagePreview[item] = imagePreview[item];
+      } else {
+        imagePreview[item] = width;
+      }
+    }
+  });
+  return imagePreview;
+};
+
+/**
+ * Создает превьюшки при загрузке изображения
+ */
+export const createImagePreviews = async (req: express.Request, image: Image): Promise<1 | 0> => {
+  const { width, path, destination, filename } = image;
+  const type = filename.match(/\.[a-zA-Z]{3,4}$/);
+  const fileType = type ? type[0] : '';
+  const keys: any = Object.keys(IMAGE_PREVIEW);
+  let i = 0;
+  let errors = 0;
+  while (i < keys.length) {
+    i++;
+    const key: keyof ImagePreview = keys[i];
+    const imagePreview = getImagePreview(width);
+    if (key && key !== 'full') {
+      if (
+        await createImagePreview(req, {
+          width: imagePreview[key],
+          path: `${ROOT_PATH}/${path}`,
+          dest: `${ROOT_PATH}/${destination}/${key}${fileType}`,
+        })
+      ) {
+        errors++;
+      }
+    }
+  }
+  if (errors) {
+    saveLog(new Error(), req, 'Error create image preview. Errors:', errors);
+    return 1;
+  }
+  return 0;
+};

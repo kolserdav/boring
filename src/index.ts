@@ -11,6 +11,7 @@
  * Индекный файл сервера
  */
 import express from 'express';
+import fs from 'fs';
 import path from 'path';
 import cors from 'cors';
 import * as api from './api';
@@ -29,12 +30,15 @@ const storageCategory = multer.diskStorage({
     } else if (url.match(/\/api\/v1\/category\/imageupload/)) {
       dirName = 'category';
     }
-    cb(null, `cloud/${dirName}`);
+    dirName = `cloud/${dirName}/${utils.getHash(32)}`;
+    const dirPath = path.resolve(__dirname, '..', dirName);
+    fs.mkdirSync(dirPath);
+    cb(null, dirName);
   },
   filename: (req, file, cb) => {
     let imageType: RegExpMatchArray | string | null = file.originalname.match(/\.\w{3,4}$/);
     imageType = imageType ? imageType[0] : '';
-    cb(null, utils.getHash(24) + imageType);
+    cb(null, 'full' + imageType);
   },
 });
 const uploadCategory = multer({ storage: storageCategory });
@@ -192,8 +196,8 @@ app.post(
   }),
   uploadCategory.single('image'),
   middleware.getLang,
-  api.category.update.middleware,
-  api.category.update.handler
+  api.image.upload.middleware,
+  api.image.upload.handler
 );
 
 //// API событий
@@ -236,8 +240,8 @@ app.post(
   }),
   uploadCategory.single('image'),
   middleware.getLang,
-  api.event.update.middleware,
-  api.event.update.handler
+  api.image.upload.middleware,
+  api.image.upload.handler
 );
 
 //// API изображений

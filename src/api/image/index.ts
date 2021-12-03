@@ -9,3 +9,4 @@
  ******************************************************************************************/
 export * as delete from './delete';
 export * as findMany from './findMany';
+export * as upload from './upload';

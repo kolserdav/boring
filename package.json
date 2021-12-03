@@ -50,13 +50,15 @@
   },
   "dependencies": {
     "@prisma/client": "^3.6.0",
+    "@types/sharp": "^0.29.4",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "html-to-text": "^8.0.0",
     "jsonwebtoken": "^8.5.1",
     "multer": "^1.4.3",
-    "nodemailer": "^6.7.0"
+    "nodemailer": "^6.7.0",
+    "sharp": "^0.29.3"
   },
   "fhead": {
     "root": "src",
