@@ -30,8 +30,8 @@ export namespace Api {
 /**
  * Определяет ключи для названия части файла
  */
-export interface ImagePreview {
-  full: number;
+interface ImagePreview {
+  full: number | undefined;
   desktop: number;
   tablet: number;
   mobile: number;
@@ -41,8 +41,8 @@ export interface ImagePreview {
 /**
  * Определяет константы размеров изображения
  */
-export const IMAGE_PREVIEW: ImagePreview = {
-  full: Infinity,
+const IMAGE_PREVIEW: ImagePreview = {
+  full: undefined,
   desktop: 1920,
   tablet: 1024,
   mobile: 760,

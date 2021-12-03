@@ -38,7 +38,7 @@ export const PASSWORD_SALT_ROUNDS = 10;
  * Определяет ключи для названия части файла
  */
 interface ImagePreview {
-  full: number;
+  full: number | undefined;
   desktop: number;
   tablet: number;
   mobile: number;
@@ -49,7 +49,7 @@ interface ImagePreview {
  * Определяет константы размеров изображения
  */
 const IMAGE_PREVIEW: ImagePreview = {
-  full: Infinity,
+  full: undefined,
   desktop: 1920,
   tablet: 1024,
   mobile: 760,
