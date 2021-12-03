@@ -28,6 +28,28 @@ export namespace Api {
 }
 
 /**
+ * Определяет ключи для названия части файла
+ */
+export interface ImagePreview {
+  full: number;
+  desktop: number;
+  tablet: number;
+  mobile: number;
+  small: number;
+}
+
+/**
+ * Определяет константы размеров изображения
+ */
+export const IMAGE_PREVIEW: ImagePreview = {
+  full: Infinity,
+  desktop: 1920,
+  tablet: 1024,
+  mobile: 760,
+  small: 320,
+};
+
+/**
  * Псевдо метод запроса на сервер
  * @param args
  * @returns
