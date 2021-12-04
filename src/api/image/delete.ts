@@ -60,6 +60,10 @@ const handler: Types.RequestHandler<any, Args, Image | null> = async (req, res) 
     fs.unlinkSync(imageFullPath);
 
     fs.unlinkSync(
+      path.resolve(__dirname, '../../..', destination, filename.replace('full', 'fourK'))
+    );
+
+    fs.unlinkSync(
       path.resolve(__dirname, '../../..', destination, filename.replace('full', 'desktop'))
     );
 

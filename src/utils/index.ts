@@ -39,6 +39,7 @@ export const PASSWORD_SALT_ROUNDS = 10;
  */
 interface ImagePreview {
   full: number | undefined;
+  fourK: number;
   desktop: number;
   tablet: number;
   mobile: number;
@@ -50,6 +51,7 @@ interface ImagePreview {
  */
 const IMAGE_PREVIEW: ImagePreview = {
   full: undefined,
+  fourK: 3840,
   desktop: 1920,
   tablet: 1024,
   mobile: 760,

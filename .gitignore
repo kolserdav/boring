@@ -3,10 +3,10 @@ node_modules
 !app/.env
 dist
 yarn-error.log
-files/category/*
-files/event/*
-files/unknown/*
-!files/category/.gitkeep
-!files/event/.gitkeep
-!files/unknown/.gitkeep
+cloud/category/*
+cloud/event/*
+cloud/unknown/*
+!cloud/category/.gitkeep
+!cloud/event/.gitkeep
+!cloud/unknown/.gitkeep
 rest/sandbox.ts

@@ -31,7 +31,8 @@ export namespace Api {
  * Определяет ключи для названия части файла
  */
 export interface ImagePreview {
-  full: number | undefined;
+  full: number | null;
+  fourK: number;
   desktop: number;
   tablet: number;
   mobile: number;
@@ -42,7 +43,8 @@ export interface ImagePreview {
  * Определяет константы размеров изображения
  */
 export const IMAGE_PREVIEW: ImagePreview = {
-  full: undefined,
+  full: null,
+  fourK: 3840,
   desktop: 1920,
   tablet: 1024,
   mobile: 760,
