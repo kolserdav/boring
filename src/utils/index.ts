@@ -557,10 +557,14 @@ export async function createIcons(iconsChildren?: boolean) {
   return 0;
 }
 
+
 interface CreateImagePreview {
   (req: express.Request, args: { path: string; width: number; dest: string }): Promise<1 | 0>;
 }
 
+/**
+ * Создает нужные превью картинки
+ */
 const createImagePreview: CreateImagePreview = async (req, { path, width, dest }) => {
   return new Promise((resolve) => {
     sharp(path)

@@ -10,3 +10,6 @@ cloud/unknown/*
 !cloud/event/.gitkeep
 !cloud/unknown/.gitkeep
 rest/sandbox.ts
+docker/mysql/data
+data
+.env.prod
